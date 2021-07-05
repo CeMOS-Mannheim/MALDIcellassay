@@ -22,7 +22,6 @@
 #' @importFrom tibble tibble
 #' @importFrom tidyr gather
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave
-#' @importFrom xlsx write.xlsx
 
 fitCurve <- function(spec,
                      dir,
@@ -154,13 +153,12 @@ fitCurve <- function(spec,
   cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
   if(saveIntensityMatrix) {
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")
-    write.xlsx(x = as_tibble(intmat[,idx], rownames = NA),
+    write.csv(x = as_tibble(intmat[,idx], rownames = NA),
                file = file.path(dir,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
-                                       "norm.xlsx")),
-               sheetName = "avg")
+                                       "norm_avg.xlsx")))
     singlePeaks <- detectPeaks(spec, method = "SuperSmoother", SNR = SNR)
     singlePeaks <- binPeaks(singlePeaks, tolerance = binTol)
     intmatSingle <- intensityMatrix(singlePeaks, spec)
@@ -179,22 +177,18 @@ fitCurve <- function(spec,
     mzsingle <- as.numeric(colnames(intmatSingle))
 
     idx_single <- match.closest(mzhits, mzsingle)
-    write.xlsx(x = as_tibble(intmatSingle[,idx_single], rownames = NA),
+    write.csv(x = as_tibble(intmatSingle[,idx_single], rownames = NA),
                file = file.path(dir,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
-                                       "norm.xlsx")),
-               sheetName = "singleSpec",
-               append = TRUE)
-    write.xlsx(x = as.data.frame(stat_df),
+                                       "norm_singleSpec.xlsx")))
+    write.csv(x = as.data.frame(stat_df),
                file = file.path(dir,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
-                                       "norm.xlsx")),
-               sheetName = "mzStats",
-               append = TRUE)
+                                       "norm_mzStats.xlsx")))
   }
 
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")

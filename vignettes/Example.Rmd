@@ -17,17 +17,19 @@ knitr::opts_chunk$set(fig.width=8,
 
 
 ## Introduction
+
 In this document we will apply an automated screening for possible candidate signals that show a response to treatment with a compound.
 For details how to do the experimental part check out our Nature Protocols publication Unger 2021 "Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry".
 Briefly, cells were treated with the following concentration of a compound: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10, 30 µM.
 After incubation the cells were washed, transferred to a MALDI target plate and matrix was applied.
-For each concentration a 4 spots were applied which means that we also have 4 "measurement replicates" for each concentration.
+For each concentration 4 spots were applied which means that we also have 4 "measurement replicates" for each concentration.
 
 The most important function in this package is fitCurve(). It does not only fit the dose response curve and compute score values but it also does most of the necessary steps needed to prepare the data for fitting like normalization and alignment. In this tutorial we want to first look at each of this steps individually and then apply the fitCurve() function the helps us combine all of them.
 
 For the sake to keep this package small, the spectra used as an example here were trimmed to 400-900 Da mass-range and stored in a compact form as example data.
 
 ## Example data and quality check
+
 ```{r setup, warning=FALSE}
 library(MALDIcellassay)
 ```
@@ -40,7 +42,9 @@ First we will check the spectra for general quality.
 ```{r qualityCheck}
 MALDIquant::plot(spec[[1]], main = "0µM, replicate 1")
 ```
+
 ## Preprocessing
+
 The baseline of the spectra already looks ok but for the sake of this tutorial we will apply a baseline correction.
 But first we want so save the names of the spectra (which are the concentrations used to treat the cells).
 Also to get a better overview of the data we compute the mean spectra of each concentration (there are 4 measurement replicates for each concentration) and plot them around m/z 760 as we want to use this signal to normalize and also as lock mass.
@@ -93,7 +97,9 @@ for(i in 2:length(avg_rdy)) {
 }
 legend("topright", legend = paste0(names(avg), "uM"), col = 1:8, lty=1)
 ```
+
 ## High variance filtering
+
 As expected we find our spectra to be perfectly aligned and normalized to 760.585.
 Now we can again detect peaks, bin them and compose a intensity matrix of all peaks.
 ```{r intmat}
@@ -109,7 +115,9 @@ idx <- which(vars > mean(vars))
 highVarIntmat <- intmat[,idx]
 dim(highVarIntmat)
 ```
+
 ## Fit Curve
+
 We end up with 20 candidate peaks for which we want to fit a IC50 curve.
 Lets do the fitting for one exemplary signal.
 ```{r fit}
@@ -135,7 +143,9 @@ fitCurve(spec = spec,
          alignTol = 500, 
          normTol = 100)
 ```
+
 ## Session Info
+
 ```{r Rsession}
 sessionInfo()
 ```
