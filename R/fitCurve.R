@@ -71,16 +71,17 @@ fitCurve <- function(spec,
          }
   )
 
+  current_names <- names(spec)
+
   cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
   spec <- alignSpectra(spec, warpingMethod = "linear",
                        tolerance = alignTol,
                        allowNoMatches = allowNoMatches,
                        emptyNoMatches = allowNoMatches)
 
-  res_list <- vector("list", length = length(unique(nm)))
-  names(res_list) <- unique(nm)
+  res_list <- vector("list", length = length(unique(current_names)))
+  names(res_list) <- unique(current_names)
 
-  current_names <- nm
 
   cat(MALDIcellassay:::timeNow(), "calculating average spectra... \n")
   avg_spec <- averageMassSpectra(spec, labels = current_names)
@@ -158,7 +159,7 @@ fitCurve <- function(spec,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
-                                       "norm_avg.xlsx")))
+                                       "norm_avg.csv")))
     singlePeaks <- detectPeaks(spec, method = "SuperSmoother", SNR = SNR)
     singlePeaks <- binPeaks(singlePeaks, tolerance = binTol)
     intmatSingle <- intensityMatrix(singlePeaks, spec)
@@ -182,13 +183,13 @@ fitCurve <- function(spec,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
-                                       "norm_singleSpec.xlsx")))
+                                       "norm_singleSpec.csv")))
     write.csv(x = as.data.frame(stat_df),
                file = file.path(dir,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
-                                       "norm_mzStats.xlsx")))
+                                       "norm_mzStats.csv")))
   }
 
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
