@@ -14,9 +14,11 @@ fitCurve(
   binTol = 0.25,
   SNR = 3,
   allowNoMatches = TRUE,
-  normMeth = c("mz", "TIC"),
+  normMeth = c("mz", "TIC", "PQN", "median", "none"),
   saveIntensityMatrix = TRUE,
-  SinglePointRecal = TRUE
+  SinglePointRecal = TRUE,
+  fc_thresh = 1,
+  markValue = NA
 )
 }
 \arguments{
@@ -32,17 +34,21 @@ fitCurve(
 
 \item{alignTol}{Numeric, tolerance for spectral alignment in Dalton.}
 
-\item{binTol}{Numeric, tolerance for binning of peaks. D}
+\item{binTol}{Numeric, tolerance for binning of peaks.}
 
 \item{SNR}{Numeric, signal to noise ratio for peak detection.}
 
 \item{allowNoMatches}{Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop}
 
-\item{normMeth}{Character, normalization method. Can either be "TIC" or "mz". If "mz" then the normMz is used.}
+\item{normMeth}{Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.}
 
 \item{saveIntensityMatrix}{Logical, save the intensity matrix as xlsx to the disk.}
 
 \item{SinglePointRecal}{Logical, perform single point recalibration to normMz}
+
+\item{fc_thresh}{Numeric, threshold for fold change above which curves are plotted. The fold-chage is calculated as max/min for a given m/z.}
+
+\item{markValue}{Numeric, value to mark in the resulting plot. Set to NA if no value needs to be marked.}
 }
 \value{
 

@@ -6,22 +6,24 @@
 #' @param normMz              Numeric, mz used for normalization AND for single point recalibration.
 #' @param normTol             Numeric, tolerance in Dalton to match normMz
 #' @param alignTol            Numeric, tolerance for spectral alignment in Dalton.
-#' @param binTol              Numeric, tolerance for binning of peaks. D
+#' @param binTol              Numeric, tolerance for binning of peaks.
 #' @param SNR                 Numeric, signal to noise ratio for peak detection.
 #' @param allowNoMatches      Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop
-#' @param normMeth            Character, normalization method. Can either be "TIC" or "mz". If "mz" then the normMz is used.
+#' @param normMeth            Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.
 #' @param saveIntensityMatrix Logical, save the intensity matrix as xlsx to the disk.
 #' @param SinglePointRecal    Logical, perform single point recalibration to normMz
+#' @param fc_thresh           Numeric, threshold for fold change above which curves are plotted. The fold-chage is calculated as max/min for a given m/z.
+#' @param markValue           Numeric, value to mark in the resulting plot. Set to NA if no value needs to be marked.
 #'
 #' @return
 #' @export
 #'
 #' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest
-#' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY
+#' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates
 #' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange
 #' @importFrom tibble tibble
 #' @importFrom tidyr gather
-#' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave
+#' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
 
 fitCurve <- function(spec,
                      dir,
@@ -32,9 +34,11 @@ fitCurve <- function(spec,
                      binTol = 0.25,
                      SNR = 3,
                      allowNoMatches =TRUE,
-                     normMeth = c("mz", "TIC"),
+                     normMeth = c("mz", "TIC", "PQN", "median", "none"),
                      saveIntensityMatrix = TRUE,
-                     SinglePointRecal = TRUE) {
+                     SinglePointRecal = TRUE,
+                     fc_thresh = 1,
+                     markValue = NA) {
   normMeth <- match.arg(normMeth)
 
   if(!any(is.na(conc))) {
@@ -42,10 +46,11 @@ fitCurve <- function(spec,
   }
     nm <- names(spec)
 
+    peaks_single <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
+
   if(SinglePointRecal) {
     # perform single point mass recalibration
-    peaks <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
-    mzShift <- getMzShift(peaksdf = peaks2df(peaks),
+    mzShift <- getMzShift(peaksdf = peaks2df(peaks_single),
                           tol = normTol,
                           targetMz = normMz,
                           tolppm = FALSE,
@@ -53,6 +58,7 @@ fitCurve <- function(spec,
     cat("found mz", normMz, "in", length(mzShift$specIdx), "/", length(spec), "spectra\n")
     cat(MALDIcellassay:::timeNow(), "mzshift was", mean(mzShift$mzshift), "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")
     spec <- shiftMassAxis(spec[mzShift$specIdx], mzShift$mzshift)
+    peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx], mzShift$mzshift)
   }
 
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
@@ -60,14 +66,22 @@ fitCurve <- function(spec,
          "TIC" = {
            spec <- calibrateIntensity(spec, method = "TIC")
          },
+         "PQN" = {
+           spec <- calibrateIntensity(spec, method = "PQN")
+         },
+         "median" = {
+           spec <- calibrateIntensity(spec, method = "median")
+         },
          "mz" = {
-           peaks <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
-           norm_fac <- getNormFactors(peaksdf = peaks2df(peaks),
+           norm_fac <- getNormFactors(peaksdf = peaks2df(peaks_single),
                                       targetMz = normMz,
                                       tol = normTol,
                                       allowNoMatch = TRUE,
                                       tolppm = TRUE)
            spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
+         },
+         "none" = {
+           # dont normalize
          }
   )
 
@@ -129,6 +143,14 @@ fitCurve <- function(spec,
 
   for(mz in as.numeric(names(res_list))) {
     model <- res_list[[as.character(mz)]]$model
+    df <- res_list[[as.character(mz)]]$df
+
+    ic50 <- 10^getEstimates(model, targets = 0.5)[,3]
+    min <- min(df$value)
+    max <- max(df$value)
+    fc_window <- max/min
+
+    if(fc_window >= fc_thresh) {
     df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
     df_P <- tibble(x = getX(model), y = getY(model))
     df_P %>%
@@ -145,11 +167,17 @@ fitCurve <- function(spec,
       geom_point() +
       scale_x_continuous(labels = c(0, 10^df_P$x[-1]), breaks = df_P$x) +
       theme_bw() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
       labs(x = "Conc.",
            y = "relative Int. [% of max Int.]",
-           title = paste0( "mz ", round(mz,2), " Da, R\u00B2=", round(R2,4))) -> p
+           title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,4), "\n",
+                           "IC50=", round(ic50,3), " min=", round(min, 4), " max=", round(max, 4), " FC=", round(fc_window, 4))) -> p
+
+    if(!is.na(markValue)) {
+      p <- p + geom_vline(aes(xintercept = markValue), linetype = "dashed")
+    }
     ggsave(filename = file.path(dir, paste0(as.character(Sys.Date()),"_plotR2_", normMeth, "norm_", round(mz,2),".png")), plot = p)
+    }
   }
   cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
   if(saveIntensityMatrix) {

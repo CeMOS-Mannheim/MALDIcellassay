@@ -137,11 +137,12 @@ To do what we did in an automated way for each signal of interest use the follow
 fitCurve(spec = spec,
          dir = getwd(),
          conc = conc, 
-         saveIntensityMatrix = FALSE, 
+         saveIntensityMatrix = TRUE, 
          SinglePointRecal = TRUE, 
          normMz = 760.585, 
          alignTol = 500, 
-         normTol = 100)
+         normTol = 100, 
+         markValue= log10(0.5))
 ```
 
 ## Session Info
