@@ -192,7 +192,10 @@ fitCurve <- function(spec,
     # peak statistics
     fit_df <- lapply(res_list, function(x) {
       model <- x$model
-      return(nplr::getGoodness(model))
+      fc_window <- max(x$df$value)/min(x$df$value)
+      res_df <- as_tibble(nplr::getGoodness(model)) %>%
+        mutate(fc_window = fc_window)
+      return(res_df)
     }) %>%
       bind_rows(.id = "mz") %>%
       rename("R2" = "gof")
@@ -206,7 +209,6 @@ fitCurve <- function(spec,
       summarise(min = min(int, na.rm = TRUE),
                 mean = mean(int, na.rm = TRUE),
                 max = max(int, na.rm = TRUE),
-                fc = max/min,
                 stdev = sd(int, na.rm = TRUE),
                 "cv%" = stdev/mean*100) %>%
       left_join(fit_df, by = "mz") %>%
