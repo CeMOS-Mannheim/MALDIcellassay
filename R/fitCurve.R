@@ -59,18 +59,23 @@ fitCurve <- function(spec,
     cat(MALDIcellassay:::timeNow(), "mzshift was", mean(mzShift$mzshift), "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")
     spec <- shiftMassAxis(spec[mzShift$specIdx], mzShift$mzshift)
     peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx], mzShift$mzshift)
+  } else {
+    mzShift <- list("mzshift" = -1)
   }
 
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
   switch(normMeth,
          "TIC" = {
            spec <- calibrateIntensity(spec, method = "TIC")
+           norm_fac <- list("norm_factor" = -1)
          },
          "PQN" = {
            spec <- calibrateIntensity(spec, method = "PQN")
+           norm_fac <- list("norm_factor" = -1)
          },
          "median" = {
            spec <- calibrateIntensity(spec, method = "median")
+           norm_fac <- list("norm_factor" = -1)
          },
          "mz" = {
            norm_fac <- getNormFactors(peaksdf = peaks2df(peaks_single),
@@ -81,7 +86,7 @@ fitCurve <- function(spec,
            spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
          },
          "none" = {
-           # dont normalize
+           norm_fac <- list("norm_factor" = -1)
          }
   )
 
@@ -105,6 +110,7 @@ fitCurve <- function(spec,
 
   # perform variance filtering
   intmat <- intensityMatrix(peaksBinned, avg_spec)
+  cat("found", dim(intmat)[2], "peaks in total.\n")
   rownames(intmat) <- names(avg_spec)
   vars <- apply(intmat, 2, var)
   idx <- which(vars > mean(vars))
@@ -178,7 +184,7 @@ fitCurve <- function(spec,
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")
 
     # average spectra
-    write.csv(x = as_tibble(intmat[,idx], rownames = NA),
+    write.csv(x = as_tibble(intmat, rownames = NA),
                file = file.path(dir,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
@@ -232,4 +238,20 @@ fitCurve <- function(spec,
   }
 
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
+  res_class <- new("MALDIassay",
+                   avgSpectra = avg_spec,
+                   singlePeaks = singlePeaks,
+                   normFactors = norm_fac$norm_factor,
+                   mzShifts = mzShift$mzshift,
+                   fits = res_list,
+                   stats = stat_df,
+                   settings = list(Conc = as.numeric(nm),
+                                   normMz = normMz,
+                                   normTol = normTol,
+                                   alignTol = alignTol,
+                                   SNR = SNR,
+                                   normMeth = normMeth,
+                                   SinglePointRecal = SinglePointRecal))
+  return(res_class)
 }
+
