@@ -19,8 +19,8 @@
 #' @export
 #'
 #' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest
-#' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates
-#' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange
+#' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates getGoodness
+#' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange left_join rename bind_rows filter
 #' @importFrom tibble tibble
 #' @importFrom tidyr gather
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
@@ -153,14 +153,7 @@ fitCurve <- function(spec,
     if(fc_window >= fc_thresh) {
     df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
     df_P <- tibble(x = getX(model), y = getY(model))
-    df_P %>%
-      mutate(yfit = getFitValues(model)) %>%
-      mutate(Sres = (y-yfit)^2,
-             Stot = (y-mean(y))^2) %>%
-      summarise(SStot = sum(Stot),
-                SSres =sum(Sres)) %>%
-      mutate(R2 = 1-SSres/SStot) %>%
-      pull(R2) -> R2
+    getGoodness(model)[[1]] -> R2
 
     ggplot(data = df_P, aes(x = x, y = y)) +
       geom_line(data = df_C, aes(x = xC, y = yC)) +
@@ -173,6 +166,7 @@ fitCurve <- function(spec,
            title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,4), "\n",
                            "IC50=", round(ic50,3), " min=", round(min, 4), " max=", round(max, 4), " FC=", round(fc_window, 4))) -> p
 
+
     if(!is.na(markValue)) {
       p <- p + geom_vline(aes(xintercept = markValue), linetype = "dashed")
     }
@@ -182,14 +176,27 @@ fitCurve <- function(spec,
   cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
   if(saveIntensityMatrix) {
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")
+
+    # average spectra
     write.csv(x = as_tibble(intmat[,idx], rownames = NA),
                file = file.path(dir,
                                 paste0(as.character(Sys.Date()),
                                        "_intensityMatrix_",
                                        normMeth,
                                        "norm_avg.csv")))
-    singlePeaks <- detectPeaks(spec, method = "SuperSmoother", SNR = SNR)
-    singlePeaks <- binPeaks(singlePeaks, tolerance = binTol)
+    allmz <- as.numeric(colnames(intmat))
+    singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
+                                                    intensity = rep(1, length(allmz))),
+                                    spec = spec)
+
+    # peak statistics
+    fit_df <- lapply(res_list, function(x) {
+      model <- x$model
+      return(nplr::getGoodness(model))
+    }) %>%
+      bind_rows(.id = "mz") %>%
+      rename("R2" = "gof")
+
     intmatSingle <- intensityMatrix(singlePeaks, spec)
     intmatSingle %>%
       as_tibble() %>%
@@ -199,23 +206,23 @@ fitCurve <- function(spec,
       summarise(min = min(int, na.rm = TRUE),
                 mean = mean(int, na.rm = TRUE),
                 max = max(int, na.rm = TRUE),
+                fc = max/min,
                 stdev = sd(int, na.rm = TRUE),
-                "cv%" = stdev/mean*100) -> stat_df
+                "cv%" = stdev/mean*100) %>%
+      left_join(fit_df, by = "mz") %>%
+      filter(!is.na(R2))-> stat_df
 
     rownames(intmatSingle) <- names(spec)
-    mzsingle <- as.numeric(colnames(intmatSingle))
-
-    idx_single <- match.closest(mzhits, mzsingle)
-    write.csv(x = as_tibble(intmatSingle[,idx_single], rownames = NA),
+    write.csv(x = as_tibble(intmatSingle, rownames = NA),
                file = file.path(dir,
-                                paste0(as.character(Sys.Date()),
+                                paste0(as.character(Sys.Date()), "_",
                                        normMeth, "_", normMz, "_",
                                        "_intensityMatrix_",
                                        normMeth,
                                        "norm_singleSpec.csv")))
     write.csv(x = as.data.frame(stat_df),
                file = file.path(dir,
-                                paste0(as.character(Sys.Date()),
+                                paste0(as.character(Sys.Date()), "_",
                                        normMeth, "_", normMz, "_",
                                        "_intensityMatrix_",
                                        normMeth,

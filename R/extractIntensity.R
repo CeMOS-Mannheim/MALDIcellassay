@@ -12,13 +12,23 @@
 extractIntensity <- function(peaks, spec, tol = 0.1) {
   if(!MALDIquant:::isMassPeaksList(peaks)) {
 
-    if(MALDIquant:::isMassPeaks(peaks)) {
-      break()
+    if(!MALDIquant:::isMassPeaks(peaks)) {
+      stop(sQuote("peaks"), " has to be MALDIquant::MassPeaks or list thereof!")
     }
-    stop(sQuote("peaks"), " has to be MALDIquant::MassPeaks or list thereof!")
   }
 
   if (length(peaks) != length(spec)) {
+    if(MALDIquant:::isMassPeaks(peaks)) {
+      res <- lapply(1:length(spec), FUN = function(i) {
+        idx <- match.closest(x = mass(peaks),
+                             table = mass(spec[[i]]),
+                             tolerance = tol)
+        createMassPeaks(mass = mass(peaks),
+                        intensity = intensity(spec[[i]])[idx],
+                        snr = rep(NA_integer_, length(idx)))
+      })
+      return(unlist(res))
+    }
     stop("For each item in ", sQuote("peaks"), " there must be a spectrum in ",
          sQuote("spec"), "!")
   }
