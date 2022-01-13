@@ -4,7 +4,7 @@
 #'
 #' @param object MALDIassay.
 #'
-#' @importFrom dplyr arrange group_by first summarise
+#' @importFrom dplyr arrange group_by first summarise desc
 #' @importFrom MALDIquant mass
 
 
@@ -26,10 +26,10 @@ setMethod("show", signature(object = "MALDIassay"),
             numPeaksTotal <- length(mass(object@singlePeaks[[1]]))
             hiVarPeaks <- length(unique(object@stats$mz))
             # Compose normalization information
-            if(normMeth == "mz") {
+            if(object@settings$normMeth == "mz") {
               normStr <- paste("Normalization on m/z", mz, "±", tol, "Da.\n")
             } else {
-              normStr <- paste("Normalization using", normMeth, "method.\n")
+              normStr <- paste("Normalization using", object@settings$normMeth, "method.\n")
             }
 
 
@@ -49,8 +49,9 @@ setMethod("show", signature(object = "MALDIassay"),
             cat("Top-features based on R² and max/min-Fold-chage:\n")
             print(object@stats %>%
               group_by(mz) %>%
-              summarise(R2 = first(R2),
-                        wgof = first(wgof),
-                        FC = first(fc_window)) %>%
+              summarise(R2 = dplyr::first(R2),
+                        wgof = dplyr::first(wgof),
+                        FC = dplyr::first(fc_window)) %>%
               arrange(desc(R2), desc(FC)))
           })
+
