@@ -48,10 +48,13 @@ setMethod("show", signature(object = "MALDIassay"),
 
             cat("Top-features based on R² and max/min-Fold-chage:\n")
             print(object@stats %>%
+                    mutate(mz = round(as.numeric(mz), 3)) %>%
               group_by(mz) %>%
-              summarise(R2 = dplyr::first(R2),
-                        wgof = dplyr::first(wgof),
-                        FC = dplyr::first(fc_window)) %>%
-              arrange(desc(R2), desc(FC)))
+              summarise(R2 = dplyr::first(round(R2,4)),
+                        wgof = dplyr::first(round(wgof,4)),
+                        FC = dplyr::first(round(fc_window, 4))) %>%
+              arrange(desc(R2), desc(FC)) %>%
+                as.data.frame() %>%
+                head())
           })
 
