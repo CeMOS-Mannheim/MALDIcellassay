@@ -20,7 +20,7 @@
 #' @return
 #' @export
 #'
-#' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest
+#' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest createMassPeaks
 #' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates getGoodness
 #' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange left_join rename bind_rows filter
 #' @importFrom tibble tibble
@@ -179,45 +179,6 @@ fitCurve <- function(spec,
     
     res_list <- current_res
   }
-  if(plot) {
-  cat(MALDIcellassay:::timeNow(), "plotting...", "\n")
-  
-  
-  
-  for(mz in as.numeric(names(res_list))) {
-    model <- res_list[[as.character(mz)]]$model
-    df <- res_list[[as.character(mz)]]$df
-    
-    ic50 <- 10^getEstimates(model, targets = 0.5)[,3]
-    min <- min(df$value)
-    max <- max(df$value)
-    fc_window <- max/min
-    
-    if(fc_window >= fc_thresh) {
-      df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
-      df_P <- tibble(x = getX(model), y = getY(model))
-      getGoodness(model)[[1]] -> R2
-      
-      ggplot(data = df_P, aes(x = x, y = y)) +
-        geom_line(data = df_C, aes(x = xC, y = yC)) +
-        geom_point() +
-        scale_x_continuous(labels = c(0, 10^df_P$x[-1]), breaks = df_P$x) +
-        theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        labs(x = "Conc.",
-             y = "relative Int. [% of max Int.]",
-             title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,4), "\n",
-                            "IC50=", round(ic50,3), " min=", round(min, 4), " max=", round(max, 4), " FC=", round(fc_window, 4))) -> p
-      
-      
-      if(!is.na(markValue)) {
-        p <- p + geom_vline(aes(xintercept = markValue), linetype = "dashed")
-      }
-      ggsave(filename = file.path(dir, paste0(as.character(Sys.Date()),"_plotR2_", normMeth, "norm_", round(mz,2),".png")), plot = p)
-    }
-  }
-  cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
-  }
   
   allmz <- as.numeric(colnames(intmat))
   singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
@@ -289,6 +250,7 @@ fitCurve <- function(spec,
                    fits = res_list,
                    stats = stat_df,
                    settings = list(Conc = as.numeric(nm),
+                                   dir = dir,
                                    normMz = normMz,
                                    normTol = normTol,
                                    varFilterMethod = varFilterMethod,
@@ -296,6 +258,12 @@ fitCurve <- function(spec,
                                    SNR = SNR,
                                    normMeth = normMeth,
                                    SinglePointRecal = SinglePointRecal))
+  if(plot) {
+    cat(MALDIcellassay:::timeNow(), "plotting...", "\n")
+    MALDIcellassay:::savePlots(res_class)
+    cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
+  }
+  
   return(res_class)
 }
 

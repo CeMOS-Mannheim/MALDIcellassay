@@ -7,9 +7,7 @@
 #' @export
 
 getConc <- function(object) {
-  if(!class(object) == "MALDIassay") {
-    stop("object needs to be of class MALDIassay.")
-  }
+  stopIfNotIsMALDIassay(object)
   return(object@settings$Conc)
 }
 
@@ -22,9 +20,7 @@ getConc <- function(object) {
 #' @export
 
 getNormMz <- function(object) {
-  if(!class(object) == "MALDIassay") {
-    stop("object needs to be of class MALDIassay.")
-  }
+  stopIfNotIsMALDIassay(object)
   return(object@settings$normMz)
 }
 
@@ -36,9 +32,7 @@ getNormMz <- function(object) {
 #' Numeric, tolerance used for normalization 
 #' @export
 getNormMzTol <- function(object) {
-  if(!class(object) == "MALDIassay") {
-    stop("object needs to be of class MALDIassay.")
-  }
+  stopIfNotIsMALDIassay(object)
   return(object@settings$normTol)
 }
 
@@ -51,9 +45,7 @@ getNormMzTol <- function(object) {
 #' List of MALDIquantMassSpectrum
 #' @export
 getAvgSpectra <- function(object) {
-  if(!class(object) == "MALDIassay") {
-    stop("object needs to be of class MALDIassay.")
-  }
+  stopIfNotIsMALDIassay(object)
   return(object@avgSpectra)
 }
 
@@ -65,9 +57,7 @@ getAvgSpectra <- function(object) {
 #' List of MALDIquantMassPeaks
 #' @export
 getAvgPeaks <- function(object) {
-  if(!class(object) == "MALDIassay") {
-    stop("object needs to be of class MALDIassay.")
-  }
+  stopIfNotIsMALDIassay(object)
   return(object@avgPeaks)
 }
 
@@ -79,9 +69,46 @@ getAvgPeaks <- function(object) {
 #' Character, normalization method used.
 #' @export
 getNormMethod <- function(object) {
-  if(!class(object) == "MALDIassay") {
-    stop("object needs to be of class MALDIassay.")
-  }
+  stopIfNotIsMALDIassay(object)
   return(object@settings$normMeth)
 }
+
+
+#' Extract curve fits
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' List, containing the data used to do the fits as well as the nlpr curve fit .
+#' @export
+getCurveFits <- function(object) {
+  stopIfNotIsMALDIassay(object)
+  return(object@fits)
+}
+
+#' Extract directory path
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' List, containing the data used to do the fits as well as the nlpr curve fit .
+#' @export
+getDirectory <- function(object) {
+  stopIfNotIsMALDIassay(object)
+  return(object@settings$dir)
+}
+
+#' Extract peak statistics 
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' A tibble with peak statistics (R², fold-change, CV%, etc.)
+#' @export
+getPeakStatistics <- function(object) {
+  stopIfNotIsMALDIassay(object)
+  return(object@stats)
+}
+
+
 

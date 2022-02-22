@@ -55,7 +55,7 @@ show_MALDIassay <- function(object) {
           summarise(R2 = dplyr::first(round(R2,4)),
                     wgof = dplyr::first(round(wgof,4)),
                     FC = dplyr::first(round(fc_window, 4))) %>%
-          arrange(desc(R2), desc(FC)) %>%
+          arrange(desc(FC), desc(R2)) %>%
           as.data.frame() %>%
           head())
 }
