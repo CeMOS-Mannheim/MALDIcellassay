@@ -106,3 +106,34 @@ savePlots <- function(object, dir = NULL) {
            plot = p)
   }
 }
+
+#' Generate an overview of a fitted curves from a MALDIassay object
+#'
+#' @param object object of class MALDIassay
+#'
+#' @return
+#' arranged plots
+#' @export
+#' @importFrom ggpubr ggarrange
+#' @importFrom ggplot2 labs theme element_text
+plotOverview <- function(object) {
+  plotList <- plotCurves(object)
+  
+  mz <- round(as.numeric(names(plotList)), 2)
+  len <- length(plotList)
+  if(len > 30 & len < 57) {
+    warning("Many curves to plot. Please enlarge the plot pane to be able to see them.\n")
+  }
+  if(len > 57) {
+    stop("Too many curves to plot. Try to plot them one by one.\n")
+  }
+  
+  p_new <- vector("list", length = len) 
+  for(i in 1:len) {
+    p_new[[i]] <- plotList[[i]] + 
+      labs(title = mz[i],
+           y = "norm. Int.") +
+      theme(title = element_text(size = 10))
+  }
+  ggarrange(plotlist = p_new)
+}

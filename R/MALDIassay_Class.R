@@ -19,6 +19,8 @@ setClass("MALDIassay",
                                          settings = "list")
 )
 
+
+
 show_MALDIassay <- function(object) {
   
   mz <- round(getNormMz(object), digits = 2)
@@ -62,4 +64,5 @@ show_MALDIassay <- function(object) {
 
 setMethod("show", signature(object = "MALDIassay"),
           MALDIcellassay:::show_MALDIassay)
+
 
