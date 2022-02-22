@@ -10,6 +10,7 @@
 
 setClass("MALDIassay",
          representation = representation(avgSpectra = "list",
+                                         avgPeaks = "list",
                                          singlePeaks = "list",
                                          normFactors = "numeric",
                                          mzShifts = "numeric",
@@ -20,8 +21,9 @@ setClass("MALDIassay",
 
 setMethod("show", signature(object = "MALDIassay"),
           function(object) {
-
+            
             mz <- round(object@settings$normMz, digits = 2)
+            varFilterMethod < object@settings$varFilterMethod
             tol <-  object@settings$normTol
             numPeaksTotal <- length(mass(object@singlePeaks[[1]]))
             hiVarPeaks <- length(unique(object@stats$mz))
@@ -31,8 +33,8 @@ setMethod("show", signature(object = "MALDIassay"),
             } else {
               normStr <- paste("Normalization using", object@settings$normMeth, "method.\n")
             }
-
-
+            
+            
             cat("------MALDIassay object------\n")
             cat("\n")
             cat(normStr)
@@ -42,19 +44,20 @@ setMethod("show", signature(object = "MALDIassay"),
               cat("Avg. mass shift:", round(mean(object@mzShifts), 4), "Da. Max abs. shift:", round(max(abs(object@mzShifts)), 4), "Da.\n")
               cat("\n")
             }
-
-            cat("Found", numPeaksTotal, "peaks above SNR", object@settings$SNR,  "and", hiVarPeaks, "high variance peaks.\n")
+            
+            cat("Found", numPeaksTotal, "peaks above SNR", object@settings$SNR,  "and", hiVarPeaks, "high variance peaks\n")
+            cat("using variance filtering method:", varFilterMethod, ".\n")
             cat("\n")
-
+            
             cat("Top-features based on R² and max/min-Fold-chage:\n")
             print(object@stats %>%
                     mutate(mz = round(as.numeric(mz), 3)) %>%
-              group_by(mz) %>%
-              summarise(R2 = dplyr::first(round(R2,4)),
-                        wgof = dplyr::first(round(wgof,4)),
-                        FC = dplyr::first(round(fc_window, 4))) %>%
-              arrange(desc(R2), desc(FC)) %>%
-                as.data.frame() %>%
-                head())
+                    group_by(mz) %>%
+                    summarise(R2 = dplyr::first(round(R2,4)),
+                              wgof = dplyr::first(round(wgof,4)),
+                              FC = dplyr::first(round(fc_window, 4))) %>%
+                    arrange(desc(R2), desc(FC)) %>%
+                    as.data.frame() %>%
+                    head())
           })
 

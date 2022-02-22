@@ -8,9 +8,10 @@ fitCurve(
   spec,
   dir,
   conc = NA,
+  varFilterMethod = c("mean", "median", "q25", "q75", "none"),
   normMz = 760.585,
   normTol = 0.1,
-  alignTol = 0.05,
+  alignTol = 0.01,
   binTol = 0.25,
   SNR = 3,
   allowNoMatches = TRUE,
@@ -27,6 +28,8 @@ fitCurve(
 \item{dir}{Character, directory for output}
 
 \item{conc}{Numeric vector, concentration for each spectrum. Length has to be the same as length of spec}
+
+\item{varFilterMethod}{Character, function applied for high variance filtering. One of the following options `mean` (default), `median`, `q25`, `q75` or `none` (no filtering).}
 
 \item{normMz}{Numeric, mz used for normalization AND for single point recalibration.}
 
