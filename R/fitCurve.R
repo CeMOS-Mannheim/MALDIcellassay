@@ -15,6 +15,7 @@
 #' @param SinglePointRecal    Logical, perform single point recalibration to normMz
 #' @param fc_thresh           Numeric, threshold for fold change above which curves are plotted. The fold-chage is calculated as max/min for a given m/z.
 #' @param markValue           Numeric, value to mark in the resulting plot. Set to NA if no value needs to be marked.
+#' @param plot                Logical, should the curves be plotted and written to dir?
 #'
 #' @return
 #' @export
@@ -40,9 +41,16 @@ fitCurve <- function(spec,
                      saveIntensityMatrix = TRUE,
                      SinglePointRecal = TRUE,
                      fc_thresh = 1,
-                     markValue = NA) {
+                     markValue = NA,
+                     plot = TRUE) {
   normMeth <- match.arg(normMeth)
   varFilterMethod <- match.arg(varFilterMethod)
+  
+  if(plot | saveIntensityMatrix) {
+    if(missing(dir)) {
+      stop("argument `dir` is missing with no default.\n")
+    }
+  } 
   
   if(!any(is.na(conc))) {
     names(spec) <- conc
@@ -171,7 +179,7 @@ fitCurve <- function(spec,
     
     res_list <- current_res
   }
-  
+  if(plot) {
   cat(MALDIcellassay:::timeNow(), "plotting...", "\n")
   
   
@@ -209,6 +217,41 @@ fitCurve <- function(spec,
     }
   }
   cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
+  }
+  
+  allmz <- as.numeric(colnames(intmat))
+  singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
+                                                  intensity = rep(1, length(allmz))),
+                                  spec = spec)
+  
+  intmatSingle <- intensityMatrix(singlePeaks, spec)
+  
+  # peak statistics
+  fit_df <- lapply(res_list, function(x) {
+    model <- x$model
+    fc_window <- max(x$df$value)/min(x$df$value)
+    res_df <- as_tibble(nplr::getGoodness(model)) %>%
+      mutate(fc_window = fc_window)
+    return(res_df)
+  }) %>%
+    bind_rows(.id = "mz") %>%
+    rename("R2" = "gof")
+  
+  rownames(intmatSingle) <- names(spec)
+  
+  stat_df <- intmatSingle %>%
+    as_tibble() %>%
+    mutate(sample = names(spec)) %>%
+    gather(mz, int, -sample) %>%
+    group_by(sample, mz) %>%
+    summarise(min = min(int, na.rm = TRUE),
+              mean = mean(int, na.rm = TRUE),
+              max = max(int, na.rm = TRUE),
+              stdev = sd(int, na.rm = TRUE),
+              "cv%" = stdev/mean*100) %>%
+    left_join(fit_df, by = "mz") %>%
+    filter(!is.na(R2)) 
+  
   if(saveIntensityMatrix) {
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")
     
@@ -219,37 +262,7 @@ fitCurve <- function(spec,
                                       "_intensityMatrix_",
                                       normMeth,
                                       "norm_avg.csv")))
-    allmz <- as.numeric(colnames(intmat))
-    singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
-                                                    intensity = rep(1, length(allmz))),
-                                    spec = spec)
     
-    # peak statistics
-    fit_df <- lapply(res_list, function(x) {
-      model <- x$model
-      fc_window <- max(x$df$value)/min(x$df$value)
-      res_df <- as_tibble(nplr::getGoodness(model)) %>%
-        mutate(fc_window = fc_window)
-      return(res_df)
-    }) %>%
-      bind_rows(.id = "mz") %>%
-      rename("R2" = "gof")
-    
-    intmatSingle <- intensityMatrix(singlePeaks, spec)
-    intmatSingle %>%
-      as_tibble() %>%
-      mutate(sample = names(spec)) %>%
-      gather(mz, int, -sample) %>%
-      group_by(sample, mz) %>%
-      summarise(min = min(int, na.rm = TRUE),
-                mean = mean(int, na.rm = TRUE),
-                max = max(int, na.rm = TRUE),
-                stdev = sd(int, na.rm = TRUE),
-                "cv%" = stdev/mean*100) %>%
-      left_join(fit_df, by = "mz") %>%
-      filter(!is.na(R2))-> stat_df
-    
-    rownames(intmatSingle) <- names(spec)
     write.csv(x = as_tibble(intmatSingle, rownames = NA),
               file = file.path(dir,
                                paste0(as.character(Sys.Date()), "_",

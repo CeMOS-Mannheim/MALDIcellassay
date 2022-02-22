@@ -19,7 +19,8 @@ fitCurve(
   saveIntensityMatrix = TRUE,
   SinglePointRecal = TRUE,
   fc_thresh = 1,
-  markValue = NA
+  markValue = NA,
+  plot = TRUE
 )
 }
 \arguments{
@@ -52,6 +53,8 @@ fitCurve(
 \item{fc_thresh}{Numeric, threshold for fold change above which curves are plotted. The fold-chage is calculated as max/min for a given m/z.}
 
 \item{markValue}{Numeric, value to mark in the resulting plot. Set to NA if no value needs to be marked.}
+
+\item{plot}{Logical, should the curves be plotted and written to dir?}
 }
 \value{
 
