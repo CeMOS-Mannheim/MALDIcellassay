@@ -39,8 +39,8 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA) {
         theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
         labs(x = "Conc.",
              y = "relative Int. [% of max Int.]",
-             title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,4), "\n",
-                            "logIC50=", round(log(ic50),3), " min=", round(min, 4), " max=", round(max, 4), " FC=", round(fc_window, 4))) -> p
+             title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,3), "\n",
+                            "logIC50=", round(log(ic50),3), " min=", round(min, 3), " max=", round(max, 3), " FC=", round(fc_window, 2))) -> p
       
       
       if(!is.na(markValue)) {
