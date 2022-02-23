@@ -4,13 +4,18 @@
 #' @param fc_thresh numeric, max/min fold-change above which plots should be generated
 #' @param markValue numeric, a value to add as a reference to the plots
 #' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
+#' @param mzIdx     numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters are still applied!
 #'
 #' @return
 #' list of ggplot objects
 #' @export
-plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA) {
+plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzIdx = NULL) {
   stopIfNotIsMALDIassay(object)
-  res_list <- getCurveFits(object)
+  if(is.null(mzIdx)) {
+    res_list <- getCurveFits(object)
+  } else {
+    res_list <- getCurveFits(object)[mzIdx]
+  }
   len <- length(names(res_list))
   mz_vals <- as.numeric(names(res_list))
   

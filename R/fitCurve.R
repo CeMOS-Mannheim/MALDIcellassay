@@ -204,14 +204,18 @@ fitCurve <- function(spec,
     as_tibble() %>%
     mutate(sample = names(spec)) %>%
     gather(mz, int, -sample) %>%
+    arrange(as.numeric(mz)) %>%
     group_by(sample, mz) %>%
-    summarise(min = min(int, na.rm = TRUE),
+    summarise(
+              min = min(int, na.rm = TRUE),
               mean = mean(int, na.rm = TRUE),
               max = max(int, na.rm = TRUE),
               stdev = sd(int, na.rm = TRUE),
-              "cv%" = stdev/mean*100) %>%
+              "cv%" = stdev/mean*100
+              ) %>%
     left_join(fit_df, by = "mz") %>%
-    filter(!is.na(R2)) 
+    filter(!is.na(R2)) %>%
+    mutate(mzIdx = as.numeric(as.factor(as.numeric(mz)))) 
   
   if(saveIntensityMatrix) {
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")

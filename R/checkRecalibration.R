@@ -42,6 +42,7 @@ checkRecalibration <- function(object, idx) {
   })
   names(df_l) <- conc[idx]
   df <- bind_rows(df_l, .id = "idx")
+  
   peakdf_l <- lapply(X = idx, FUN = function(i) {
     peakdf <- tibble(mass = mass(peaks[[i]]),
                      intensity = intensity(peaks[[i]]))

@@ -50,19 +50,20 @@ show_MALDIassay <- function(object) {
   }
   
   cat("Found", numPeaksTotal, "peaks above SNR", object@settings$SNR,  "and", hiVarPeaks, "high variance peaks\n")
-  cat("using variance filtering method:", varFilterMethod, ".\n")
+  cat("using variance filtering method:", paste0(varFilterMethod, ".\n"))
   cat("\n")
   
-  cat("Top-features based on R² and max/min-Fold-chage:\n")
+  cat("Top5-features based on Fold-chage and R²:\n")
   print(getPeakStatistics(object) %>%
           mutate(mz = round(as.numeric(mz), 3)) %>%
           group_by(mz) %>%
-          summarise(R2 = dplyr::first(round(R2,4)),
+          summarise(mzIdx = first(mzIdx),
+                    R2 = dplyr::first(round(R2,4)),
                     wgof = dplyr::first(round(wgof,4)),
                     FC = dplyr::first(round(fc_window, 4))) %>%
           arrange(desc(FC), desc(R2)) %>%
           as.data.frame() %>%
-          head())
+          head(n = 5))
 }
 
 setMethod("show", signature(object = "MALDIassay"),
