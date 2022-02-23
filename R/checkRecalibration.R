@@ -39,7 +39,7 @@ checkRecalibration <- function(object, idx) {
     df <- tibble(mass = mass(spec[[i]]),
                  intensity = intensity(spec[[i]]))
     
-    })
+  })
   names(df_l) <- conc[idx]
   df <- bind_rows(df_l, .id = "idx")
   peakdf_l <- lapply(X = idx, FUN = function(i) {
@@ -69,4 +69,29 @@ checkRecalibration <- function(object, idx) {
   }
   return(p)
   
+}
+
+#' Calculate remaining calibration error of a MALDIassay object
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' A tibble containing statistics about remaining calibration error
+#' @export
+#'
+#' @importFrom tibble tibble
+getRecalibrationError <- function(object) {
+  peaks <- peaks2df(getAvgPeaks(object))
+  mzdev <- getMzShift(peaksdf = peaks, 
+                      tol = getNormMzTol(object), 
+                      targetMz = getNormMz(object), 
+                      tolppm = FALSE, 
+                      allowNoMatch = FALSE)
+  
+  res_df <- tibble(meanAbs = mean(abs(mzdev$mzshift)),
+                   sdAbs = sd(abs(mzdev$mzshift)),
+                   maxAbs = max(abs(mzdev$mzshift)),
+                   mean = mean(mzdev$mzshift),
+                   sd = sd(mzdev$mzshift))
+  return(res_df)
 }

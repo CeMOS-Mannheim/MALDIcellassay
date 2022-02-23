@@ -28,6 +28,7 @@ show_MALDIassay <- function(object) {
   tol <-  getNormMzTol(object)
   numPeaksTotal <- length(mass(object@singlePeaks[[1]]))
   hiVarPeaks <- length(unique(object@stats$mz))
+  mzdev <- getRecalibrationError(object)
   # Compose normalization information
   if(getNormMethod(object) == "mz") {
     normStr <- paste("Normalization on m/z", mz, "±", tol, "Da.\n")
@@ -43,7 +44,8 @@ show_MALDIassay <- function(object) {
   cat("\n")
   if(object@settings$SinglePointRecal) {
     cat("Single point recalibation on", mz, "with", tol, "Da tolerance.\n")
-    cat("Avg. mass shift:", round(mean(object@mzShifts), 4), "Da. Max abs. shift:", round(max(abs(object@mzShifts)), 4), "Da.\n")
+    cat("Avg. mass shift before recal.:", round(mean(object@mzShifts), 4), "Da. Max abs. shift:", round(max(abs(object@mzShifts)), 4), "Da.\n")
+    cat("Avg. mass shift after recal. :", round(mzdev$mean, 4), "Da. Max abs. shift:", round(mzdev$meanAbs, 4), "Da.\n")
     cat("\n")
   }
   
