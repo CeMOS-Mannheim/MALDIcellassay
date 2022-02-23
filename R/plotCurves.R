@@ -3,11 +3,12 @@
 #' @param object    object of class MALDIassay
 #' @param fc_thresh numeric, max/min fold-change above which plots should be generated
 #' @param markValue numeric, a value to add as a reference to the plots
+#' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
 #'
 #' @return
 #' list of ggplot objects
 #' @export
-plotCurves <- function(object, fc_thresh = 1, markValue = NA) {
+plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA) {
   stopIfNotIsMALDIassay(object)
   res_list <- getCurveFits(object)
   len <- length(names(res_list))
@@ -23,11 +24,12 @@ plotCurves <- function(object, fc_thresh = 1, markValue = NA) {
     min <- min(df$value)
     max <- max(df$value)
     fc_window <- max/min
+    R2 <- getGoodness(model)[[1]]
     
-    if(fc_window >= fc_thresh) {
+    if(fc_window >= fc_thresh & R2 >= R2_tresh) {
       df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
       df_P <- tibble(x = getX(model), y = getY(model))
-      R2 <- getGoodness(model)[[1]]
+      
       
       ggplot(data = df_P, aes(x = x, y = y)) +
         geom_line(data = df_C, aes(x = xC, y = yC)) +
@@ -38,7 +40,7 @@ plotCurves <- function(object, fc_thresh = 1, markValue = NA) {
         labs(x = "Conc.",
              y = "relative Int. [% of max Int.]",
              title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,4), "\n",
-                            "IC50=", round(ic50,3), " min=", round(min, 4), " max=", round(max, 4), " FC=", round(fc_window, 4))) -> p
+                            "logIC50=", round(log(ic50),3), " min=", round(min, 4), " max=", round(max, 4), " FC=", round(fc_window, 4))) -> p
       
       
       if(!is.na(markValue)) {
@@ -48,5 +50,10 @@ plotCurves <- function(object, fc_thresh = 1, markValue = NA) {
       names(p_list) <- mz_vals
     }
   }
-  return(p_list)
+  # check for empty entries (result of filtering for FC or R2) and remove them
+  idx <- vapply(p_list, function(x) {length(x)>0}, FUN.VALUE = TRUE)
+  if(sum(!idx) == len) {
+    stop("Nothing to plot. Condsider decreasing fc_thresh or R2_tresh.\n")
+  }
+  return(p_list[idx])
 }

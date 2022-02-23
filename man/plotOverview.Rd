@@ -4,10 +4,16 @@
 \alias{plotOverview}
 \title{Generate an overview of a fitted curves from a MALDIassay object}
 \usage{
-plotOverview(object)
+plotOverview(object, fc_thresh = 1, R2_tresh = 0, markValue = NA)
 }
 \arguments{
 \item{object}{object of class MALDIassay}
+
+\item{fc_thresh}{numeric, min. Fold-change (max/min value) to plot curve}
+
+\item{markValue}{numeric, value to display as vertical line in plots for reference}
+
+\item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }
 \value{
 arranged plots

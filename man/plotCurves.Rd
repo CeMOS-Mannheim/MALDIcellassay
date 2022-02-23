@@ -4,7 +4,7 @@
 \alias{plotCurves}
 \title{generate ggplot objects for each of the curve fits in a MALDIassay object}
 \usage{
-plotCurves(object, fc_thresh = 1, markValue = NA)
+plotCurves(object, fc_thresh = 1, R2_tresh = 0, markValue = NA)
 }
 \arguments{
 \item{object}{object of class MALDIassay}
@@ -12,6 +12,8 @@ plotCurves(object, fc_thresh = 1, markValue = NA)
 \item{fc_thresh}{numeric, max/min fold-change above which plots should be generated}
 
 \item{markValue}{numeric, a value to add as a reference to the plots}
+
+\item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }
 \value{
 list of ggplot objects
