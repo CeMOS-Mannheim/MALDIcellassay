@@ -38,6 +38,7 @@ show_MALDIassay <- function(object) {
   
   cat("------MALDIassay object------\n")
   cat("\n")
+  cat("Including", length(getAvgPeaks(object)), "different concentrations.\n")
   cat(normStr)
   cat("\n")
   if(object@settings$SinglePointRecal) {
@@ -51,7 +52,7 @@ show_MALDIassay <- function(object) {
   cat("\n")
   
   cat("Top-features based on R² and max/min-Fold-chage:\n")
-  print(object@stats %>%
+  print(getPeakStatistics(object) %>%
           mutate(mz = round(as.numeric(mz), 3)) %>%
           group_by(mz) %>%
           summarise(R2 = dplyr::first(round(R2,4)),
