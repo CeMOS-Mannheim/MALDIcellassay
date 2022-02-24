@@ -4,7 +4,7 @@
 \alias{getPeakStatistics}
 \title{Extract peak statistics}
 \usage{
-getPeakStatistics(object)
+getPeakStatistics(object, summarise = FALSE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}

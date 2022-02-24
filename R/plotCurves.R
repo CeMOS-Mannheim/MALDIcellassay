@@ -31,7 +31,7 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
     fc_window <- max/min
     R2 <- getGoodness(model)[[1]]
 
-    if(fc_window >= fc_thresh & R2 >= R2_tresh) {
+    if((fc_window >= fc_thresh & R2 >= R2_tresh) | !is.null(mzIdx)) {
       df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
       df_P <- tibble(x = getX(model), y = getY(model))
 

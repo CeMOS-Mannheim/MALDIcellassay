@@ -16,7 +16,7 @@ getConc <- function(object) {
 #' @param object Object of class MALDIassay
 #'
 #' @return
-#' Numeric, m/z used for normalization 
+#' Numeric, m/z used for normalization
 #' @export
 
 getNormMz <- function(object) {
@@ -29,7 +29,7 @@ getNormMz <- function(object) {
 #' @param object Object of class MALDIassay
 #'
 #' @return
-#' Numeric, tolerance used for normalization 
+#' Numeric, tolerance used for normalization
 #' @export
 getNormMzTol <- function(object) {
   stopIfNotIsMALDIassay(object)
@@ -98,16 +98,29 @@ getDirectory <- function(object) {
   return(object@settings$dir)
 }
 
-#' Extract peak statistics 
+#' Extract peak statistics
 #'
 #' @param object Object of class MALDIassay
 #'
 #' @return
 #' A tibble with peak statistics (R², fold-change, CV%, etc.)
 #' @export
-getPeakStatistics <- function(object) {
+getPeakStatistics <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
-  return(object@stats)
+  stats <- object@stats
+
+  if(summarise) {
+    stats <- stats %>%
+      mutate(mz = round(as.numeric(mz), 3)) %>%
+      group_by(mz, mzIdx) %>%
+      summarise(pIC50 = first(pIC50),
+                R2 = first(R2),
+                wgof = first(wgof),
+                FC = first(fc_window)
+               )
+  }
+
+  return(stats)
 }
 
 

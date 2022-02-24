@@ -54,14 +54,7 @@ show_MALDIassay <- function(object) {
   cat("\n")
 
   cat("Top5-features based on Fold-Change and R²:\n")
-  print(getPeakStatistics(object) %>%
-          mutate(mz = round(as.numeric(mz), 3)) %>%
-          group_by(mz) %>%
-          summarise(mzIdx = first(mzIdx),
-                    pIC50 = first(pIC50),
-                    R2 = first(round(R2,4)),
-                    wgof = first(round(wgof,4)),
-                    FC = first(round(fc_window, 4))) %>%
+  print(getPeakStatistics(object, summarise = TRUE) %>%
           arrange(desc(FC), desc(R2)) %>%
           as.data.frame() %>%
           head(n = 5))

@@ -4,7 +4,7 @@
 \alias{plotPeak}
 \title{Plot a peak of interest from a MALDIassay object}
 \usage{
-plotPeak(object, mzIdx, tol = 4)
+plotPeak(object, mzIdx, tol = 0.8)
 }
 \arguments{
 \item{object}{object of class MALDIassay}

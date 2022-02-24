@@ -249,7 +249,7 @@ fitCurve <- function(spec,
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
   res_class <- new("MALDIassay",
                    avgSpectra = avg_spec,
-                   avgPeaks = peaks,
+                   avgPeaks = peaksBinned,
                    singlePeaks = singlePeaks,
                    normFactors = norm_fac$norm_factor,
                    mzShifts = mzShift$mzshift,
