@@ -22,7 +22,7 @@ setClass("MALDIassay",
 
 
 show_MALDIassay <- function(object) {
-  
+
   mz <- round(getNormMz(object), digits = 2)
   varFilterMethod <- object@settings$varFilterMethod
   tol <-  getNormMzTol(object)
@@ -35,8 +35,8 @@ show_MALDIassay <- function(object) {
   } else {
     normStr <- paste("Normalization using", getNormMethod(object), "method.\n")
   }
-  
-  
+
+
   cat("------MALDIassay object------\n")
   cat("\n")
   cat("Including", length(getAvgPeaks(object)), "different concentrations.\n")
@@ -48,19 +48,20 @@ show_MALDIassay <- function(object) {
     cat("Avg. mass shift after recal. :", round(mzdev$mean, 4), "Da. Max abs. shift:", round(mzdev$meanAbs, 4), "Da.\n")
     cat("\n")
   }
-  
+
   cat("Found", numPeaksTotal, "peaks above SNR", object@settings$SNR,  "and", hiVarPeaks, "high variance peaks\n")
   cat("using variance filtering method:", paste0(varFilterMethod, ".\n"))
   cat("\n")
-  
-  cat("Top5-features based on Fold-chage and R²:\n")
+
+  cat("Top5-features based on Fold-Change and R²:\n")
   print(getPeakStatistics(object) %>%
           mutate(mz = round(as.numeric(mz), 3)) %>%
           group_by(mz) %>%
           summarise(mzIdx = first(mzIdx),
-                    R2 = dplyr::first(round(R2,4)),
-                    wgof = dplyr::first(round(wgof,4)),
-                    FC = dplyr::first(round(fc_window, 4))) %>%
+                    pIC50 = first(pIC50),
+                    R2 = first(round(R2,4)),
+                    wgof = first(round(wgof,4)),
+                    FC = first(round(fc_window, 4))) %>%
           arrange(desc(FC), desc(R2)) %>%
           as.data.frame() %>%
           head(n = 5))

@@ -45,20 +45,20 @@ fitCurve <- function(spec,
                      plot = TRUE) {
   normMeth <- match.arg(normMeth)
   varFilterMethod <- match.arg(varFilterMethod)
-  
+
   if(plot | saveIntensityMatrix) {
     if(missing(dir)) {
       stop("argument `dir` is missing with no default.\n")
     }
-  } 
-  
+  }
+
   if(!any(is.na(conc))) {
     names(spec) <- conc
   }
   nm <- names(spec)
-  
+
   peaks_single <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
-  
+
   if(SinglePointRecal) {
     # perform single point mass recalibration
     mzShift <- getMzShift(peaksdf = peaks2df(peaks_single),
@@ -73,7 +73,7 @@ fitCurve <- function(spec,
   } else {
     mzShift <- list("mzshift" = 0)
   }
-  
+
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
   switch(normMeth,
          "TIC" = {
@@ -100,9 +100,9 @@ fitCurve <- function(spec,
            norm_fac <- list("norm_factor" = 0)
          }
   )
-  
+
   current_names <- names(spec)
-  
+
   cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
   spec <- alignSpectra(spec, warpingMethod = "linear",
                        tolerance = alignTol,
@@ -113,17 +113,17 @@ fitCurve <- function(spec,
                                                SNR = SNR),
                        allowNoMatches = allowNoMatches,
                        emptyNoMatches = allowNoMatches)
-  
+
   res_list <- vector("list", length = length(unique(current_names)))
   names(res_list) <- unique(current_names)
-  
-  
+
+
   cat(MALDIcellassay:::timeNow(), "calculating average spectra... \n")
   avg_spec <- averageMassSpectra(spec, labels = current_names)
   cat(MALDIcellassay:::timeNow(), "building intensity matrix and applying variance filter... \n")
   peaks <- detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
   peaksBinned <- binPeaks(peaks, tolerance = binTol)
-  
+
   # perform variance filtering
   intmat <- intensityMatrix(peaksBinned, avg_spec)
   cat("      Found", dim(intmat)[2], "peaks in total.\n")
@@ -152,10 +152,10 @@ fitCurve <- function(spec,
             cat("      No variance filtering applied. Using all peaks.\n")
           }
   )
-  
+
   mzhits <- as.numeric(colnames(intmat))[idx]
-  
-  
+
+
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
   current_res <- vector("list", length = length(idx))
   names(current_res) <- colnames(intmat[,idx])
@@ -173,33 +173,35 @@ fitCurve <- function(spec,
       mutate(concLog = concLog)
     resp <- convertToProp(y = df$value)
     model <- nplr(x = concLog, y = resp, useLog = FALSE, npars = 4)
-    
+
     current_res[[j]] <- list(model = model,
                              df = df)
-    
+
     res_list <- current_res
   }
-  
+
   allmz <- as.numeric(colnames(intmat))
   singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
                                                   intensity = rep(1, length(allmz))),
                                   spec = spec)
-  
+
   intmatSingle <- intensityMatrix(singlePeaks, spec)
-  
+
   # peak statistics
   fit_df <- lapply(res_list, function(x) {
     model <- x$model
+    pIC50 <- -getEstimates(model, targets = 0.5)[,3]
     fc_window <- max(x$df$value)/min(x$df$value)
     res_df <- as_tibble(nplr::getGoodness(model)) %>%
-      mutate(fc_window = fc_window)
+      mutate(fc_window = fc_window,
+             pIC50 = pIC50)
     return(res_df)
   }) %>%
     bind_rows(.id = "mz") %>%
     rename("R2" = "gof")
-  
+
   rownames(intmatSingle) <- names(spec)
-  
+
   stat_df <- intmatSingle %>%
     as_tibble() %>%
     mutate(sample = names(spec)) %>%
@@ -215,11 +217,11 @@ fitCurve <- function(spec,
               ) %>%
     left_join(fit_df, by = "mz") %>%
     filter(!is.na(R2)) %>%
-    mutate(mzIdx = as.numeric(as.factor(as.numeric(mz)))) 
-  
+    mutate(mzIdx = as.numeric(as.factor(as.numeric(mz))))
+
   if(saveIntensityMatrix) {
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")
-    
+
     # average spectra
     write.csv(x = as_tibble(intmat, rownames = NA),
               file = file.path(dir,
@@ -227,7 +229,7 @@ fitCurve <- function(spec,
                                       "_intensityMatrix_",
                                       normMeth,
                                       "norm_avg.csv")))
-    
+
     write.csv(x = as_tibble(intmatSingle, rownames = NA),
               file = file.path(dir,
                                paste0(as.character(Sys.Date()), "_",
@@ -243,7 +245,7 @@ fitCurve <- function(spec,
                                       normMeth,
                                       "norm_mzStats.csv")))
   }
-  
+
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
   res_class <- new("MALDIassay",
                    avgSpectra = avg_spec,
@@ -267,7 +269,7 @@ fitCurve <- function(spec,
     MALDIcellassay:::savePlots(res_class)
     cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
   }
-  
+
   return(res_class)
 }
 
