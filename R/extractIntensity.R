@@ -1,5 +1,3 @@
-
-
 #' Extract intensity using peaks as template
 #'
 #' @param peaks MALDIquant::MassPeaks list

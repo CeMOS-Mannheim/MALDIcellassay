@@ -13,7 +13,7 @@ plotCurves(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzIdx = NULL)
 
 \item{markValue}{numeric, a value to add as a reference to the plots}
 
-\item{mzIdx}{numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters are still applied!}
+\item{mzIdx}{numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!}
 
 \item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }

@@ -61,6 +61,19 @@ getAvgPeaks <- function(object) {
   return(object@avgPeaks)
 }
 
+#' Extract peaks of single spectra spectra (before average calculation)
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' List of MALDIquantMassPeaks
+#' @export
+getSinglePeaks <- function(object) {
+  stopIfNotIsMALDIassay(object)
+  return(object@singlePeaks)
+}
+
+
 #' Extract normalization method
 #'
 #' @param object Object of class MALDIassay

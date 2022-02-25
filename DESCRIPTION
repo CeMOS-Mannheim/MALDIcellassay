@@ -1,6 +1,6 @@
 Package: MALDIcellassay
 Type: Package
-Title: Automated (untrageted) screening of MALDI cell based assays. 
+Title: Automated (untrageted) screening of MALDI cell based assays based on dose-response curve fitting. 
 Version: 0.2.0
 Author: Thomas Enzlein 
 Maintainer: Thomas Enzlein <t.enzlein@hs-mannheim.de>
