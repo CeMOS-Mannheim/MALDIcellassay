@@ -50,7 +50,7 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
 
       }, numeric(1))
 
-      df_singlePeaks <- tibble(conc =  getConc(res),
+      df_singlePeaks <- tibble(conc =  getConc(object),
                                int_raw = int,
                                int = convertToProp(y = int,
                                                    T0 = min,
