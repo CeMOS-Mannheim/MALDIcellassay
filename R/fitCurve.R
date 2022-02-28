@@ -22,8 +22,8 @@
 #'
 #' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest createMassPeaks
 #' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates getGoodness
-#' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange left_join rename bind_rows filter pull slice_head slice_tail
-#' @importFrom tibble tibble
+#' @importFrom dplyr summarise mutate group_by %>% arrange left_join rename bind_rows filter pull slice_head slice_tail
+#' @importFrom tibble tibble as_tibble
 #' @importFrom tidyr gather
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
 
