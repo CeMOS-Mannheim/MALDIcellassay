@@ -33,7 +33,18 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
     ic50 <- 10^getEstimates(model, targets = 0.5)[,3]
     min <- min(df$value)
     max <- max(df$value)
-    fc_window <- max/min
+
+    Int_minConc <-  df %>%
+      arrange(conc) %>%
+      slice_head(n = 2) %>%
+      pull(value) %>%
+      mean()
+    Int_maxConc <- df %>%
+      arrange(conc) %>%
+      slice_tail(n = 2) %>%
+      pull(value) %>%
+      mean()
+    fc_window <- Int_minConc/Int_maxConc
     R2 <- getGoodness(model)[[1]]
 
     if((fc_window >= fc_thresh & R2 >= R2_tresh) | !is.null(mzIdx)) {

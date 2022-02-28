@@ -22,7 +22,7 @@
 #'
 #' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest createMassPeaks
 #' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates getGoodness
-#' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange left_join rename bind_rows filter
+#' @importFrom dplyr summarise mutate group_by %>% as_tibble arrange left_join rename bind_rows filter pull slice_head slice_tail
 #' @importFrom tibble tibble
 #' @importFrom tidyr gather
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
@@ -189,9 +189,20 @@ fitCurve <- function(spec,
 
   # peak statistics
   fit_df <- lapply(res_list, function(x) {
+    Int_minConc <-  x$df %>%
+      arrange(conc) %>%
+      slice_head(n = 2) %>%
+      pull(value) %>%
+      mean()
+    Int_maxConc <- x$df %>%
+      arrange(conc) %>%
+      slice_tail(n = 2) %>%
+      pull(value) %>%
+      mean()
+
     model <- x$model
     pIC50 <- -getEstimates(model, targets = 0.5)[,3]
-    fc_window <- max(x$df$value)/min(x$df$value)
+    fc_window <- Int_minConc/Int_maxConc
     res_df <- as_tibble(nplr::getGoodness(model)) %>%
       mutate(fc_window = fc_window,
              pIC50 = pIC50)
