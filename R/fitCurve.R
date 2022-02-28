@@ -189,20 +189,11 @@ fitCurve <- function(spec,
 
   # peak statistics
   fit_df <- lapply(res_list, function(x) {
-    Int_minConc <-  x$df %>%
-      arrange(conc) %>%
-      slice_head(n = 2) %>%
-      pull(value) %>%
-      mean()
-    Int_maxConc <- x$df %>%
-      arrange(conc) %>%
-      slice_tail(n = 2) %>%
-      pull(value) %>%
-      mean()
+
 
     model <- x$model
     pIC50 <- -getEstimates(model, targets = 0.5)[,3]
-    fc_window <- Int_minConc/Int_maxConc
+    fc_window <- MALDIcellassay:::calculateFC(x$df)
     res_df <- as_tibble(nplr::getGoodness(model)) %>%
       mutate(fc_window = fc_window,
              pIC50 = pIC50)

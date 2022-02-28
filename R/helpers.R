@@ -148,3 +148,33 @@ plotOverview <- function(object,
   }
   ggarrange(plotlist = p_new)
 }
+
+#' Calculate the fold-change
+#'
+#' @param df tibble with columns "conc" and "value"
+#'
+#' @return
+#' Numeric, fold-change
+calculateFC <- function(df) {
+  if(!is_tibble(df)) {
+    stop("df needs to be a tibble.\n")
+  }
+
+  if(!all(c("conc", "value") %in% colnames(df))) {
+    stop("df needs to have columns `value` and `conc`.\n")
+  }
+
+  Int_minConc <-  df %>%
+    arrange(conc) %>%
+    slice_head(n = 2) %>%
+    pull(value) %>%
+    mean()
+  Int_maxConc <- df %>%
+    arrange(conc) %>%
+    slice_tail(n = 2) %>%
+    pull(value) %>%
+    mean()
+
+  FC <- max(Int_minConc, Int_maxConc)/min(Int_minConc, Int_maxConc)
+  return(FC)
+}
