@@ -5,11 +5,16 @@
 #' @param markValue numeric, a value to add as a reference to the plots
 #' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
 #' @param mzIdx     numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!
-#'
+#' @param errorbars logical, add errorbars to plot representing standard deviation.
 #' @return
 #' list of ggplot objects
+#'
+#' @importFrom ggplot2 geom_errorbar geom_point ggplot aes geom_line scale_x_continuous theme_bw theme element_text labs
+#' @importFrom dplyr group_by summarise
+#' @importFrom tibble tibble
+#' @importFrom nplr getGoodness getEstimates getXcurve getYcurve getX getY convertToProp
 #' @export
-plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzIdx = NULL) {
+plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzIdx = NULL, errorbars = FALSE) {
   stopIfNotIsMALDIassay(object)
   if(is.null(mzIdx)) {
     res_list <- getCurveFits(object)
@@ -35,8 +40,26 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
       df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
       df_P <- tibble(x = getX(model), y = getY(model))
 
+      int <- vapply(getSinglePeaks(res), function(x) {
+        targetmass <- mz
+        mass <- mass(x)
+        idx <- match.closest(targetmass, mass, tolerance = 0.01)
+        int <- intensity(x)
+        return(int[idx])
 
-      ggplot(data = df_P, aes(x = x, y = y)) +
+      }, numeric(1))
+
+      df_singlePeaks <- tibble(conc =  getConc(res),
+                               int_raw = int,
+                               int = convertToProp(y = int,
+                                                   T0 = min,
+                                                   Ctrl = max)) %>%
+        group_by(conc) %>%
+        summarise(y = mean(int),
+                  ymin = y - sd(int),
+                  ymax = y + sd(int))
+
+      p <- ggplot(data = df_P, aes(x = x, y = y)) +
         geom_line(data = df_C, aes(x = xC, y = yC)) +
         geom_point() +
         scale_x_continuous(labels = c(0, 10^df_P$x[-1]), breaks = df_P$x) +
@@ -45,8 +68,19 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
         labs(x = "Conc.",
              y = "relative Int. [% of max Int.]",
              title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,3), "\n",
-                            "pIC50=", round(-log10(ic50),3), " min=", round(min, 3), " max=", round(max, 3), " FC=", round(fc_window, 2))) -> p
+                            "pIC50=", round(-log10(ic50),3),
+                            " min=", round(min, 3),
+                            " max=", round(max, 3),
+                            " FC=", round(fc_window, 2)))
 
+        if(errorbars) {
+          p <- p +
+            geom_errorbar(data = df_singlePeaks, aes(x = log10(conc),
+                                                     y = y,
+                                                     ymin = ymin,
+                                                     ymax = ymax),
+                          alpha = 0.5)
+        }
 
       if(!is.na(markValue)) {
         p <- p + geom_vline(aes(xintercept = markValue), linetype = "dashed")

@@ -266,7 +266,7 @@ fitCurve <- function(spec,
                                    SinglePointRecal = SinglePointRecal))
   if(plot) {
     cat(MALDIcellassay:::timeNow(), "plotting...", "\n")
-    MALDIcellassay:::savePlots(res_class)
+    MALDIcellassay:::savePlots(res_class, fc_thresh = fc_thresh)
     cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
   }
 

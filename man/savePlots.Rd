@@ -4,10 +4,14 @@
 \alias{savePlots}
 \title{Write ggplot objects to disk as png}
 \usage{
-savePlots(object, dir = NULL)
+savePlots(object, dir = NULL, fc_thresh = 1, R2_tresh = 0)
 }
 \arguments{
 \item{object}{object of class MALDIassay}
+
+\item{fc_tresh}{numeric, max/min fold-change above which plots should be generated}
+
+\item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }
 \description{
 Write ggplot objects to disk as png
