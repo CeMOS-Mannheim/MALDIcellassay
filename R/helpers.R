@@ -155,6 +155,8 @@ plotOverview <- function(object,
 #'
 #' @return
 #' Numeric, fold-change
+#'
+#' @importFrom tibble is_tibble
 calculateFC <- function(df) {
   if(!is_tibble(df)) {
     stop("df needs to be a tibble.\n")
