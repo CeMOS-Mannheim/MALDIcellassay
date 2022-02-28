@@ -41,7 +41,7 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
       df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
       df_P <- tibble(x = getX(model), y = getY(model))
 
-      int <- vapply(getSinglePeaks(res), function(x) {
+      int <- vapply(getSinglePeaks(object), function(x) {
         targetmass <- mz
         mass <- mass(x)
         idx <- match.closest(targetmass, mass, tolerance = 0.01)
