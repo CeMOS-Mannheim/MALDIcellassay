@@ -157,28 +157,7 @@ fitCurve <- function(spec,
 
 
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
-  current_res <- vector("list", length = length(idx))
-  names(current_res) <- colnames(intmat[,idx])
-  for(j in 1:length(idx)) {
-    df <- intmat[,idx[j]] %>%
-      as_tibble() %>%
-      mutate(conc = rownames(intmat)) %>%
-      mutate(conc = as.numeric(conc)) %>%
-      arrange(conc)
-    concLog <- log10(df$conc)
-    if(any(concLog == -Inf)) {
-      concLog[which(concLog == -Inf)] <- (min(concLog[which(!concLog == -Inf)])-1)
-    }
-    df <- df %>%
-      mutate(concLog = concLog)
-    resp <- convertToProp(y = df$value)
-    model <- nplr(x = concLog, y = resp, useLog = FALSE, npars = 4)
-
-    current_res[[j]] <- list(model = model,
-                             df = df)
-
-    res_list <- current_res
-  }
+  res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = 4)
 
   allmz <- as.numeric(colnames(intmat))
   singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
