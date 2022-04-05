@@ -8,16 +8,16 @@
 #' @importFrom MALDIquant isMassSpectrum isMassPeaks isMassSpectrumList isMassPeaksList
 #' @export
 shiftMassAxis <- function(spec, mzdiff) {
-  if(isMassSpectrum(spec) || isMassPeaks(spec)) {
+  if (isMassSpectrum(spec) || isMassPeaks(spec)) {
     spec@mass <- spec@mass + mzdiff
     return(spec)
   }
 
-  if(isMassSpectrumList(spec) || isMassPeaksList(spec)) {
-    if(!(length(spec) == length(mzdiff))) {
+  if (isMassSpectrumList(spec) || isMassPeaksList(spec)) {
+    if (!(length(spec) == length(mzdiff))) {
       stop("length(spec) != length(mzdiff) !\n")
     }
-    for(i in 1:length(spec)) {
+    for (i in 1:length(spec)) {
       spec[[i]]@mass <- spec[[i]]@mass + mzdiff[i]
     }
     return(spec)

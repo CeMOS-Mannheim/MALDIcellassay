@@ -15,12 +15,11 @@
 #' @export
 
 getMzShift <- function(peaksdf, tol, targetMz, tolppm = TRUE, allowNoMatch = TRUE) {
-
   plot_Idx <- sort(unique(peaksdf$plotIdx))
 
-  if(tolppm) {
+  if (tolppm) {
     resdf <- peaksdf %>%
-      mutate(match = ifelse(mz > targetMz - mz*(tol/1e6) & mz < targetMz + mz*(tol/1e6), TRUE, FALSE))
+      mutate(match = ifelse(mz > targetMz - mz * (tol / 1e6) & mz < targetMz + mz * (tol / 1e6), TRUE, FALSE))
     f_resdf <- resdf %>%
       filter(match) %>%
       mutate(mz.diff = round(targetMz - mz, 4)) %>%
@@ -39,19 +38,21 @@ getMzShift <- function(peaksdf, tol, targetMz, tolppm = TRUE, allowNoMatch = TRU
   }
 
 
-if(!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))){
-  if(!allowNoMatch) {
-    stop("Could not find ", targetMz, " for all spectra! Consider adjusting tol.\n")
+  if (!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))) {
+    if (!allowNoMatch) {
+      stop("Could not find ", targetMz, " for all spectra! Consider adjusting tol.\n")
+    }
+    warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(plotIdx)))), collapse = ", "), ".\n")
+    specIdx <- sort(which(plot_Idx %in% (f_resdf %>% pull(plotIdx))))
+  } else {
+    specIdx <- plot_Idx
   }
-  warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(plotIdx)))), collapse = ", "), ".\n")
-  specIdx <- sort(which(plot_Idx %in% (f_resdf %>% pull(plotIdx))))
-} else {
-  specIdx <- plot_Idx
-}
-if(length(specIdx) < 1) {
-  stop("Could not find targetMz in any spectrum! Consider adjusting tol.\n")
-}
+  if (length(specIdx) < 1) {
+    stop("Could not find targetMz in any spectrum! Consider adjusting tol.\n")
+  }
 
-return(list(mzshift = pull(f_resdf, mz.diff),
-            specIdx = specIdx))
+  return(list(
+    mzshift = pull(f_resdf, mz.diff),
+    specIdx = specIdx
+  ))
 }

@@ -5,7 +5,7 @@ stabilizeVariance <- function(spec,
   correctBaseline <- match.arg(correctBaseline)
 
   spec <- transformIntensity(spec, method = method)
-  if(!is.na(correctBaseline)) {
+  if (!is.na(correctBaseline)) {
     spec <- removeBaseline(spec, method = correctBaseline)
   }
   return(spec)

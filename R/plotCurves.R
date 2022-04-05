@@ -16,7 +16,7 @@
 #' @export
 plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzIdx = NULL, errorbars = FALSE) {
   stopIfNotIsMALDIassay(object)
-  if(is.null(mzIdx)) {
+  if (is.null(mzIdx)) {
     res_list <- getCurveFits(object)
   } else {
     res_list <- getCurveFits(object)[mzIdx]
@@ -25,19 +25,19 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
   mz_vals <- as.numeric(names(res_list))
 
   p_list <- vector("list", length = len)
-  for(i in 1:len) {
+  for (i in 1:len) {
     mz <- mz_vals[i]
     model <- res_list[[as.character(mz)]]$model
     df <- res_list[[as.character(mz)]]$df
 
-    ic50 <- 10^getEstimates(model, targets = 0.5)[,3]
+    ic50 <- 10^getEstimates(model, targets = 0.5)[, 3]
     min <- min(df$value)
     max <- max(df$value)
 
     fc_window <- MALDIcellassay:::calculateFC(df)
     R2 <- getGoodness(model)[[1]]
 
-    if((abs(fc_window) >= fc_thresh & R2 >= R2_tresh) | !is.null(mzIdx)) {
+    if ((abs(fc_window) >= fc_thresh & R2 >= R2_tresh) | !is.null(mzIdx)) {
       df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
       df_P <- tibble(x = getX(model), y = getY(model))
 
@@ -47,18 +47,23 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
         idx <- match.closest(targetmass, mass, tolerance = 0.01)
         int <- intensity(x)
         return(int[idx])
-
       }, numeric(1))
 
-      df_singlePeaks <- tibble(conc =  getConc(object),
-                               int_raw = int,
-                               int = convertToProp(y = int,
-                                                   T0 = min,
-                                                   Ctrl = max)) %>%
+      df_singlePeaks <- tibble(
+        conc = getConc(object),
+        int_raw = int,
+        int = convertToProp(
+          y = int,
+          T0 = min,
+          Ctrl = max
+        )
+      ) %>%
         group_by(conc) %>%
-        summarise(y = mean(int),
-                  ymin = y - sd(int),
-                  ymax = y + sd(int))
+        summarise(
+          y = mean(int),
+          ymin = y - sd(int),
+          ymax = y + sd(int)
+        )
 
       p <- ggplot(data = df_P, aes(x = x, y = y)) +
         geom_line(data = df_C, aes(x = xC, y = yC)) +
@@ -66,24 +71,32 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
         scale_x_continuous(labels = c(0, 10^df_P$x[-1]), breaks = df_P$x) +
         theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        labs(x = "Conc.",
-             y = "relative Int. [% of max Int.]",
-             title = paste0("mz ", round(mz,2), " Da, R\u00B2=", round(R2,3), "\n",
-                            "pIC50=", round(-log10(ic50),3),
-                            " min=", round(min, 3),
-                            " max=", round(max, 3),
-                            " FC=", round(fc_window, 2)))
+        labs(
+          x = "Conc.",
+          y = "relative Int. [% of max Int.]",
+          title = paste0(
+            "mz ", round(mz, 2), " Da, R\u00B2=", round(R2, 3), "\n",
+            "pIC50=", round(-log10(ic50), 3),
+            " min=", round(min, 3),
+            " max=", round(max, 3),
+            " FC=", round(fc_window, 2)
+          )
+        )
 
-        if(errorbars) {
-          p <- p +
-            geom_errorbar(data = df_singlePeaks, aes(x = log10(conc),
-                                                     y = y,
-                                                     ymin = ymin,
-                                                     ymax = ymax),
-                          alpha = 0.5)
-        }
+      if (errorbars) {
+        p <- p +
+          geom_errorbar(
+            data = df_singlePeaks, aes(
+              x = log10(conc),
+              y = y,
+              ymin = ymin,
+              ymax = ymax
+            ),
+            alpha = 0.5
+          )
+      }
 
-      if(!is.na(markValue)) {
+      if (!is.na(markValue)) {
         p <- p + geom_vline(aes(xintercept = markValue), linetype = "dashed")
       }
       p_list[[i]] <- p
@@ -91,9 +104,16 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
     }
   }
   # check for empty entries (result of filtering for FC or R2) and remove them
-  idx <- vapply(p_list, function(x) {length(x)>0}, FUN.VALUE = TRUE)
-  if(sum(!idx) == len) {
+  idx <- vapply(p_list, function(x) {
+    length(x) > 0
+  }, FUN.VALUE = TRUE)
+  if (sum(!idx) == len) {
     stop("Nothing to plot. Condsider decreasing fc_thresh or R2_tresh.\n")
   }
+
+  if (length(p_list) == 1) {
+    return(p_list[[1]])
+  }
+
   return(p_list[idx])
 }

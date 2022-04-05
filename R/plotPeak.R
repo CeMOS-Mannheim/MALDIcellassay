@@ -14,15 +14,19 @@
 #' @importFrom forcats fct_reorder
 #' @export
 plotPeak <- function(object, mzIdx, tol = 0.8) {
+  if (missing(mzIdx)) {
+    stop("No mzIdx supplied.\n")
+  }
   mz <- as.numeric(names(getCurveFits(object))[mzIdx])
   spec <- getAvgSpectra(object)
   conc <- unique(getConc(object))
 
   idx <- 1:length(spec)
   df_l <- lapply(X = idx, FUN = function(i) {
-    df <- tibble(mass = mass(spec[[i]]),
-                 intensity = intensity(spec[[i]]))
-
+    df <- tibble(
+      mass = mass(spec[[i]]),
+      intensity = intensity(spec[[i]])
+    )
   })
   names(df_l) <- conc[idx]
   df <- bind_rows(df_l, .id = "idx")
@@ -38,15 +42,17 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     scale_y_continuous(limits = c(0, NA)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
     theme_minimal(base_size = 14) +
-    labs(x = "m/z",
-         y = "Intensity",
-         col = "Conc.",
-         title = title)
+    labs(
+      x = "m/z",
+      y = "Intensity",
+      col = "Conc.",
+      title = title
+    )
 
   return(p)
 }
 
-#' Title
+#' Summary plot of a specific m/z with spectrum of peak and dose-response curve
 #'
 #' @param object    object of class MALDIassay
 #' @param mzIdx     numeric, index of mass of interest (see \code{getPeakStatistics()})
@@ -59,12 +65,19 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
 #'
 #' @importFrom ggpubr ggarrange
 plotPeakSummary <- function(object, mzIdx, tol = 4, markValue = NA) {
-  peakProfile <- plotPeak(object = object,
-                          mzIdx = mzIdx,
-                          tol = tol)
-  curve <- plotCurves(object = object,
-                      mzIdx = mzIdx,
-                      markValue = markValue)
-  p <- ggarrange(curve[[1]], peakProfile + labs(title = NULL))
+  if (missing(mzIdx)) {
+    stop("No mzIdx supplied.\n")
+  }
+  peakProfile <- plotPeak(
+    object = object,
+    mzIdx = mzIdx,
+    tol = tol
+  )
+  curve <- plotCurves(
+    object = object,
+    mzIdx = mzIdx,
+    markValue = markValue
+  )
+  p <- ggarrange(curve, peakProfile + labs(title = NULL))
   return(p)
 }

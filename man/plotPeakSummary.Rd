@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotPeak.R
 \name{plotPeakSummary}
 \alias{plotPeakSummary}
-\title{Title}
+\title{Summary plot of a specific m/z with spectrum of peak and dose-response curve}
 \usage{
 plotPeakSummary(object, mzIdx, tol = 4, markValue = NA)
 }
@@ -19,5 +19,5 @@ plotPeakSummary(object, mzIdx, tol = 4, markValue = NA)
 ggplot object
 }
 \description{
-Title
+Summary plot of a specific m/z with spectrum of peak and dose-response curve
 }

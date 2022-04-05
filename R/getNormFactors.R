@@ -14,12 +14,11 @@
 #' @importFrom dplyr pull %>% filter arrange
 #' @export
 getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch = TRUE) {
-
   plot_Idx <- sort(unique(peaksdf$plotIdx))
 
-  if(tolppm) {
+  if (tolppm) {
     resdf <- peaksdf %>%
-      mutate(match = ifelse(mz > targetMz - mz*(tol/1e6) & mz < targetMz + mz*(tol/1e6), TRUE, FALSE))
+      mutate(match = ifelse(mz > targetMz - mz * (tol / 1e6) & mz < targetMz + mz * (tol / 1e6), TRUE, FALSE))
     f_resdf <- resdf %>%
       filter(match) %>%
       arrange(plotIdx)
@@ -31,8 +30,8 @@ getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch =
       arrange(plotIdx)
   }
 
-  if(!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))){
-    if(!allowNoMatch) {
+  if (!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))) {
+    if (!allowNoMatch) {
       stop("Could not find ", targetMz, " for all spectra! Consider adjusting tol.\n")
     }
     warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(plotIdx)))), collapse = ", "), ".\n")
@@ -40,9 +39,11 @@ getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch =
   } else {
     specIdx <- plot_Idx
   }
-  if(length(specIdx) < 1) {
+  if (length(specIdx) < 1) {
     stop("Could not find targetMz in any spectrum! Consider adjusting tol.\n")
   }
-  return(list(norm_factor = pull(f_resdf, int),
-              specIdx = specIdx))
+  return(list(
+    norm_factor = pull(f_resdf, int),
+    specIdx = specIdx
+  ))
 }

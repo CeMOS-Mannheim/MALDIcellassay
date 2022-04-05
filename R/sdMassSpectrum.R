@@ -5,11 +5,11 @@
 #' @param mergeMetaData see MALDIquant
 #'
 #' @return see MALDIquant
-sdMassSpectraFun <- function(l, mergeMetaData=TRUE) {
+sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
 
   ## merge metaData
   if (mergeMetaData) {
-    metaData <- MALDIquant:::.mergeMetaData(lapply(l, function(x)x@metaData))
+    metaData <- MALDIquant:::.mergeMetaData(lapply(l, function(x) x@metaData))
   } else {
     metaData <- list()
   }
@@ -26,13 +26,13 @@ sdMassSpectraFun <- function(l, mergeMetaData=TRUE) {
   approxSpectra <- lapply(l, MALDIquant:::approxfun)
 
   ## get interpolated intensities
-  intensityList <- lapply(approxSpectra, function(x)x(mass))
+  intensityList <- lapply(approxSpectra, function(x) x(mass))
 
   ## create a matrix which could merged
   m <- do.call(rbind, intensityList)
 
   ## merge intensities
-  intensity <- colSdColMeans(m, na.rm=TRUE)
+  intensity <- colSdColMeans(m, na.rm = TRUE)
 
   ## create an empty spectrum if all intensities are NaN
   if (is.nan(intensity[1L])) {
@@ -40,27 +40,27 @@ sdMassSpectraFun <- function(l, mergeMetaData=TRUE) {
     mass <- double()
   }
 
-  createMassSpectrum(mass=mass, intensity=intensity, metaData=metaData)
+  createMassSpectrum(mass = mass, intensity = intensity, metaData = metaData)
 }
 
 #' Column wise standard deviation
 #'
 #'
-#'also a function of sgibb
-#'see https://stackoverflow.com/questions/17549762/is-there-such-colsd-in-r
+#' also a function of sgibb
+#' see https://stackoverflow.com/questions/17549762/is-there-such-colsd-in-r
 #' @param x     matrix
 #' @param na.rm logical
 #'
 #' @return sd
 #' @export
-colSdColMeans <- function(x, na.rm=TRUE) {
+colSdColMeans <- function(x, na.rm = TRUE) {
   if (na.rm) {
     n <- colSums(!is.na(x)) # thanks @flodel
   } else {
     n <- nrow(x)
   }
-  colVar <- colMeans(x*x, na.rm=na.rm) - (colMeans(x, na.rm=na.rm))^2
-  return(sqrt(colVar * n/(n-1)))
+  colVar <- colMeans(x * x, na.rm = na.rm) - (colMeans(x, na.rm = na.rm))^2
+  return(sqrt(colVar * n / (n - 1)))
 }
 
 
@@ -78,11 +78,12 @@ colSdColMeans <- function(x, na.rm=TRUE) {
 #' Returns a single (no labels given) or a list (labels given) of standard-deviation spectra as MassSpectrum objects.
 #' @export
 
-sdMassSpectrum <- function (l, labels, ...)
-{
-  fun = colSdColMeans
+sdMassSpectrum <- function(l, labels, ...) {
+  fun <- colSdColMeans
 
   MALDIquant:::.stopIfNotIsMassSpectrumList(l)
-  MALDIquant:::.doByLabels(l = l, labels = labels, FUN = sdMassSpectraFun,
-              fun = fun, ...)
+  MALDIquant:::.doByLabels(
+    l = l, labels = labels, FUN = sdMassSpectraFun,
+    fun = fun, ...
+  )
 }

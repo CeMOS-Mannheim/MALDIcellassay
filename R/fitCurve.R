@@ -46,26 +46,28 @@ fitCurve <- function(spec,
   normMeth <- match.arg(normMeth)
   varFilterMethod <- match.arg(varFilterMethod)
 
-  if(plot | saveIntensityMatrix) {
-    if(missing(dir)) {
+  if (plot | saveIntensityMatrix) {
+    if (missing(dir)) {
       stop("argument `dir` is missing with no default.\n")
     }
   }
 
-  if(!any(is.na(conc))) {
+  if (!any(is.na(conc))) {
     names(spec) <- conc
   }
   nm <- names(spec)
 
   peaks_single <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
 
-  if(SinglePointRecal) {
+  if (SinglePointRecal) {
     # perform single point mass recalibration
-    mzShift <- getMzShift(peaksdf = peaks2df(peaks_single),
-                          tol = normTol,
-                          targetMz = normMz,
-                          tolppm = FALSE,
-                          allowNoMatch = TRUE)
+    mzShift <- getMzShift(
+      peaksdf = peaks2df(peaks_single),
+      tol = normTol,
+      targetMz = normMz,
+      tolppm = FALSE,
+      allowNoMatch = TRUE
+    )
     cat("found mz", normMz, "in", length(mzShift$specIdx), "/", length(spec), "spectra\n")
     cat(MALDIcellassay:::timeNow(), "mzshift was", mean(mzShift$mzshift), "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")
     spec <- shiftMassAxis(spec[mzShift$specIdx], mzShift$mzshift)
@@ -76,43 +78,48 @@ fitCurve <- function(spec,
 
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
   switch(normMeth,
-         "TIC" = {
-           spec <- calibrateIntensity(spec, method = "TIC")
-           norm_fac <- list("norm_factor" = 0)
-         },
-         "PQN" = {
-           spec <- calibrateIntensity(spec, method = "PQN")
-           norm_fac <- list("norm_factor" = 0)
-         },
-         "median" = {
-           spec <- calibrateIntensity(spec, method = "median")
-           norm_fac <- list("norm_factor" = 0)
-         },
-         "mz" = {
-           norm_fac <- getNormFactors(peaksdf = peaks2df(peaks_single),
-                                      targetMz = normMz,
-                                      tol = normTol,
-                                      allowNoMatch = TRUE,
-                                      tolppm = TRUE)
-           spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
-         },
-         "none" = {
-           norm_fac <- list("norm_factor" = 0)
-         }
+    "TIC" = {
+      spec <- calibrateIntensity(spec, method = "TIC")
+      norm_fac <- list("norm_factor" = 0)
+    },
+    "PQN" = {
+      spec <- calibrateIntensity(spec, method = "PQN")
+      norm_fac <- list("norm_factor" = 0)
+    },
+    "median" = {
+      spec <- calibrateIntensity(spec, method = "median")
+      norm_fac <- list("norm_factor" = 0)
+    },
+    "mz" = {
+      norm_fac <- getNormFactors(
+        peaksdf = peaks2df(peaks_single),
+        targetMz = normMz,
+        tol = normTol,
+        allowNoMatch = TRUE,
+        tolppm = TRUE
+      )
+      spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
+    },
+    "none" = {
+      norm_fac <- list("norm_factor" = 0)
+    }
   )
 
   current_names <- names(spec)
 
   cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
-  spec <- alignSpectra(spec, warpingMethod = "linear",
-                       tolerance = alignTol,
-                       noiseMethod = "SuperSmoother",
-                       SNR = SNR,
-                       reference = detectPeaks(averageMassSpectra(spec),
-                                               method = "SuperSmoother",
-                                               SNR = SNR),
-                       allowNoMatches = allowNoMatches,
-                       emptyNoMatches = allowNoMatches)
+  spec <- alignSpectra(spec,
+    warpingMethod = "linear",
+    tolerance = alignTol,
+    noiseMethod = "SuperSmoother",
+    SNR = SNR,
+    reference = detectPeaks(averageMassSpectra(spec),
+      method = "SuperSmoother",
+      SNR = SNR
+    ),
+    allowNoMatches = allowNoMatches,
+    emptyNoMatches = allowNoMatches
+  )
 
   res_list <- vector("list", length = length(unique(current_names)))
   names(res_list) <- unique(current_names)
@@ -129,123 +136,94 @@ fitCurve <- function(spec,
   cat("      Found", dim(intmat)[2], "peaks in total.\n")
   rownames(intmat) <- names(avg_spec)
   vars <- apply(intmat, 2, var)
-  switch (varFilterMethod,
-          "mean" = {
-            idx <- which(vars > mean(vars))
-            cat("      Found", length(idx), "peaks with high variance using `mean` method.\n")
-          },
-          "median" = {
-            idx <- which(vars > median(vars))
-            cat("      Found", length(idx), "peaks with high variance using `median` method..\n")
-          },
-          "q25" = {
-            idx <- which(vars > quantile(vars, 0.25))
-            cat("      Found", length(idx), "peaks with high variance using 25%-quantile method..\n")
-          },
-          "q75" = {
-            idx <- which(vars > quantile(vars, 0.75))
-            cat("      Found", length(idx), "peaks with high variance using 75%-quantile method..\n")
-          },
-          "none" = {
-            # get all indicies, no filtering applied
-            idx <- 1:length(vars)
-            cat("      No variance filtering applied. Using all peaks.\n")
-          }
-  )
+  idx <- filterVariance(vars, method = varFilterMethod)
 
   mzhits <- as.numeric(colnames(intmat))[idx]
-
 
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
   res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = 4)
 
   allmz <- as.numeric(colnames(intmat))
-  singlePeaks <- extractIntensity(createMassPeaks(mass = allmz,
-                                                  intensity = rep(1, length(allmz))),
-                                  spec = spec)
+  singlePeaks <- extractIntensity(createMassPeaks(
+    mass = allmz,
+    intensity = rep(1, length(allmz))
+  ),
+  spec = spec
+  )
 
   intmatSingle <- intensityMatrix(singlePeaks, spec)
-
-  # peak statistics
-  fit_df <- lapply(res_list, function(x) {
-
-
-    model <- x$model
-    pIC50 <- -getEstimates(model, targets = 0.5)[,3]
-    fc_window <- MALDIcellassay:::calculateFC(x$df)
-    res_df <- as_tibble(nplr::getGoodness(model)) %>%
-      mutate(fc_window = fc_window,
-             pIC50 = pIC50)
-    return(res_df)
-  }) %>%
-    bind_rows(.id = "mz") %>%
-    rename("R2" = "gof")
-
   rownames(intmatSingle) <- names(spec)
 
-  stat_df <- intmatSingle %>%
-    as_tibble() %>%
-    mutate(sample = names(spec)) %>%
-    gather(mz, int, -sample) %>%
-    arrange(as.numeric(mz)) %>%
-    group_by(sample, mz) %>%
-    summarise(
-              min = min(int, na.rm = TRUE),
-              mean = mean(int, na.rm = TRUE),
-              max = max(int, na.rm = TRUE),
-              stdev = sd(int, na.rm = TRUE),
-              "cv%" = stdev/mean*100
-              ) %>%
-    left_join(fit_df, by = "mz") %>%
-    filter(!is.na(R2)) %>%
-    mutate(mzIdx = as.numeric(as.factor(as.numeric(mz))))
+  # peak statistics
+  stat_df <- calculatePeakStatistics(res_list, intmatSingle)
 
-  if(saveIntensityMatrix) {
+  if (saveIntensityMatrix) {
     cat(MALDIcellassay:::timeNow(), "writing intensity matrix...", "\n")
 
     # average spectra
-    write.csv(x = as_tibble(intmat, rownames = NA),
-              file = file.path(dir,
-                               paste0(as.character(Sys.Date()),
-                                      "_intensityMatrix_",
-                                      normMeth,
-                                      "norm_avg.csv")))
+    write.csv(
+      x = as_tibble(intmat, rownames = NA),
+      file = file.path(
+        dir,
+        paste0(
+          as.character(Sys.Date()),
+          "_intensityMatrix_",
+          normMeth,
+          "norm_avg.csv"
+        )
+      )
+    )
 
-    write.csv(x = as_tibble(intmatSingle, rownames = NA),
-              file = file.path(dir,
-                               paste0(as.character(Sys.Date()), "_",
-                                      normMeth, "_", normMz, "_",
-                                      "_intensityMatrix_",
-                                      normMeth,
-                                      "norm_singleSpec.csv")))
-    write.csv(x = as.data.frame(stat_df),
-              file = file.path(dir,
-                               paste0(as.character(Sys.Date()), "_",
-                                      normMeth, "_", normMz, "_",
-                                      "_intensityMatrix_",
-                                      normMeth,
-                                      "norm_mzStats.csv")))
+    write.csv(
+      x = as_tibble(intmatSingle, rownames = NA),
+      file = file.path(
+        dir,
+        paste0(
+          as.character(Sys.Date()), "_",
+          normMeth, "_", normMz, "_",
+          "_intensityMatrix_",
+          normMeth,
+          "norm_singleSpec.csv"
+        )
+      )
+    )
+    write.csv(
+      x = as.data.frame(stat_df),
+      file = file.path(
+        dir,
+        paste0(
+          as.character(Sys.Date()), "_",
+          normMeth, "_", normMz, "_",
+          "_intensityMatrix_",
+          normMeth,
+          "norm_mzStats.csv"
+        )
+      )
+    )
   }
 
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
   res_class <- new("MALDIassay",
-                   avgSpectra = avg_spec,
-                   avgPeaks = peaksBinned,
-                   singlePeaks = singlePeaks,
-                   normFactors = norm_fac$norm_factor,
-                   mzShifts = mzShift$mzshift,
-                   fits = res_list,
-                   stats = stat_df,
-                   settings = list(Conc = as.numeric(nm),
-                                   dir = dir,
-                                   normMz = normMz,
-                                   normTol = normTol,
-                                   varFilterMethod = varFilterMethod,
-                                   alignTol = alignTol,
-                                   SNR = SNR,
-                                   normMeth = normMeth,
-                                   SinglePointRecal = SinglePointRecal))
-  if(plot) {
+    avgSpectra = avg_spec,
+    avgPeaks = peaksBinned,
+    singlePeaks = singlePeaks,
+    normFactors = norm_fac$norm_factor,
+    mzShifts = mzShift$mzshift,
+    fits = res_list,
+    stats = stat_df,
+    settings = list(
+      Conc = as.numeric(nm),
+      dir = dir,
+      normMz = normMz,
+      normTol = normTol,
+      varFilterMethod = varFilterMethod,
+      alignTol = alignTol,
+      SNR = SNR,
+      normMeth = normMeth,
+      SinglePointRecal = SinglePointRecal
+    )
+  )
+  if (plot) {
     cat(MALDIcellassay:::timeNow(), "plotting...", "\n")
     MALDIcellassay:::savePlots(res_class, fc_thresh = fc_thresh)
     cat(MALDIcellassay:::timeNow(), "plotting done!", "\n")
@@ -253,4 +231,3 @@ fitCurve <- function(spec,
 
   return(res_class)
 }
-

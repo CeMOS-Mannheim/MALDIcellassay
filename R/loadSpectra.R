@@ -23,32 +23,29 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
 
   # determine number of measured spots
   total_n <- vector("numeric", 1)
-  for(i in 1:length(analyses)) {
+  for (i in 1:length(analyses)) {
     n <- length(list.dirs(file.path(Dir, analyses[i]), recursive = F))
     total_n <- total_n + n
-
   }
 
   spectra <- vector("list", length = total_n)
   counter <- 0
   cat(timeNow(), "Loading spectra...\n\n")
-  for(i in analyses) {
-
+  for (i in analyses) {
     path <- file.path(Dir, i)
     spots <- list.files(path, recursive = T)[grepl(pattern = "fid", x = list.files(path, recursive = T))]
-    for(spot in spots) {
+    for (spot in spots) {
       counter <- counter + 1
-      spec <- MALDIquantForeign::importBrukerFlex(path = file.path(path, spot), verbose = F )
-      #metaData(spec[[1]]) <- list(name = i)
+      spec <- MALDIquantForeign::importBrukerFlex(path = file.path(path, spot), verbose = F)
+      # metaData(spec[[1]]) <- list(name = i)
       spectra[[counter]] <- spec[[1]]
 
-      if(nameSpectra) {
+      if (nameSpectra) {
         names(spectra)[counter] <- i
       }
 
-      svMisc::progress(counter/total_n*100)
+      svMisc::progress(counter / total_n * 100)
     }
-
   }
   cat("\n")
 
