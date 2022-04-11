@@ -78,7 +78,7 @@ plotPeakSummary <- function(object, mzIdx, tol = 4, markValue = NA, errorbars = 
     object = object,
     mzIdx = mzIdx,
     markValue = markValue,
-    errorbars = TRUE
+    errorbars = errorbars
   )
   p <- ggarrange(curve, peakProfile + labs(title = NULL))
   return(p)
