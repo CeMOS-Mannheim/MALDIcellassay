@@ -54,17 +54,18 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
 
 #' Summary plot of a specific m/z with spectrum of peak and dose-response curve
 #'
-#' @param object    object of class MALDIassay
-#' @param mzIdx     numeric, index of mass of interest (see \code{getPeakStatistics()})
-#' @param tol       numeric, tolerance around peak to plot
-#' @param markValue numeric, value to mark in curve plot with a vertical line
+#' @param object    object of class MALDIassay.
+#' @param mzIdx     numeric, index of mass of interest (see \code{getPeakStatistics()}).
+#' @param tol       numeric, tolerance around peak to plot.
+#' @param markValue numeric, value to mark in curve plot with a vertical line.
+#' @param errorbars logical, add errorbars to plot representing standard deviation in regards to the measurment replicates.
 #'
 #' @return
 #' ggplot object
 #' @export
 #'
 #' @importFrom ggpubr ggarrange
-plotPeakSummary <- function(object, mzIdx, tol = 4, markValue = NA) {
+plotPeakSummary <- function(object, mzIdx, tol = 4, markValue = NA, errorbars = TRUE) {
   if (missing(mzIdx)) {
     stop("No mzIdx supplied.\n")
   }
@@ -76,7 +77,8 @@ plotPeakSummary <- function(object, mzIdx, tol = 4, markValue = NA) {
   curve <- plotCurves(
     object = object,
     mzIdx = mzIdx,
-    markValue = markValue
+    markValue = markValue,
+    errorbars = TRUE
   )
   p <- ggarrange(curve, peakProfile + labs(title = NULL))
   return(p)

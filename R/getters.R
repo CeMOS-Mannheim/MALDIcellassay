@@ -200,3 +200,23 @@ getRecalibrationError <- function(object) {
   )
   return(res_df)
 }
+
+#' Get the mz value associated with a mzIdx
+#'
+#' @param object Object of class MALDIassay
+#' @param mzIdx  numeric, index of mass of interest (see \code{getPeakStatistics()})
+#'
+#' @return
+#' numeric, mz value
+#' @export
+getMzFromMzIdx <- function(object, mzIdx) {
+  stopIfNotIsMALDIassay(object)
+  mz <- getPeakStatistics(object, TRUE) %>%
+    filter(mzIdx == {{mzIdx}}) %>%
+    pull(mz)
+
+  if(length(mz)>1) {
+    warning("Something is wrong. There are multiple mz-values with this index!\n")
+  }
+  return(mz)
+}

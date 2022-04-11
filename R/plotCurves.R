@@ -5,7 +5,8 @@
 #' @param markValue numeric, a value to add as a reference to the plots
 #' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
 #' @param mzIdx     numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!
-#' @param errorbars logical, add errorbars to plot representing standard deviation.
+#' @param errorbars logical, add errorbars to plot representing standard deviation in regards to the measurment replicates.
+#'
 #' @return
 #' list of ggplot objects
 #'

@@ -4,16 +4,18 @@
 \alias{plotPeakSummary}
 \title{Summary plot of a specific m/z with spectrum of peak and dose-response curve}
 \usage{
-plotPeakSummary(object, mzIdx, tol = 4, markValue = NA)
+plotPeakSummary(object, mzIdx, tol = 4, markValue = NA, errorbars = TRUE)
 }
 \arguments{
-\item{object}{object of class MALDIassay}
+\item{object}{object of class MALDIassay.}
 
-\item{mzIdx}{numeric, index of mass of interest (see \code{getPeakStatistics()})}
+\item{mzIdx}{numeric, index of mass of interest (see \code{getPeakStatistics()}).}
 
-\item{tol}{numeric, tolerance around peak to plot}
+\item{tol}{numeric, tolerance around peak to plot.}
 
-\item{markValue}{numeric, value to mark in curve plot with a vertical line}
+\item{markValue}{numeric, value to mark in curve plot with a vertical line.}
+
+\item{errorbars}{logical, add errorbars to plot representing standard deviation in regards to the measurment replicates.}
 }
 \value{
 ggplot object

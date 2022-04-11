@@ -22,7 +22,7 @@ plotCurves(
 
 \item{mzIdx}{numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!}
 
-\item{errorbars}{logical, add errorbars to plot representing standard deviation.}
+\item{errorbars}{logical, add errorbars to plot representing standard deviation in regards to the measurment replicates.}
 
 \item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }
