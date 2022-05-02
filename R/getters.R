@@ -8,7 +8,7 @@
 
 getConc <- function(object) {
   stopIfNotIsMALDIassay(object)
-  return(object@settings$Conc)
+  return(object@settings$Conc[object@included_specIdx])
 }
 
 #' Extract m/z used for normalization

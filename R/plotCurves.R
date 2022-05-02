@@ -51,20 +51,21 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
       }, numeric(1))
 
       df_singlePeaks <- tibble(
-        conc = getConc(object),
-        int_raw = int,
+        x = getConc(object),
+        #int_raw = int,
         int = convertToProp(
           y = int,
           T0 = min,
           Ctrl = max
         )
       ) %>%
-        group_by(conc) %>%
+        group_by(x) %>%
         summarise(
-          y = mean(int),
-          ymin = y - sd(int),
-          ymax = y + sd(int)
+          sd = sd(int),
         )
+
+      df_P <- df_P %>%
+        mutate(sd = pull(df_singlePeaks, sd))
 
       p <- ggplot(data = df_P, aes(x = x, y = y)) +
         geom_line(data = df_C, aes(x = xC, y = yC)) +
@@ -87,11 +88,10 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
       if (errorbars) {
         p <- p +
           geom_errorbar(
-            data = df_singlePeaks, aes(
-              x = log10(conc),
+            aes(
               y = y,
-              ymin = ymin,
-              ymax = ymax
+              ymin = y - sd,
+              ymax = y + sd
             ),
             alpha = 0.5
           )

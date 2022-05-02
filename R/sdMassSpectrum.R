@@ -1,3 +1,23 @@
+#' Column wise standard deviation
+#'
+#'
+#' also a function of sgibb
+#' see https://stackoverflow.com/questions/17549762/is-there-such-colsd-in-r
+#' @param x     matrix
+#' @param na.rm logical
+#'
+#' @return sd
+#' @export
+colSdColMeans <- function(x, na.rm = TRUE) {
+  if (na.rm) {
+    n <- colSums(!is.na(x)) # thanks @flodel
+  } else {
+    n <- nrow(x)
+  }
+  colVar <- colMeans(x * x, na.rm = na.rm) - (colMeans(x, na.rm = na.rm))^2
+  return(sqrt(colVar * n / (n - 1)))
+}
+
 #' Still fork from sgibb MALDIquant
 #'
 #' @param l       see MALDIquant
@@ -40,28 +60,10 @@ sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
     mass <- double()
   }
 
-  createMassSpectrum(mass = mass, intensity = intensity, metaData = metaData)
+  createMassPeaks(mass = mass, intensity = intensity, snr = rep(NA_integer_, length(intensity)),metaData = metaData)
 }
 
-#' Column wise standard deviation
-#'
-#'
-#' also a function of sgibb
-#' see https://stackoverflow.com/questions/17549762/is-there-such-colsd-in-r
-#' @param x     matrix
-#' @param na.rm logical
-#'
-#' @return sd
-#' @export
-colSdColMeans <- function(x, na.rm = TRUE) {
-  if (na.rm) {
-    n <- colSums(!is.na(x)) # thanks @flodel
-  } else {
-    n <- nrow(x)
-  }
-  colVar <- colMeans(x * x, na.rm = na.rm) - (colMeans(x, na.rm = na.rm))^2
-  return(sqrt(colVar * n / (n - 1)))
-}
+
 
 
 
@@ -79,11 +81,9 @@ colSdColMeans <- function(x, na.rm = TRUE) {
 #' @export
 
 sdMassSpectrum <- function(l, labels, ...) {
-  fun <- colSdColMeans
 
-  MALDIquant:::.stopIfNotIsMassSpectrumList(l)
+  #MALDIquant:::.stopIfNotIsMassSpectrumList(l)
   MALDIquant:::.doByLabels(
     l = l, labels = labels, FUN = sdMassSpectraFun,
-    fun = fun, ...
   )
 }

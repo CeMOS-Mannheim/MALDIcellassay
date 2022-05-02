@@ -83,8 +83,10 @@ fitCurve <- function(spec,
                           mzShift$mzshift)
     peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx],
                                   mzShift$mzshift)
+    included_idx_recal <- mzShift$specIdx
   } else {
     mzShift <- list("mzshift" = 0)
+    included_idx_recal <- 1:length(spec)
   }
 
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
@@ -92,14 +94,17 @@ fitCurve <- function(spec,
          "TIC" = {
            spec <- calibrateIntensity(spec, method = "TIC")
            norm_fac <- list("norm_factor" = 0)
+           included_idx_norm <- 1:length(spec)
          },
          "PQN" = {
            spec <- calibrateIntensity(spec, method = "PQN")
            norm_fac <- list("norm_factor" = 0)
+           included_idx_norm <- 1:length(spec)
          },
          "median" = {
            spec <- calibrateIntensity(spec, method = "median")
            norm_fac <- list("norm_factor" = 0)
+           included_idx_norm <- 1:length(spec)
          },
          "mz" = {
            norm_fac <- getNormFactors(
@@ -110,9 +115,11 @@ fitCurve <- function(spec,
              tolppm = TRUE
            )
            spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
+           included_idx_norm <- norm_fac$specIdx
          },
          "none" = {
            norm_fac <- list("norm_factor" = 0)
+           included_idx_norm <- 1:length(spec)
          }
   )
 
@@ -152,9 +159,7 @@ fitCurve <- function(spec,
 
   mzhits <- as.numeric(colnames(intmat))[idx]
 
-  cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
-  res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = 4)
-
+  # single spectra data
   allmz <- as.numeric(colnames(intmat))
 
   singlePeaks <- extractIntensity(
@@ -162,11 +167,19 @@ fitCurve <- function(spec,
       mass = allmz,
       intensity = rep(1, length(allmz))
     ),
-    spec = spec
+    spec = spec, tol = 0.2
   )
 
   intmatSingle <- intensityMatrix(singlePeaks, spec)
   rownames(intmatSingle) <- names(spec)
+
+  # fit curves
+
+  cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
+  res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = 4)
+
+  # fit curves again to single spectra data (experimental)
+  res_list_single <- calculateCurveFit(intmat = intmatSingle, idx = idx, npars = 4)
 
   # peak statistics
   stat_df <- calculatePeakStatistics(res_list, intmatSingle)
@@ -225,6 +238,7 @@ fitCurve <- function(spec,
                    mzShifts = mzShift$mzshift,
                    fits = res_list,
                    stats = stat_df,
+                   included_specIdx = included_idx_norm,
                    settings = list(
                      Conc = as.numeric(nm),
                      dir = dir,

@@ -17,6 +17,7 @@ setClass("MALDIassay",
     mzShifts = "numeric",
     fits = "list",
     stats = "data.frame",
+    included_specIdx = "numeric",
     settings = "list"
   )
 )
