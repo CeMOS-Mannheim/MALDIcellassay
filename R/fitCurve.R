@@ -4,6 +4,8 @@
 #' @param dir                 Character, directory for output
 #' @param varFilterMethod     Character, function applied for high variance filtering. One of the following options `mean` (default), `median`, `q25`, `q75` or `none` (no filtering).
 #' @param conc                Numeric vector, concentration for each spectrum. Length has to be the same as length of spec
+#' @param unit                Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
+#'                            Set to "M" if you dont want changes in your concentrations.
 #' @param normMz              Numeric, mz used for normalization AND for single point recalibration.
 #' @param normTol             Numeric, tolerance in Dalton to match normMz
 #' @param alignTol            Numeric, tolerance for spectral alignment in Dalton.
@@ -30,6 +32,7 @@
 fitCurve <- function(spec,
                      dir,
                      conc = NA,
+                     unit = c("M", "mM", "µM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
                      normMz = 760.585,
                      normTol = 0.1,
@@ -45,7 +48,17 @@ fitCurve <- function(spec,
                      plot = TRUE) {
 
   normMeth <- match.arg(normMeth)
+  unit <- match.arg(unit)
   varFilterMethod <- match.arg(varFilterMethod)
+
+  unitFactor <- switch (unit,
+    "M" = 1,
+    "mM" = 1e-3,
+    "µM" = 1e-6,
+    "nM" = 1e-9,
+    "pM" = 1e-12,
+    "fM" = 1e-15
+  )
 
   if (plot | saveIntensityMatrix) {
     if (missing(dir)) {
@@ -54,7 +67,17 @@ fitCurve <- function(spec,
   }
 
   if (!any(is.na(conc))) {
-    names(spec) <- conc
+    # if conc is given update spectra names with conc
+    names(spec) <- as.numeric(conc) * unitFactor
+    conc <- as.numeric(conc) * unitFactor
+  } else {
+    # if conc is not given assume that spectra names are concentrations
+    if(length(names(spec)) < 1) {
+      stop("No concentrations provided.
+           Either name spectra with concentrations or use conc. var
+           to set them.\n")
+    }
+    names(spec) <- as.numeric(names(spec)) * unitFactor
   }
   nm <- names(spec)
 

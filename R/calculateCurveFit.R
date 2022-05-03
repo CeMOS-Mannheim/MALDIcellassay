@@ -12,7 +12,7 @@
 #' @importFrom nplr nplr convertToProp
 #' @importFrom dplyr mutate arrange %>%
 #' @importFrom tibble as_tibble
-calculateCurveFit <- function(intmat, idx, npars = 4, ...) {
+calculateCurveFit <- function(intmat, idx, npars = "all", ...) {
   if (length(rownames(intmat)) == 0) {
     stop("intmat must have concentrations as rownames!\n")
   }
