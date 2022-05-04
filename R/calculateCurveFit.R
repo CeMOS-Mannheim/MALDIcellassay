@@ -20,6 +20,8 @@ calculateCurveFit <- function(intmat, idx, npars = "all", ...) {
   current_res <- vector("list", length = length(idx))
   names(current_res) <- colnames(intmat[, idx])
   for (j in 1:length(idx)) {
+    cat("fitting", colnames(intmat)[j],
+        paste0("(", j, "/", length(idx), ")\n"))
     df <- intmat[, idx[j]] %>%
       as_tibble() %>%
       mutate(conc = rownames(intmat)) %>%

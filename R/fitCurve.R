@@ -47,6 +47,7 @@ fitCurve <- function(spec,
                      markValue = NA,
                      plot = TRUE) {
 
+
   normMeth <- match.arg(normMeth)
   unit <- match.arg(unit)
   varFilterMethod <- match.arg(varFilterMethod)
@@ -67,6 +68,9 @@ fitCurve <- function(spec,
   }
 
   if (!any(is.na(conc))) {
+    if(is.unsorted(as.numeric(conc))) {
+      stop("conc needs to be a numeric vector of ascending concentrations!\n")
+    }
     # if conc is given update spectra names with conc
     names(spec) <- as.numeric(conc) * unitFactor
     conc <- as.numeric(conc) * unitFactor
@@ -80,6 +84,12 @@ fitCurve <- function(spec,
     names(spec) <- as.numeric(names(spec)) * unitFactor
   }
   nm <- names(spec)
+
+  # make sure that spectra are in ascending order in regards to concentration
+  order <- order(as.numeric(nm))
+  nm <- nm[order]
+  spec <- spec[order]
+
 
   if(!length(nm) == length(spec)) {
     stop("No concentrations provided.
@@ -199,10 +209,7 @@ fitCurve <- function(spec,
   # fit curves
 
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
-  res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = 4)
-
-  # fit curves again to single spectra data (experimental)
-  res_list_single <- calculateCurveFit(intmat = intmatSingle, idx = idx, npars = 4)
+  res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = "all")
 
   # peak statistics
   stat_df <- calculatePeakStatistics(res_list, intmatSingle)
