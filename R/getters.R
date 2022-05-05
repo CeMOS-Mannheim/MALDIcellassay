@@ -220,3 +220,22 @@ getMzFromMzIdx <- function(object, mzIdx) {
   }
   return(mz)
 }
+
+#' Get the spot coordinates of spectra
+#'
+#' @param object      Object of class MALDIassay
+#' @param singleSpec  Logical, extract the spot coordinates of single spectra (default) or from average spectra.
+#'
+#' @return
+#' character vector of spot coordinates. In case of average spectra multiple spots are concatenated.
+#' @export
+getSpots <- function(object, singleSpec = TRUE) {
+  stopIfNotIsMALDIassay(object)
+  if(singleSpec) {
+    spots <- object@singleSpecSpots
+    return(spots)
+  } else {
+    spots <- extractSpots(getAvgSpectra(object))
+    return(spots)
+  }
+}

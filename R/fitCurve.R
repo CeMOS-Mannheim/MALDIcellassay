@@ -177,6 +177,7 @@ fitCurve <- function(spec,
 
 
   cat(MALDIcellassay:::timeNow(), "calculating average spectra... \n")
+  spots <- extractSpots(spec)
   avg_spec <- averageMassSpectra(spec, labels = current_names)
   cat(MALDIcellassay:::timeNow(),
       "building intensity matrix and applying variance filter... \n")
@@ -264,6 +265,7 @@ fitCurve <- function(spec,
                    avgSpectra = avg_spec,
                    avgPeaks = peaksBinned,
                    singlePeaks = singlePeaks,
+                   singleSpecSpots = spots,
                    normFactors = norm_fac$norm_factor,
                    mzShifts = mzShift$mzshift,
                    fits = res_list,

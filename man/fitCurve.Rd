@@ -8,6 +8,7 @@ fitCurve(
   spec,
   dir,
   conc = NA,
+  unit = c("M", "mM", "µM", "nM", "pM", "fM"),
   varFilterMethod = c("mean", "median", "q25", "q75", "none"),
   normMz = 760.585,
   normTol = 0.1,
@@ -29,6 +30,9 @@ fitCurve(
 \item{dir}{Character, directory for output}
 
 \item{conc}{Numeric vector, concentration for each spectrum. Length has to be the same as length of spec}
+
+\item{unit}{Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
+Set to "M" if you dont want changes in your concentrations.}
 
 \item{varFilterMethod}{Character, function applied for high variance filtering. One of the following options `mean` (default), `median`, `q25`, `q75` or `none` (no filtering).}
 

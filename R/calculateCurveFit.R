@@ -34,7 +34,9 @@ calculateCurveFit <- function(intmat, idx, npars = "all", ...) {
     df <- df %>%
       mutate(concLog = concLog)
     resp <- convertToProp(y = df$value)
-    model <- nplr(x = concLog, y = resp, useLog = FALSE, npars = npars, silent = TRUE, ...)
+    model <- suppressWarnings(
+      nplr(x = concLog, y = resp, useLog = FALSE, npars = npars, silent = TRUE, ...)
+      )
 
     current_res[[j]] <- list(
       model = model,
