@@ -210,7 +210,7 @@ fitCurve <- function(spec,
   # fit curves
 
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
-  res_list <- calculateCurveFit(intmat = intmat, idx = idx, npars = "all")
+  res_list <- calculateCurveFit(intmat = intmat, idx = idx)
 
   # peak statistics
   stat_df <- calculatePeakStatistics(res_list, intmatSingle)

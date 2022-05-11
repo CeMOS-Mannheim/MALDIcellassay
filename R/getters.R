@@ -166,7 +166,10 @@ getPeakStatistics <- function(object, summarise = FALSE) {
         R2 = first(R2),
         wgof = first(wgof),
         FC = first(fc_window)
-      )
+      ) %>%
+      left_join(getFittingParameters(object, summarise = TRUE)) %>%
+      mutate(symetric = ifelse(npar < 5, TRUE, FALSE)) %>%
+      select(-npar)
   }
 
   return(stats)
@@ -221,6 +224,20 @@ getMzFromMzIdx <- function(object, mzIdx) {
   return(mz)
 }
 
+#' Get all mz value of an MALDIassay-object
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' numeric vector of mz values
+#' @export
+getAllMz <- function(object) {
+  stopIfNotIsMALDIassay(object)
+  mz <- getPeakStatistics(object, TRUE) %>%
+    pull(mz)
+  return(mz)
+}
+
 #' Get the spot coordinates of spectra
 #'
 #' @param object      Object of class MALDIassay
@@ -239,3 +256,33 @@ getSpots <- function(object, singleSpec = TRUE) {
     return(spots)
   }
 }
+
+#' Get fitting parameters
+#'
+#' @param object      Object of class MALDIassay
+#'
+#' @return
+#' tibble of fitting parameters for each fitted m/z-value
+#' @export
+#' @importFrom nplr getPar
+getFittingParameters <- function(object, summarise = FALSE) {
+  stopIfNotIsMALDIassay(object)
+
+  fits <- getCurveFits(object)
+
+  res_list <- lapply(fits, function(x) {
+    getPar(x$model)
+  })
+
+  df <- bind_rows(res_list, .id = "mz")
+
+  if(summarise) {
+    df <- df %>%
+      mutate(mz = round(as.numeric(mz), 3)) %>%
+      select(mz, npar)
+  }
+
+  return(df)
+}
+
+

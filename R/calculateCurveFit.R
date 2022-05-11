@@ -4,7 +4,6 @@
 #'               \code{MALDIquant::intensityMatrix()}
 #'               with rownames as the respectiv concentrations of the spectra.
 #' @param idx    Numeric vector of the mz indicies to perform the fit.
-#' @param npars  Numeric or "all", see \code{nplr::nplr()}.
 #' @param ...    Additional arguments passed to \code{nplr::nplr()}
 #'
 #' @return
@@ -12,7 +11,7 @@
 #' @importFrom nplr nplr convertToProp
 #' @importFrom dplyr mutate arrange %>%
 #' @importFrom tibble as_tibble
-calculateCurveFit <- function(intmat, idx, npars = "all", ...) {
+calculateCurveFit <- function(intmat, idx, ...) {
   if (length(rownames(intmat)) == 0) {
     stop("intmat must have concentrations as rownames!\n")
   }
@@ -20,7 +19,7 @@ calculateCurveFit <- function(intmat, idx, npars = "all", ...) {
   current_res <- vector("list", length = length(idx))
   names(current_res) <- colnames(intmat[, idx])
   for (j in 1:length(idx)) {
-    cat("fitting", colnames(intmat)[j],
+    cat("fitting", round(as.numeric(colnames(intmat)[j]), 3),
         paste0("(", j, "/", length(idx), ")\n"))
     df <- intmat[, idx[j]] %>%
       as_tibble() %>%
@@ -34,9 +33,18 @@ calculateCurveFit <- function(intmat, idx, npars = "all", ...) {
     df <- df %>%
       mutate(concLog = concLog)
     resp <- convertToProp(y = df$value)
-    model <- suppressWarnings(
-      nplr(x = concLog, y = resp, useLog = FALSE, npars = npars, silent = TRUE, ...)
+    model <- tryCatch(expr = {
+      suppressWarnings(
+        nplr(x = concLog, y = resp, useLog = FALSE, npars = 4, silent = TRUE, ...)
       )
+    }, error = function(cond) {
+      cat("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
+          "failed. Re-trying with npar='all' setting")
+      suppressWarnings(
+
+        return(nplr(x = concLog, y = resp, useLog = FALSE, npars = "all", silent = TRUE, ...))
+      )
+    })
 
     current_res[[j]] <- list(
       model = model,
