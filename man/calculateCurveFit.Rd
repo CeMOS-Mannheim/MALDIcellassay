@@ -16,7 +16,7 @@ with rownames as the respectiv concentrations of the spectra.}
 \item{...}{Additional arguments passed to \code{nplr::nplr()}}
 }
 \value{
-
+List of curve fits.
 }
 \description{
 Calculate the fit for a dose-response curve

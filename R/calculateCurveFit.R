@@ -7,6 +7,7 @@
 #' @param ...    Additional arguments passed to \code{nplr::nplr()}
 #'
 #' @return
+#' List of curve fits.
 #' @export
 #' @importFrom nplr nplr convertToProp
 #' @importFrom dplyr mutate arrange %>%

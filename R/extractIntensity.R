@@ -22,9 +22,17 @@ extractIntensity <- function(peaks, spec, tol = 0.1) {
           table = mass(spec[[i]]),
           tolerance = tol
         )
+        int <- intensity(spec[[i]])[idx]
+        if(any(is.na(int))) {
+          na_idx <- which(is.na(int))
+          warning("Could not match intensity for spectrum idx",
+                  i, "and m/z", round(mass(peaks)[na_idx], 2),
+                  ".\n Replacing by zero.\n")
+          int[na_idx] <- 0
+        }
         createMassPeaks(
           mass = mass(peaks),
-          intensity = intensity(spec[[i]])[idx],
+          intensity = int,
           snr = rep(NA_integer_, length(idx))
         )
       })

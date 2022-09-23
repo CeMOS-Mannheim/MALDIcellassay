@@ -61,7 +61,8 @@ Set to "M" if you dont want changes in your concentrations.}
 \item{plot}{Logical, should the curves be plotted and written to dir?}
 }
 \value{
-
+Object of class `MALDIassay`.
+The most important slot is `fits` which contains the IC50 curve fits.
 }
 \description{
 Fit dose-response curves

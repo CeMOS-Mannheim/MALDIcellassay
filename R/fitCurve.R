@@ -20,6 +20,8 @@
 #' @param plot                Logical, should the curves be plotted and written to dir?
 #'
 #' @return
+#' Object of class `MALDIassay`.
+#' The most important slot is `fits` which contains the IC50 curve fits.
 #' @export
 #'
 #' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest createMassPeaks
@@ -117,6 +119,18 @@ fitCurve <- function(spec,
     peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx],
                                   mzShift$mzshift)
     included_idx_recal <- mzShift$specIdx
+
+    if(length(unique(nm)) != length(unique(nm[included_idx_recal]))) {
+      # stop if a single condition got filtered completely
+      u_nm <- unique(nm)
+      u_fil <- unique(nm[included_idx_recal])
+      label_removed <- u_nm[which(!(u_nm %in% u_fil))]
+
+      stop("Could not find", normMz, "in all spectra with label",
+           paste0(label_removed, collapse = ", "),
+           ".\n Consider increasing tol.\n")
+    }
+
   } else {
     mzShift <- list("mzshift" = 0)
     included_idx_recal <- 1:length(spec)
@@ -149,6 +163,17 @@ fitCurve <- function(spec,
            )
            spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
            included_idx_norm <- norm_fac$specIdx
+
+           if(length(unique(nm)) != length(unique(nm[included_idx_norm]))) {
+             # stop if a single condition got filtered completely
+             u_nm <- unique(nm)
+             u_fil <- unique(nm[included_idx_nrom])
+             label_removed <- u_nm[which(!(u_nm %in% u_fil))]
+
+             stop("Could not find", normMz, "in all spectra with label",
+                  paste0(label_removed, collapse = ", "),
+                  ".\n Consider increasing tol.\n")
+           }
          },
          "none" = {
            norm_fac <- list("norm_factor" = 0)
@@ -201,7 +226,8 @@ fitCurve <- function(spec,
       mass = allmz,
       intensity = rep(1, length(allmz))
     ),
-    spec = spec, tol = 0.2
+    spec = spec,
+    tol = 0.5
   )
 
   intmatSingle <- intensityMatrix(singlePeaks, spec)

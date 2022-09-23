@@ -165,6 +165,8 @@ getPeakStatistics <- function(object, summarise = FALSE) {
         pIC50 = first(pIC50),
         R2 = first(R2),
         wgof = first(wgof),
+        min = mean(min),
+        max = mean(max),
         FC = first(fc_window)
       ) %>%
       left_join(getFittingParameters(object, summarise = TRUE)) %>%
