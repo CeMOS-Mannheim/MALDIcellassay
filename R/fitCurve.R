@@ -87,6 +87,9 @@ fitCurve <- function(spec,
   }
   nm <- names(spec)
 
+  # check spectra for problematic meta data and remove it of needed
+  spec <- .repairMetaData(spec)
+
   # make sure that spectra are in ascending order in regards to concentration
   order <- order(as.numeric(nm))
   nm <- nm[order]
