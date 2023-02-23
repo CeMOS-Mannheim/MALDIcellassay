@@ -163,7 +163,7 @@ plotOverview <- function(object,
 #'
 #' @param df       tibble with columns "conc" and "value".
 #' @param absolute logical, return the absolute FC.
-#'                 If FALSE (default) the FC is calculated by dividing the mean intensity of the lowest concentrations by the mean intensity of the highest concentrations.
+#'                 If FALSE (default) the FC is calculated by dividing the mean intensity of the highest concentrations by the mean intensity of the lowest concentrations.
 #' @param n_conc   numeric, the FC is calculated on the top and bottom `n_conc` concentrations (default 2).
 #'
 #' @return
@@ -192,7 +192,7 @@ calculateFC <- function(df, absolute = FALSE, n_conc = 2) {
   if(absolute) {
     FC <- max(Int_minConc, Int_maxConc) / min(Int_minConc, Int_maxConc)
   } else {
-    FC <- Int_minConc / Int_maxConc
+    FC <- Int_maxConc / Int_minConc
   }
 
   return(FC)
