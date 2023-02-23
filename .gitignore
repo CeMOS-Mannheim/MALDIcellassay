@@ -6,3 +6,4 @@ Meta
 spec.R
 .Rhistory
 .RData
+.RDataTmp

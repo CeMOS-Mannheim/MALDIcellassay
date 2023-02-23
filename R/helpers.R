@@ -161,13 +161,16 @@ plotOverview <- function(object,
 
 #' Calculate the fold-change
 #'
-#' @param df tibble with columns "conc" and "value"
+#' @param df       tibble with columns "conc" and "value".
+#' @param absolute logical, return the absolute FC.
+#'                 If FALSE (default) the FC is calculated by dividing the mean intensity of the lowest concentrations by the mean intensity of the highest concentrations.
+#' @param n_conc   numeric, the FC is calculated on the top and bottom `n_conc` concentrations (default 2).
 #'
 #' @return
 #' Numeric, fold-change
 #'
 #' @importFrom tibble is_tibble
-calculateFC <- function(df) {
+calculateFC <- function(df, absolute = FALSE, n_conc = 2) {
   if (!is_tibble(df)) {
     stop("df needs to be a tibble.\n")
   }
@@ -178,15 +181,19 @@ calculateFC <- function(df) {
 
   Int_minConc <- df %>%
     arrange(conc) %>%
-    slice_head(n = 2) %>%
+    slice_head(n = n_conc) %>%
     pull(value) %>%
     mean()
   Int_maxConc <- df %>%
     arrange(conc) %>%
-    slice_tail(n = 2) %>%
+    slice_tail(n = n_conc) %>%
     pull(value) %>%
     mean()
+  if(absolute) {
+    FC <- max(Int_minConc, Int_maxConc) / min(Int_minConc, Int_maxConc)
+  } else {
+    FC <- Int_minConc / Int_maxConc
+  }
 
-  FC <- max(Int_minConc, Int_maxConc) / min(Int_minConc, Int_maxConc)
   return(FC)
 }
