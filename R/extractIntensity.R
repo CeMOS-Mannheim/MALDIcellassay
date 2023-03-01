@@ -53,7 +53,8 @@ extractIntensity <- function(peaks, spec, tol = 0.1) {
     createMassPeaks(
       mass = mass(peaks[[i]]),
       intensity = intensity(spec[[i]])[idx],
-      snr = rep(NA_integer_, length(idx))
+      snr = rep(NA_integer_, length(idx)),
+      metaData = metaData(spec)
     )
   })
   return(unlist(res))

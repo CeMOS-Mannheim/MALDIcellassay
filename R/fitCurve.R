@@ -36,10 +36,10 @@ fitCurve <- function(spec,
                      conc = NA,
                      unit = c("M", "mM", "µM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
-                     normMz = 760.585,
+                     normMz = NULL,
                      normTol = 0.1,
                      alignTol = 0.01,
-                     binTol = 0.25,
+                     binTol = 0.0002,
                      SNR = 3,
                      allowNoMatches = TRUE,
                      normMeth = c("mz", "TIC", "PQN", "median", "none"),
@@ -62,6 +62,10 @@ fitCurve <- function(spec,
     "pM" = 1e-12,
     "fM" = 1e-15
   )
+
+  if(normMeth == "mz" & is.null(normMz)) {
+    stop("Normalization to m/z is not possible when no m/z was supplied.\n")
+  }
 
   if (plot | saveIntensityMatrix) {
     if (missing(dir)) {

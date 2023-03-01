@@ -1,6 +1,6 @@
 #' Extract the concentrations used in a MALDIassay
 #'
-#' @param object Object of class MALDIassay
+#' @param object         Object of class MALDIassay
 #'
 #' @return
 #' Numeric vector, concentrations used in a MALDIassay
@@ -8,7 +8,32 @@
 
 getConc <- function(object) {
   stopIfNotIsMALDIassay(object)
-  return(object@settings$Conc[object@included_specIdx])
+  conc <- as.numeric(object@settings$Conc[object@included_specIdx])
+  return(conc)
+
+}
+
+#' Extract the intensities of single spectra for a given mzIdx
+#'
+#' @param object         Object of class MALDIassay
+#' @param mzIdx          Integer, index of mz
+#'
+#' @return
+#' Numeric vector, intensities of mzIdx
+#' @export
+getSingleSpecIntensity <- function(object, mzIdx) {
+  s <- getSinglePeaks(object)
+  mz <- mass(s[[1]]) # all single spectra have same mass axis
+  targetMz <- getMzFromMzIdx(object, mzIdx)
+  idx <- match.closest(targetMz, mz)
+
+  int <- vapply(s,
+                function(x) {
+                  ints <- intensity(x)
+                  return(ints[idx])
+                  },
+                numeric(1))
+  return(int)
 }
 
 #' Extract m/z used for normalization
@@ -119,6 +144,18 @@ getVarFilterMethod <- function(object) {
 getAppliedMzShift <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@mzShifts)
+}
+
+#' Extract applied normalization factors
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' Numeric vector of normalization factors applied to spectra
+#' @export
+getAppliedNormFactors <- function(object) {
+  stopIfNotIsMALDIassay(object)
+  return(object@normFactors)
 }
 
 #' Extract curve fits
