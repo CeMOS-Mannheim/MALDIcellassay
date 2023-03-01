@@ -4,12 +4,12 @@
 \alias{getSingleSpecIntensity}
 \title{Extract the intensities of single spectra for a given mzIdx}
 \usage{
-getSingleSpecIntensity(object, mzIdx)
+getSingleSpecIntensity(object, mz_idx)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}
 
-\item{mzIdx}{Integer, index of mz}
+\item{mz_idx}{Integer, index of mz}
 }
 \value{
 Numeric vector, intensities of mzIdx

@@ -16,15 +16,15 @@ getConc <- function(object) {
 #' Extract the intensities of single spectra for a given mzIdx
 #'
 #' @param object         Object of class MALDIassay
-#' @param mzIdx          Integer, index of mz
+#' @param mz_idx         Integer, index of mz
 #'
 #' @return
 #' Numeric vector, intensities of mzIdx
 #' @export
-getSingleSpecIntensity <- function(object, mzIdx) {
+getSingleSpecIntensity <- function(object, mz_idx) {
   s <- getSinglePeaks(object)
   mz <- mass(s[[1]]) # all single spectra have same mass axis
-  targetMz <- getMzFromMzIdx(object, mzIdx)
+  targetMz <- getMzFromMzIdx(object, mz_idx)
   idx <- match.closest(targetMz, mz)
 
   int <- vapply(s,
