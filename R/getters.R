@@ -206,7 +206,8 @@ getPeakStatistics <- function(object, summarise = FALSE) {
         max = mean(max),
         FC = first(fc_window)
       ) %>%
-      left_join(getFittingParameters(object, summarise = TRUE)) %>%
+      left_join(getFittingParameters(object, summarise = TRUE),
+                by = join_by(mz)) %>%
       mutate(symetric = ifelse(npar < 5, TRUE, FALSE)) %>%
       select(-npar)
   }

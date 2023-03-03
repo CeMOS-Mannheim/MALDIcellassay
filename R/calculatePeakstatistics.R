@@ -45,7 +45,7 @@ calculatePeakStatistics <- function(curveFits, intensityMatrix) {
       stdev = sd(int, na.rm = TRUE),
       "cv%" = stdev / mean * 100
     ) %>%
-    left_join(fit_df, by = "mz") %>%
+    left_join(fit_df, by = join_by(mz)) %>%
     filter(!is.na(R2)) %>%
     mutate(mzIdx = as.numeric(as.factor(as.numeric(mz))))
   return(stat_df)
