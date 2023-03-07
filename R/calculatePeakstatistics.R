@@ -6,6 +6,7 @@
 #' @return
 #' A tibble with peak statistics
 #' @export
+#' @importFrom dplyr join_by
 
 calculatePeakStatistics <- function(curveFits, intensityMatrix) {
   if (!is.list(curveFits)) {

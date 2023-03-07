@@ -190,6 +190,8 @@ getDirectory <- function(object) {
 #' @return
 #' A tibble with peak statistics (R², fold-change, CV%, etc.)
 #' @export
+#'
+#' @importFrom dplyr select
 getPeakStatistics <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
   stats <- object@stats

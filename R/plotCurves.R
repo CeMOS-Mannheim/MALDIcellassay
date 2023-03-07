@@ -5,13 +5,13 @@
 #' @param markValue numeric, a value to add as a reference to the plots
 #' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
 #' @param mzIdx     numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!
-#' @param errorbars logical, add errorbars to plot representing standard deviation in regards to the measurment replicates.
+#' @param errorbars logical, add errorbars to plot representing the standard error of the mean in regards to the measurment replicates.
 #'
 #' @return
 #' list of ggplot objects
 #'
 #' @importFrom ggplot2 geom_errorbar geom_point ggplot aes geom_line scale_x_continuous theme_bw theme element_text labs
-#' @importFrom dplyr group_by summarise
+#' @importFrom dplyr group_by summarise n
 #' @importFrom tibble tibble
 #' @importFrom nplr getGoodness getEstimates getXcurve getYcurve getX getY convertToProp
 #' @export
@@ -52,20 +52,22 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
 
       df_singlePeaks <- tibble(
         x = getConc(object),
-        #int_raw = int,
         int = convertToProp(
-          y = int,
-          T0 = min,
-          Ctrl = max
+          y = int
         )
+        # int = convertToProp(
+        #   y = int,
+        #   T0 = min,
+        #   Ctrl = max
+        # )
       ) %>%
         group_by(x) %>%
         summarise(
-          sd = sd(int),
+          sem = sd(int)/sqrt(n()),
         )
 
       df_P <- df_P %>%
-        mutate(sd = pull(df_singlePeaks, sd))
+        mutate(sem = pull(df_singlePeaks, sem))
 
       p <- ggplot(data = df_P, aes(x = x, y = y)) +
         geom_line(data = df_C, aes(x = xC, y = yC)) +
@@ -90,8 +92,8 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
           geom_errorbar(
             aes(
               y = y,
-              ymin = y - sd,
-              ymax = y + sd
+              ymin = y - sem,
+              ymax = y + sem
             ),
             alpha = 0.5
           )

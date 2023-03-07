@@ -7,3 +7,4 @@ spec.R
 .Rhistory
 .RData
 .RDataTmp
+test_package.R
