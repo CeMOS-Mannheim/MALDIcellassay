@@ -3,8 +3,8 @@
 #' @param vars    Numeric vector, veriances of signals
 #' @param method  Character, filtering method. One of "mean" (default), "median", "q25", "q75" (25 and 75% quantile) or "none".
 #'
-#' @return
-#' Indicies of spectra with a high variance
+#' @return Indicies of spectra with a high variance
+#'
 #' @export
 filterVariance <- function(vars, method = c("mean", "median", "q25", "q75", "none")) {
   method <- match.arg(method)

@@ -133,10 +133,12 @@ fitCurve <- function(spec,
       u_fil <- unique(nm[included_idx_recal])
       label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
-      stop("Could not find", normMz, "in all spectra with label",
+      stop("Could not find ", normMz, " in all spectra with label",
            paste0(label_removed, collapse = ", "),
            ".\n Consider increasing tol.\n")
     }
+    # update name string
+    um_new <- um[included_idx_recal]
 
   } else {
     mzShift <- list("mzshift" = 0)
@@ -173,11 +175,17 @@ fitCurve <- function(spec,
 
            if(length(unique(nm)) != length(unique(nm[included_idx_norm]))) {
              # stop if a single condition got filtered completely
-             u_nm <- unique(nm)
+             if(SinglePointRecal) {
+               # if recal was done use updated name string
+               u_nm <- unique(nm)
+             } else {
+               u_nm <- unique(nm)
+             }
+
              u_fil <- unique(nm[included_idx_norm])
              label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
-             stop("Could not find", normMz, "in all spectra with label",
+             stop("Could not find ", normMz, " in all spectra with label ",
                   paste0(label_removed, collapse = ", "),
                   ".\n Consider increasing tol.\n")
            }
