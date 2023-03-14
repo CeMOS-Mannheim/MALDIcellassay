@@ -1,12 +1,24 @@
-#### helper functions ######
-
 #' Current time
 #'
-
 #' @return current time
 #' @noRd
 timeNow <- function() {
   format(Sys.time(), "%H:%M")
+}
+
+#' Convert concentration to log10 and replace zero's
+#'
+#' @param conc numeric, concentrations.
+#'
+#' @return
+#' numeric, log10 transformed concentrations
+#' @export
+transformConc2Log <- function(conc) {
+  concLog <- log10(conc)
+  if (any(concLog == -Inf)) {
+    concLog[which(concLog == -Inf)] <- (min(concLog[which(!concLog == -Inf)]) - 1)
+  }
+  return(concLog)
 }
 
 #' get direction of curve
