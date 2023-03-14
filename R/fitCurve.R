@@ -173,16 +173,18 @@ fitCurve <- function(spec,
            spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
            included_idx_norm <- norm_fac$specIdx
 
-           if(length(unique(nm)) != length(unique(nm[included_idx_norm]))) {
-             # stop if a single condition got filtered completely
-             if(SinglePointRecal) {
-               # if recal was done use updated name string
-               u_nm <- unique(nm_new)
-             } else {
-               u_nm <- unique(nm)
-             }
-
+           if(SinglePointRecal) {
+             # if recal was done use updated name string
+             u_nm <- unique(nm_new)
+             u_fil <- unique(nm_new[included_idx_norm])
+           } else {
+             u_nm <- unique(nm)
              u_fil <- unique(nm[included_idx_norm])
+           }
+
+           if(length(u_nm) != length(u_fil)) {
+             # stop if a single condition got filtered completely
+
              label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
              stop("Could not find ", normMz, " in all spectra with label ",
