@@ -138,7 +138,7 @@ fitCurve <- function(spec,
            ".\n Consider increasing tol.\n")
     }
     # update name string
-    um_new <- um[included_idx_recal]
+    nm_new <- nm[included_idx_recal]
 
   } else {
     mzShift <- list("mzshift" = 0)
@@ -177,7 +177,7 @@ fitCurve <- function(spec,
              # stop if a single condition got filtered completely
              if(SinglePointRecal) {
                # if recal was done use updated name string
-               u_nm <- unique(nm)
+               u_nm <- unique(nm_new)
              } else {
                u_nm <- unique(nm)
              }
