@@ -74,8 +74,8 @@ fitCurve <- function(spec,
   }
 
   if (!any(is.na(conc))) {
-    if(is.unsorted(as.numeric(conc))) {
-      stop("conc needs to be a numeric vector of ascending concentrations!\n")
+    if(as.numeric(conc)) {
+      stop("conc needs to be a numeric vector of concentrations!\n")
     }
     # if conc is given update spectra names with conc
     names(spec) <- as.numeric(conc) * unitFactor
@@ -174,7 +174,7 @@ fitCurve <- function(spec,
            if(length(unique(nm)) != length(unique(nm[included_idx_norm]))) {
              # stop if a single condition got filtered completely
              u_nm <- unique(nm)
-             u_fil <- unique(nm[included_idx_nrom])
+             u_fil <- unique(nm[included_idx_norm])
              label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
              stop("Could not find", normMz, "in all spectra with label",

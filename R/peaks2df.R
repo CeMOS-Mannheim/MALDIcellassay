@@ -12,7 +12,7 @@ peaks2df <- function(peaks) {
   }
 
   if (is.null(names(peaks))) {
-    names(peaks) <- "noName"
+    names(peaks) <- rep("noName", length(peaks))
   }
 
 
