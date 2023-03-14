@@ -36,6 +36,37 @@ getSingleSpecIntensity <- function(object, mz_idx) {
   return(int)
 }
 
+#' Get the intensity matrix of single spectra for all fitted curves
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @details
+#' Note that the returned matrix only contains *m/z* values that were actually fitted.
+#' If a variance filtering step was applied this will not include **all** *m/z* values.
+#' If you wish to get a matrix of **all** *m/z* values use ```MALDIquant::intensityMatrix(getSinglePeaks(object))```.
+#'
+#' @return
+#' A matrix with columns as *m/z* values and rows as concentrations/spectra
+#'
+#' @export
+getIntensityMatrix <- function(object) {
+
+  intmat <- intensityMatrix(getSinglePeaks(res))
+
+  all_mz <- as.numeric(colnames(intmat))
+
+  # filter out normalization mz if no var-filter was applied
+  # otherwise it will be filtered out anyway
+  normMz <- getNormMz(res)
+
+  if(!is.null(normMz) & getVarFilterMethod(object) == "none") {
+    normMzIdx <- match.closest(normMz, all_mz)
+    intmat <- intmat[,-normMzIdx]
+  }
+
+  return(intmat)
+}
+
 #' Extract m/z used for normalization
 #'
 #' @param object Object of class MALDIassay
@@ -191,14 +222,13 @@ getDirectory <- function(object) {
 #' A tibble with peak statistics (R², fold-change, CV%, etc.)
 #' @export
 #'
-#' @importFrom dplyr select
+#' @importFrom dplyr select ungroup arrange
 getPeakStatistics <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
   stats <- object@stats
 
   if (summarise) {
     stats <- stats %>%
-      mutate(mz = round(as.numeric(mz), 3)) %>%
       group_by(mz, mzIdx) %>%
       summarise(
         pIC50 = first(pIC50),
@@ -208,6 +238,8 @@ getPeakStatistics <- function(object, summarise = FALSE) {
         max = mean(max),
         FC = first(fc_window)
       ) %>%
+      ungroup() %>%
+      arrange(mzIdx) %>%
       left_join(getFittingParameters(object, summarise = TRUE),
                 by = join_by(mz)) %>%
       mutate(symetric = ifelse(npar < 5, TRUE, FALSE)) %>%
@@ -320,7 +352,6 @@ getFittingParameters <- function(object, summarise = FALSE) {
 
   if(summarise) {
     df <- df %>%
-      mutate(mz = round(as.numeric(mz), 3)) %>%
       select(mz, npar)
   }
 
