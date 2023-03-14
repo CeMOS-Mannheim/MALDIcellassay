@@ -51,13 +51,18 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 #' @export
 getIntensityMatrix <- function(object) {
 
-  intmat <- intensityMatrix(getSinglePeaks(res))
+  intmat <- intensityMatrix(getSinglePeaks(object))
 
   all_mz <- as.numeric(colnames(intmat))
 
+  # filter fitted mz values
+  mz <- getAllMz(object)
+  idx <- match.closest(mz, all_mz, tolerance = 0.1)
+  intmat <- intmat[,idx]
+
   # filter out normalization mz if no var-filter was applied
   # otherwise it will be filtered out anyway
-  normMz <- getNormMz(res)
+  normMz <- getNormMz(object)
 
   if(!is.null(normMz) & getVarFilterMethod(object) == "none") {
     normMzIdx <- match.closest(normMz, all_mz)
