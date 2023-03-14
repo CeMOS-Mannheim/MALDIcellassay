@@ -139,6 +139,8 @@ fitCurve <- function(spec,
     }
     # update name string
     nm_new <- nm[included_idx_recal]
+    # store included indices to be stored in result object
+    included_specIdx <- included_idx_recal
 
   } else {
     mzShift <- list("mzshift" = 0)
@@ -180,6 +182,8 @@ fitCurve <- function(spec,
            } else {
              u_nm <- unique(nm)
              u_fil <- unique(nm[included_idx_norm])
+             # if no recal was done store included indices to be written to result object
+             included_specIdx <- included_idx_norm
            }
 
            if(length(u_nm) != length(u_fil)) {
@@ -313,7 +317,7 @@ fitCurve <- function(spec,
                    mzShifts = mzShift$mzshift,
                    fits = res_list,
                    stats = stat_df,
-                   included_specIdx = included_idx_norm,
+                   included_specIdx = included_specIdx,
                    settings = list(
                      Conc = as.numeric(nm),
                      dir = dir,
