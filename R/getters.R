@@ -229,6 +229,7 @@ getPeakStatistics <- function(object, summarise = FALSE) {
 
   if (summarise) {
     stats <- stats %>%
+      mutate(mz = as.numeric(mz)) %>%
       group_by(mz, mzIdx) %>%
       summarise(
         pIC50 = first(pIC50),
@@ -352,6 +353,7 @@ getFittingParameters <- function(object, summarise = FALSE) {
 
   if(summarise) {
     df <- df %>%
+      mutate(mz = as.numeric(mz)) %>%
       select(mz, npar)
   }
 
