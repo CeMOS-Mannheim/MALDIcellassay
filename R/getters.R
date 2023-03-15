@@ -31,7 +31,7 @@ getSingleSpecIntensity <- function(object, mz_idx) {
                 function(x) {
                   ints <- intensity(x)
                   return(ints[idx])
-                  },
+                },
                 numeric(1))
   return(int)
 }
@@ -39,19 +39,25 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 #' Get the intensity matrix of single spectra for all fitted curves
 #'
 #' @param object Object of class MALDIassay
+#' @param avg    logical, return single spectra intensity matrix (default) or average spectra intensity matrix
 #'
 #' @details
 #' Note that the returned matrix only contains *m/z* values that were actually fitted.
 #' If a variance filtering step was applied this will not include **all** *m/z* values.
 #' If you wish to get a matrix of **all** *m/z* values use ```MALDIquant::intensityMatrix(getSinglePeaks(object))```.
+#' For average spectra intensity matrix with **all** *m/z* values use ```MALDIquant::intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))```.
 #'
 #' @return
 #' A matrix with columns as *m/z* values and rows as concentrations/spectra
 #'
 #' @export
-getIntensityMatrix <- function(object) {
+getIntensityMatrix <- function(object, avg = FALSE) {
 
-  intmat <- intensityMatrix(getSinglePeaks(object))
+  if(avg) {
+    intmat <- intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))
+  } else {
+    intmat <- intensityMatrix(getSinglePeaks(object))
+  }
 
   all_mz <- as.numeric(colnames(intmat))
 

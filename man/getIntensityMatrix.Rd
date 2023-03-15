@@ -4,10 +4,12 @@
 \alias{getIntensityMatrix}
 \title{Get the intensity matrix of single spectra for all fitted curves}
 \usage{
-getIntensityMatrix(object)
+getIntensityMatrix(object, avg = FALSE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}
+
+\item{avg}{logical, return single spectra intensity matrix (default) or average spectra intensity matrix}
 }
 \value{
 A matrix with columns as *m/z* values and rows as concentrations/spectra
@@ -19,4 +21,5 @@ Get the intensity matrix of single spectra for all fitted curves
 Note that the returned matrix only contains *m/z* values that were actually fitted.
 If a variance filtering step was applied this will not include **all** *m/z* values.
 If you wish to get a matrix of **all** *m/z* values use ```MALDIquant::intensityMatrix(getSinglePeaks(object))```.
+For average spectra intensity matrix with **all** *m/z* values use ```MALDIquant::intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))```.
 }
