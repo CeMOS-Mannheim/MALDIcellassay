@@ -235,7 +235,13 @@ fitCurve <- function(spec,
   peaks <- detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
 
   if(monoisotopicFilter) {
-    peaks <- monoisotopicPeaks(peaks, size = 2L:10L, minCor = 0.9)
+    cat(MALDIcellassay:::timeNow(),
+        "Filtering monoisotopic peaks...\n")
+    # set it to be less restrictive then default settings
+    peaks <- monoisotopicPeaks(peaks,
+                               size = 2L:10L,
+                               minCor = 0.85,
+                               tolerance = 1e-3)
   }
 
   peaksBinned <- binPeaks(peaks, tolerance = binTol)
