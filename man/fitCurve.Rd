@@ -10,6 +10,7 @@ fitCurve(
   conc = NA,
   unit = c("M", "mM", "µM", "nM", "pM", "fM"),
   varFilterMethod = c("mean", "median", "q25", "q75", "none"),
+  monoisotopicFilter = FALSE,
   normMz = NULL,
   normTol = 0.1,
   alignTol = 0.01,

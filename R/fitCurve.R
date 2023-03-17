@@ -36,6 +36,7 @@ fitCurve <- function(spec,
                      conc = NA,
                      unit = c("M", "mM", "µM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
+                     monoisotopicFilter = FALSE,
                      normMz = NULL,
                      normTol = 0.1,
                      alignTol = 0.01,
@@ -49,7 +50,7 @@ fitCurve <- function(spec,
                      markValue = NA,
                      plot = TRUE) {
 
-
+  ##### match & evaluate arguments ####
   normMeth <- match.arg(normMeth)
   unit <- match.arg(unit)
   varFilterMethod <- match.arg(varFilterMethod)
@@ -105,6 +106,8 @@ fitCurve <- function(spec,
          Either name spectra with concentrations or use 'conc' argument.")
   }
 
+  #### recal ####
+
   peaks_single <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
 
   if (SinglePointRecal) {
@@ -147,6 +150,7 @@ fitCurve <- function(spec,
     included_idx_recal <- 1:length(spec)
   }
 
+  #### normalization ####
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
   switch(normMeth,
          "TIC" = {
@@ -204,6 +208,7 @@ fitCurve <- function(spec,
 
   current_names <- names(spec)
 
+  #### alignment ####
   cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
   spec <- alignSpectra(spec,
                        warpingMethod = "linear",
@@ -221,13 +226,18 @@ fitCurve <- function(spec,
   res_list <- vector("list", length = length(unique(current_names)))
   names(res_list) <- unique(current_names)
 
-
+  #### average spectra ####
   cat(MALDIcellassay:::timeNow(), "calculating average spectra... \n")
   spots <- extractSpots(spec)
   avg_spec <- averageMassSpectra(spec, labels = current_names)
   cat(MALDIcellassay:::timeNow(),
       "building intensity matrix and applying variance filter... \n")
   peaks <- detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
+
+  if(monoisotopicFilter) {
+    peaks <- monoisotopicPeaks(peaks, size = 2L:10L, minCor = 0.9)
+  }
+
   peaksBinned <- binPeaks(peaks, tolerance = binTol)
 
   # perform variance filtering
@@ -324,6 +334,7 @@ fitCurve <- function(spec,
                      normMz = normMz,
                      normTol = normTol,
                      varFilterMethod = varFilterMethod,
+                     monoisotopicFilter = monoisotopicFilter,
                      alignTol = alignTol,
                      SNR = SNR,
                      normMeth = normMeth,
