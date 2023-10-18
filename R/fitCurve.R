@@ -136,7 +136,7 @@ fitCurve <- function(spec,
       u_fil <- unique(nm[included_idx_recal])
       label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
-      stop("Could not find ", normMz, " in all spectra with label ",
+      stop("Could not find ", normMz, " in any spectrum with label ",
            paste0(label_removed, collapse = ", "),
            ".\n Consider increasing tol.\n")
     }
