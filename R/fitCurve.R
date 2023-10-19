@@ -154,17 +154,17 @@ fitCurve <- function(spec,
          "TIC" = {
            spec <- calibrateIntensity(spec, method = "TIC")
            norm_fac <- list("norm_factor" = 0)
-           included_idx_norm <- 1:length(spec)
+           included_specIdx <- 1:length(spec)
          },
          "PQN" = {
            spec <- calibrateIntensity(spec, method = "PQN")
            norm_fac <- list("norm_factor" = 0)
-           included_idx_norm <- 1:length(spec)
+           included_specIdx <- 1:length(spec)
          },
          "median" = {
            spec <- calibrateIntensity(spec, method = "median")
            norm_fac <- list("norm_factor" = 0)
-           included_idx_norm <- 1:length(spec)
+           included_specIdx <- 1:length(spec)
          },
          "mz" = {
            norm_fac <- getNormFactors(
@@ -175,7 +175,7 @@ fitCurve <- function(spec,
              tolppm = TRUE
            )
            spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
-           included_idx_norm <- norm_fac$specIdx
+           included_specIdx <- norm_fac$specIdx
 
            if(SinglePointRecal) {
              # if recal was done use updated name string
@@ -200,14 +200,12 @@ fitCurve <- function(spec,
          },
          "none" = {
            norm_fac <- list("norm_factor" = 0)
-           included_idx_norm <- 1:length(spec)
+           included_specIdx <- 1:length(spec)
          }
   )
 
-  # intersection of idx from norm and recal to be stored in result object
-  included_specIdx <- intersect(included_idx_norm, included_idx_recal)
-
   current_names <- names(spec)
+
 
   #### alignment ####
   cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
