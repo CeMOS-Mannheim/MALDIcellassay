@@ -180,12 +180,10 @@ fitCurve <- function(spec,
            if(SinglePointRecal) {
              # if recal was done use updated name string
              u_nm <- unique(nm_new)
-             u_fil <- unique(nm_new[included_idx_norm])
+             u_fil <- unique(nm_new[included_specIdx])
            } else {
              u_nm <- unique(nm)
-             u_fil <- unique(nm[included_idx_norm])
-             # if no recal was done store included indices to be written to result object
-             included_specIdx <- included_idx_norm
+             u_fil <- unique(nm[included_specIdx])
            }
 
            if(length(u_nm) != length(u_fil)) {
