@@ -142,8 +142,6 @@ fitCurve <- function(spec,
     }
     # update name string
     nm_new <- nm[included_idx_recal]
-    # store included indices to be stored in result object
-    included_specIdx <- included_idx_recal
 
   } else {
     mzShift <- list("mzshift" = 0)
@@ -205,6 +203,9 @@ fitCurve <- function(spec,
            included_idx_norm <- 1:length(spec)
          }
   )
+
+  # intersection of idx from norm and recal to be stored in result object
+  included_specIdx <- intersect(included_idx_norm, included_idx_recal)
 
   current_names <- names(spec)
 
