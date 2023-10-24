@@ -277,7 +277,7 @@ getRecalibrationError <- function(object) {
     tol = getNormMzTol(object),
     targetMz = getNormMz(object),
     tolppm = FALSE,
-    allowNoMatch = FALSE
+    allowNoMatch = TRUE
   )
 
   res_df <- tibble(
