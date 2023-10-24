@@ -11,7 +11,7 @@ fitCurve(
   unit = c("M", "mM", "µM", "nM", "pM", "fM"),
   varFilterMethod = c("mean", "median", "q25", "q75", "none"),
   monoisotopicFilter = FALSE,
-  averageSpectra = TRUE,
+  averageMethod = c("mean", "median", "sum"),
   normMz = NULL,
   normTol = 0.1,
   alignTol = 0.01,
@@ -40,7 +40,7 @@ Set to "M" if you dont want changes in your concentrations.}
 
 \item{monoisotopicFilter}{Logical, filter peaks and just use monoisotopic peaks for curve fit.}
 
-\item{averageSpectra}{Logical, use average mass spectra for calculation of curve fit.}
+\item{averageMethod}{Character, aggregation method for average mass spectra ("mean" or "median")}
 
 \item{normMz}{Numeric, mz used for normalization AND for single point recalibration.}
 

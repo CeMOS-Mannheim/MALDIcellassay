@@ -7,7 +7,7 @@
 #' @param unit                Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
 #'                            Set to "M" if you dont want changes in your concentrations.
 #' @param monoisotopicFilter  Logical, filter peaks and just use monoisotopic peaks for curve fit.
-#' @param averageSpectra      Logical, use average mass spectra for calculation of curve fit.
+#' @param averageMethod       Character, aggregation method for average mass spectra ("mean" or "median")
 #' @param normMz              Numeric, mz used for normalization AND for single point recalibration.
 #' @param normTol             Numeric, tolerance in Dalton to match normMz
 #' @param alignTol            Numeric, tolerance for spectral alignment in Dalton.
@@ -39,7 +39,7 @@ fitCurve <- function(spec,
                      unit = c("M", "mM", "µM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
                      monoisotopicFilter = FALSE,
-                     averageSpectra = TRUE,
+                     averageMethod = c("mean", "median", "sum"),
                      normMz = NULL,
                      normTol = 0.1,
                      alignTol = 0.01,
@@ -56,15 +56,16 @@ fitCurve <- function(spec,
   ##### match & evaluate arguments ####
   normMeth <- match.arg(normMeth)
   unit <- match.arg(unit)
+  averageMethod <- match.arg(averageMethod)
   varFilterMethod <- match.arg(varFilterMethod)
 
   unitFactor <- switch (unit,
-    "M" = 1,
-    "mM" = 1e-3,
-    "µM" = 1e-6,
-    "nM" = 1e-9,
-    "pM" = 1e-12,
-    "fM" = 1e-15
+                        "M" = 1,
+                        "mM" = 1e-3,
+                        "µM" = 1e-6,
+                        "nM" = 1e-9,
+                        "pM" = 1e-12,
+                        "fM" = 1e-15
   )
 
   if(normMeth == "mz" & is.null(normMz)) {
@@ -227,13 +228,14 @@ fitCurve <- function(spec,
   names(res_list) <- unique(current_names)
 
   #### average spectra ####
-  cat(MALDIcellassay:::timeNow(), "calculating average spectra... \n")
+  cat(MALDIcellassay:::timeNow(), "calculating", averageMethod, "spectra... \n")
   spots <- extractSpots(spec)
-  if(averageSpectra) {
-    avg_spec <- averageMassSpectra(spec, labels = current_names)
-  } else {
-    avg_spec <- spec
-  }
+
+
+  avg_spec <- averageMassSpectra(spec,
+                                 labels = current_names,
+                                 method = averageMethod)
+
   cat(MALDIcellassay:::timeNow(),
       "building intensity matrix and applying variance filter... \n")
   peaks <- detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
