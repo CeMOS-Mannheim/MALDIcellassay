@@ -6,6 +6,8 @@
 #' @param conc                Numeric vector, concentration for each spectrum. Length has to be the same as length of spec
 #' @param unit                Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
 #'                            Set to "M" if you dont want changes in your concentrations.
+#' @param monoisotopicFilter  Logical, filter peaks and just use monoisotopic peaks for curve fit.
+#' @param averageSpectra      Logical, use average mass spectra for calculation of curve fit.
 #' @param normMz              Numeric, mz used for normalization AND for single point recalibration.
 #' @param normTol             Numeric, tolerance in Dalton to match normMz
 #' @param alignTol            Numeric, tolerance for spectral alignment in Dalton.
@@ -37,6 +39,7 @@ fitCurve <- function(spec,
                      unit = c("M", "mM", "µM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
                      monoisotopicFilter = FALSE,
+                     averageSpectra = TRUE,
                      normMz = NULL,
                      normTol = 0.1,
                      alignTol = 0.01,
@@ -226,7 +229,11 @@ fitCurve <- function(spec,
   #### average spectra ####
   cat(MALDIcellassay:::timeNow(), "calculating average spectra... \n")
   spots <- extractSpots(spec)
-  avg_spec <- averageMassSpectra(spec, labels = current_names)
+  if(averageSpectra) {
+    avg_spec <- averageMassSpectra(spec, labels = current_names)
+  } else {
+    avg_spec <- spec
+  }
   cat(MALDIcellassay:::timeNow(),
       "building intensity matrix and applying variance filter... \n")
   peaks <- detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
