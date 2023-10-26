@@ -34,23 +34,24 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
   title <- paste0("Profile of m/z ", round(mz, 2), " ± ", round(tol, 2), "Da")
   # for whatever reason, if mzIdx is not evaluated before the function it leads to an error
   mzIdx_ <- mzIdx
-  center <- getMzFromMzIdx(object = object, mzIdx = mzIdx_)
+  center <- getMzFromMzIdx(object = object,
+                           mzIdx = mzIdx_)
 
-  p <- df %>%
+  df <-  df %>%
     filter(between(mass, mz - tol, mz + tol)) %>%
     mutate(conc = as.numeric(idx)) %>%
-    mutate(idx = fct_reorder(idx, conc)) %>%
-    ggplot(aes(x = mass, y = intensity)) +
-    geom_line(aes(col = idx)) +
-    scale_y_continuous(limits = c(0, NA)) +
+    mutate(idx = fct_reorder(idx, conc))
+
+  p <-ggplot() +
+    geom_rect(aes(xmin = center - tol*0.1,
+                  xmax = center + tol*0.1,
+                  ymin = 0,
+                  ymax = max(pull(df, intensity))*1.05),
+              alpha=0.1,
+              fill="black") +
+    geom_line(data = df, aes(x = mass, y = intensity, col = idx)) +
+    scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
-    annotate("rect",
-             xmin = center - tol*0.1,
-             xmax = center + tol*0.1,
-             ymin=0,
-             ymax=Inf,
-             alpha=0.2,
-             fill="black") +
     theme_minimal(base_size = 14) +
     labs(
       x = "m/z",
