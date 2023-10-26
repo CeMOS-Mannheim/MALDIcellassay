@@ -4,7 +4,7 @@
 \alias{getIntensityMatrix}
 \title{Get the intensity matrix of single spectra for all fitted curves}
 \usage{
-getIntensityMatrix(object, avg = FALSE)
+getIntensityMatrix(object, avg = FALSE, excludeNormMz = FALSE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}

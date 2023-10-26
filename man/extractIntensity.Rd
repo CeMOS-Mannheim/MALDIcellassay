@@ -7,6 +7,8 @@
 extractIntensity(mz, peaks, spec, tol)
 }
 \arguments{
+\item{mz}{numeric, mz values to be extracted from the peaks/spectra}
+
 \item{peaks}{MALDIquant::MassPeaks list}
 
 \item{spec}{MALDIquant::MassSpectrum list}

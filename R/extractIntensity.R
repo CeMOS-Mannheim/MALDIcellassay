@@ -1,5 +1,6 @@
 #' Extract intensity using peaks as template
 #'
+#' @param mz    numeric, mz values to be extracted from the peaks/spectra
 #' @param peaks MALDIquant::MassPeaks list
 #' @param spec  MALDIquant::MassSpectrum list
 #' @param tol   numeric, tolerance in Da
@@ -44,57 +45,3 @@ extractIntensity <- function(mz, peaks, spec, tol) {
   names(res_peaks) <- names(peaks)
   return(res_peaks)
 }
-
-
-# extractIntensity <- function(peaks, spec, tol = 0.1) {
-#   if (!MALDIquant:::isMassPeaksList(peaks)) {
-#     if (!MALDIquant:::isMassPeaks(peaks)) {
-#       stop(sQuote("peaks"), " has to be MALDIquant::MassPeaks or list thereof!")
-#     }
-#   }
-#
-#   if (length(peaks) != length(spec)) {
-#     if (MALDIquant:::isMassPeaks(peaks)) {
-#       res <- lapply(1:length(spec), FUN = function(i) {
-#         idx <- match.closest(
-#           x = mass(peaks),
-#           table = mass(spec[[i]]),
-#           tolerance = tol
-#         )
-#         int <- intensity(spec[[i]])[idx]
-#         if(any(is.na(int))) {
-#           na_idx <- which(is.na(int))
-#           warning("Could not match intensity for spectrum idx",
-#                   i, "and m/z", round(mass(peaks)[na_idx], 2),
-#                   ".\n Replacing by zero.\n")
-#           int[na_idx] <- 0
-#         }
-#         createMassPeaks(
-#           mass = mass(peaks),
-#           intensity = int,
-#           snr = rep(NA_integer_, length(idx))
-#         )
-#       })
-#       return(unlist(res))
-#     }
-#     stop(
-#       "For each item in ", sQuote("peaks"), " there must be a spectrum in ",
-#       sQuote("spec"), "!"
-#     )
-#   }
-#
-#   res <- lapply(1:length(spec), FUN = function(i) {
-#     idx <- match.closest(
-#       x = mass(peaks[[i]]),
-#       table = mass(spec[[i]]),
-#       tolerance = tol
-#     )
-#     createMassPeaks(
-#       mass = mass(peaks[[i]]),
-#       intensity = intensity(spec[[i]])[idx],
-#       snr = rep(NA_integer_, length(idx)),
-#       metaData = metaData(spec)
-#     )
-#   })
-#   return(unlist(res))
-# }

@@ -51,7 +51,7 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 #' A matrix with columns as *m/z* values and rows as concentrations/spectra
 #'
 #' @export
-getIntensityMatrix <- function(object, avg = FALSE) {
+getIntensityMatrix <- function(object, avg = FALSE, excludeNormMz =FALSE) {
 
   if(avg) {
     intmat <- intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))
@@ -62,18 +62,9 @@ getIntensityMatrix <- function(object, avg = FALSE) {
   all_mz <- as.numeric(colnames(intmat))
 
   # filter fitted mz values
-  mz <- getAllMz(object)
+  mz <- getAllMz(object, excludeNormMz = excludeNormMz)
   idx <- match.closest(mz, all_mz, tolerance = 0.1)
   intmat <- intmat[,idx]
-
-  # filter out normalization mz if no var-filter was applied
-  # otherwise it will be filtered out anyway
-  normMz <- getNormMz(object)
-
-  if(!is.null(normMz) & getVarFilterMethod(object) == "none") {
-    normMzIdx <- match.closest(normMz, all_mz)
-    intmat <- intmat[,-normMzIdx]
-  }
 
   return(intmat)
 }
@@ -326,10 +317,15 @@ getAllMz <- function(object, excludeNormMz = FALSE) {
   } else {
     mz <-
       getPeakStatistics(object, TRUE) %>%
-      filter(is.na(
-        match.closest(table = getNormMz(object),
-                      x = mz,
-                      tolerance = getNormMzTol(object)))) %>%
+      filter(
+        is.na(
+          match.closest(
+            table = getNormMz(object),
+            x = mz,
+            tolerance = getNormMzTol(object)
+          )
+        )
+      ) %>%
       pull(mz)
   }
 
