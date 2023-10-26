@@ -56,9 +56,11 @@
   botIdx <- which(getConc(res) %in% concs[(length(concs)-nConc+1):length(concs)])
 
   intmatPos <- getIntensityMatrix(res,
-                                  avg = FALSE)[botIdx,]
+                                  avg = FALSE,
+                                  excludeNormMz = FALSE)[botIdx,]
   intmatNeg <- getIntensityMatrix(res,
-                                  avg = FALSE)[topIdx,]
+                                  avg = FALSE,
+                                  excludeNormMz = FALSE)[topIdx,]
 
   return(list(pos = intmatPos,
               neg = intmatNeg))
