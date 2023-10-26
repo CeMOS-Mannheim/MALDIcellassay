@@ -66,7 +66,7 @@
 
 
   metric <- vapply(X = seq_along(getAllMz(res,
-                                          excludeNormMz = TRUE)),
+                                          excludeNormMz = FALSE)),
                    FUN = function(i) {
                      fun(pos = int$pos[, i],
                          neg = int$neg[, i])
