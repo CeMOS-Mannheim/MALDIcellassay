@@ -1,13 +1,6 @@
 .getSigmaFit <- function(res) {
   fits <- getCurveFits(res)
 
-  # filter Normalization mz
-  mz <- as.numeric(names(fits))
-  normIdx <- match.closest(x = getNormMz(res),
-                           table = mz,
-                           tolerance = getNormMzTol(res))
-  fits <- fits[-normIdx]
-
   purrr::map_dbl(fits, function(x) {
     yfit =  getFitValues(x$model)
     y =  getY(x$model)
