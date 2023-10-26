@@ -12,7 +12,7 @@ getPeakStatistics(object, summarise = FALSE)
 \item{summarise}{Logical, return summarised results (one result per mz and not per mz and spectra)}
 }
 \value{
-A tibble with peak statistics (R², fold-change, CV%, etc.)
+A tibble with peak statistics (R², fold-change, CV\%, etc.)
 }
 \description{
 Extract peak statistics

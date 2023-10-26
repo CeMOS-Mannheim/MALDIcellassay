@@ -4,7 +4,7 @@
 \alias{getAllMz}
 \title{Get all mz value of an MALDIassay-object}
 \usage{
-getAllMz(object)
+getAllMz(object, excludeNormMz = FALSE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}

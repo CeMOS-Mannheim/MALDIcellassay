@@ -19,9 +19,10 @@ getMzShift(peaksdf, tol, targetMz, tolppm = TRUE, allowNoMatch = TRUE)
 If TRUE spectra without targetMz match will be excluded.}
 }
 \value{
-List with two entries:
-                                      MzShift The mass shift for each spectrum
-                                      specIdx The index of the spectra with a match for targetMz
+\if{html}{\out{<div class="sourceCode">}}\preformatted{        List with two entries:
+                                  MzShift The mass shift for each spectrum
+                                  specIdx The index of the spectra with a match for targetMz
+}\if{html}{\out{</div>}}
 }
 \description{
 get mass shift for target mz

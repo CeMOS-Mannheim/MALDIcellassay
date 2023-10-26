@@ -156,8 +156,10 @@ fitCurve <- function(spec,
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
   switch(normMeth,
          "TIC" = {
-           spec <- calibrateIntensity(spec, method = "TIC")
-           norm_fac <- list("norm_factor" = 0)
+           tic <- purrr::map_dbl(spec, totalIonCurrent)
+           spec <- normalizeByFactor(spec, tic)
+
+           norm_fac <- list("norm_factor" = tic)
            included_specIdx <- 1:length(spec)
          },
          "PQN" = {
@@ -224,6 +226,9 @@ fitCurve <- function(spec,
                        emptyNoMatches = allowNoMatches
   )
 
+  peaks_single <- detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
+  names(peaks_single) <- current_names
+
   res_list <- vector("list", length = length(unique(current_names)))
   names(res_list) <- unique(current_names)
 
@@ -264,20 +269,17 @@ fitCurve <- function(spec,
   # single spectra data
   allmz <- as.numeric(colnames(intmat))
 
-  singlePeaks <- extractIntensity(
-    createMassPeaks(
-      mass = allmz,
-      intensity = rep(1, length(allmz))
-    ),
-    spec = spec,
-    tol = 0.5
-  )
+  #browser()
+
+  singlePeaks <- extractIntensity(mz = allmz,
+                                  peaks = peaks_single,
+                                  spec = spec,
+                                  tol = normTol)
 
   intmatSingle <- intensityMatrix(singlePeaks, spec)
   rownames(intmatSingle) <- names(spec)
 
   # fit curves
-
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
   res_list <- calculateCurveFit(intmat = intmat, idx = idx)
 

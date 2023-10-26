@@ -12,14 +12,14 @@ getIntensityMatrix(object, avg = FALSE)
 \item{avg}{logical, return single spectra intensity matrix (default) or average spectra intensity matrix}
 }
 \value{
-A matrix with columns as *m/z* values and rows as concentrations/spectra
+A matrix with columns as \emph{m/z} values and rows as concentrations/spectra
 }
 \description{
 Get the intensity matrix of single spectra for all fitted curves
 }
 \details{
-Note that the returned matrix only contains *m/z* values that were actually fitted.
-If a variance filtering step was applied this will not include **all** *m/z* values.
-If you wish to get a matrix of **all** *m/z* values use ```MALDIquant::intensityMatrix(getSinglePeaks(object))```.
-For average spectra intensity matrix with **all** *m/z* values use ```MALDIquant::intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))```.
+Note that the returned matrix only contains \emph{m/z} values that were actually fitted.
+If a variance filtering step was applied this will not include \strong{all} \emph{m/z} values.
+If you wish to get a matrix of \strong{all} \emph{m/z} values use \code{MALDIquant::intensityMatrix(getSinglePeaks(object))}.
+For average spectra intensity matrix with \strong{all} \emph{m/z} values use \code{MALDIquant::intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))}.
 }

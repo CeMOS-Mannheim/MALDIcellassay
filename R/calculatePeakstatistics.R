@@ -21,9 +21,19 @@ calculatePeakStatistics <- function(curveFits, intensityMatrix) {
 
   fit_df <- lapply(curveFits, function(x) {
     model <- x$model
-    pIC50 <- -getEstimates(model, targets = 0.5)[, 3]
+    pIC50 <- -suppressMessages(
+      suppressWarnings(
+        getEstimates(model, targets = 0.5)[, 3]
+      )
+    )
     fc_window <- MALDIcellassay:::calculateFC(x$df)
-    res_df <- as_tibble(nplr::getGoodness(model)) %>%
+    res_df <- suppressMessages(
+      suppressWarnings(
+        as_tibble(
+          nplr::getGoodness(model)
+        )
+      )
+    ) %>%
       mutate(
         fc_window = fc_window,
         pIC50 = pIC50
@@ -46,6 +56,7 @@ calculatePeakStatistics <- function(curveFits, intensityMatrix) {
       stdev = sd(int, na.rm = TRUE),
       "cv%" = stdev / mean * 100
     ) %>%
+    ungroup() %>%
     left_join(fit_df, by = join_by(mz)) %>%
     filter(!is.na(R2)) %>%
     mutate(mzIdx = as.numeric(as.factor(as.numeric(mz))))

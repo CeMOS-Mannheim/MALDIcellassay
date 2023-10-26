@@ -9,7 +9,7 @@ filterVariance(vars, method = c("mean", "median", "q25", "q75", "none"))
 \arguments{
 \item{vars}{Numeric vector, veriances of signals}
 
-\item{method}{Character, filtering method. One of "mean" (default), "median", "q25", "q75" (25 and 75% quantile) or "none".}
+\item{method}{Character, filtering method. One of "mean" (default), "median", "q25", "q75" (25 and 75\% quantile) or "none".}
 }
 \value{
 Indicies of spectra with a high variance

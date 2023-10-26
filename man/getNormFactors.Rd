@@ -19,9 +19,10 @@ getNormFactors(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch = TRUE)
 If TRUE spectra without targetMz match will be excluded.}
 }
 \value{
-List with two entries:
-                                      norm_factor The normalization factor for each spectrum
-                                      specIdx     The index of the spectra with a match for targetMz
+\if{html}{\out{<div class="sourceCode">}}\preformatted{         List with two entries:
+                                  norm_factor The normalization factor for each spectrum
+                                  specIdx     The index of the spectra with a match for targetMz
+}\if{html}{\out{</div>}}
 }
 \description{
 Get normalization factors from peak data.frame

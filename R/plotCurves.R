@@ -51,16 +51,7 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
       }, numeric(1))
 
       df_singlePeaks <- tibble(
-        x = getConc(object),
-        int = convertToProp(
-          y = int
-        )
-        # int = convertToProp(
-        #   y = int,
-        #   T0 = min,
-        #   Ctrl = max
-        # )
-      ) %>%
+        x = getConc(object)) %>%
         group_by(x) %>%
         summarise(
           sem = sd(int)/sqrt(n()),

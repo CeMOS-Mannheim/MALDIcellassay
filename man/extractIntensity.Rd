@@ -4,7 +4,7 @@
 \alias{extractIntensity}
 \title{Extract intensity using peaks as template}
 \usage{
-extractIntensity(peaks, spec, tol = 0.1)
+extractIntensity(mz, peaks, spec, tol)
 }
 \arguments{
 \item{peaks}{MALDIquant::MassPeaks list}

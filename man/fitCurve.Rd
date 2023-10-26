@@ -36,7 +36,7 @@ fitCurve(
 \item{unit}{Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
 Set to "M" if you dont want changes in your concentrations.}
 
-\item{varFilterMethod}{Character, function applied for high variance filtering. One of the following options `mean` (default), `median`, `q25`, `q75` or `none` (no filtering).}
+\item{varFilterMethod}{Character, function applied for high variance filtering. One of the following options \code{mean} (default), \code{median}, \code{q25}, \code{q75} or \code{none} (no filtering).}
 
 \item{monoisotopicFilter}{Logical, filter peaks and just use monoisotopic peaks for curve fit.}
 
@@ -67,8 +67,8 @@ Set to "M" if you dont want changes in your concentrations.}
 \item{plot}{Logical, should the curves be plotted and written to dir?}
 }
 \value{
-Object of class `MALDIassay`.
-The most important slot is `fits` which contains the IC50 curve fits.
+Object of class \code{MALDIassay}.
+The most important slot is \code{fits} which contains the IC50 curve fits.
 }
 \description{
 Fit dose-response curves

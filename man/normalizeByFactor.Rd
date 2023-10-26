@@ -12,7 +12,8 @@ normalizeByFactor(spec, factors)
 \item{factors}{Numeric vector of normalization factors. See getNormFactors().}
 }
 \value{
-List of normalized Spectra or Peaks
+\if{html}{\out{<div class="sourceCode">}}\preformatted{        List of normalized Spectra or Peaks
+}\if{html}{\out{</div>}}
 }
 \description{
 Apply normalization factors to spectra

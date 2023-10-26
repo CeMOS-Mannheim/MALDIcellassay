@@ -33,7 +33,8 @@ calculateCurveFit <- function(intmat, idx, ...) {
 
     df <- df %>%
       mutate(concLog = concLog)
-    resp <- convertToProp(y = df$value)
+    resp <- df$value
+      #convertToProp(y = df$value)
     model <- tryCatch(expr = {
       suppressWarnings(
         nplr(x = concLog, y = resp, useLog = FALSE, npars = 4, silent = TRUE, ...)

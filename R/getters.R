@@ -317,10 +317,22 @@ getMzFromMzIdx <- function(object, mzIdx) {
 #' @return
 #' numeric vector of mz values
 #' @export
-getAllMz <- function(object) {
+getAllMz <- function(object, excludeNormMz = FALSE) {
   stopIfNotIsMALDIassay(object)
-  mz <- getPeakStatistics(object, TRUE) %>%
-    pull(mz)
+  if(!excludeNormMz) {
+    mz <-
+      getPeakStatistics(object, TRUE) %>%
+      pull(mz)
+  } else {
+    mz <-
+      getPeakStatistics(object, TRUE) %>%
+      filter(is.na(
+        match.closest(table = getNormMz(object),
+                      x = mz,
+                      tolerance = getNormMzTol(object)))) %>%
+      pull(mz)
+  }
+
   return(mz)
 }
 
