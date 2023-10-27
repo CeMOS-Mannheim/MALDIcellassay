@@ -8,3 +8,4 @@ spec.R
 .RData
 .RDataTmp
 test_package.R
+test_data.RData

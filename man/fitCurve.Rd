@@ -6,7 +6,6 @@
 \usage{
 fitCurve(
   spec,
-  dir,
   conc = NA,
   unit = c("M", "mM", "µM", "nM", "pM", "fM"),
   varFilterMethod = c("mean", "median", "q25", "q75", "none"),
@@ -19,17 +18,11 @@ fitCurve(
   SNR = 3,
   allowNoMatches = TRUE,
   normMeth = c("mz", "TIC", "PQN", "median", "none"),
-  saveIntensityMatrix = TRUE,
-  SinglePointRecal = TRUE,
-  fc_thresh = 1,
-  markValue = NA,
-  plot = TRUE
+  SinglePointRecal = TRUE
 )
 }
 \arguments{
 \item{spec}{List of MALDIquant::MassSpectrum}
-
-\item{dir}{Character, directory for output}
 
 \item{conc}{Numeric vector, concentration for each spectrum. Length has to be the same as length of spec}
 
@@ -56,15 +49,7 @@ Set to "M" if you dont want changes in your concentrations.}
 
 \item{normMeth}{Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.}
 
-\item{saveIntensityMatrix}{Logical, save the intensity matrix as xlsx to the disk.}
-
 \item{SinglePointRecal}{Logical, perform single point recalibration to normMz}
-
-\item{fc_thresh}{Numeric, threshold for fold change above which curves are plotted. The fold-chage is calculated as max/min for a given m/z.}
-
-\item{markValue}{Numeric, value to mark in the resulting plot. Set to NA if no value needs to be marked.}
-
-\item{plot}{Logical, should the curves be plotted and written to dir?}
 }
 \value{
 Object of class \code{MALDIassay}.

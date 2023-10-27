@@ -4,9 +4,10 @@
 #'
 #' @return
 #' Character vector of spot names. If multiple spots are used (e.g. for average spectra) they will be concatenate.
+#' @export
 extractSpots <- function(spec) {
   if(!isMassSpectrumList(spec)) {
-    if(!isMassPeaksListt(spec)) {
+    if(!isMassPeaksList(spec)) {
       stop("spec needs to be either a list of MassSpectra or MassPeaks.\n")
     }
   }
