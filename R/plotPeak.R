@@ -43,11 +43,11 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     mutate(idx = fct_reorder(idx, conc))
 
   p <-ggplot() +
-    geom_rect(aes(xmin = center - tol*0.1,
-                  xmax = center + tol*0.1,
+    geom_rect(aes(xmin = center - getBinTol(object) * center,
+                  xmax = center + getBinTol(object) * center,
                   ymin = 0,
                   ymax = max(pull(df, intensity))*1.05),
-              alpha=0.1,
+              alpha=0.2,
               fill="black") +
     geom_line(data = df, aes(x = mass, y = intensity, col = idx)) +
     scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +

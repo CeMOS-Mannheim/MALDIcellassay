@@ -352,6 +352,7 @@ fitCurve <- function(spec,
                      alignTol = alignTol,
                      SNR = SNR,
                      normMeth = normMeth,
+                     binTol = binTol,
                      SinglePointRecal = SinglePointRecal
                    )
   )
