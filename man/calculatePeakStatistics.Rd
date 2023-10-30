@@ -4,15 +4,15 @@
 \alias{calculatePeakStatistics}
 \title{Calculate peak statistics}
 \usage{
-calculatePeakStatistics(curveFits, intensityMatrix)
+calculatePeakStatistics(curveFits, singlePeaks)
 }
 \arguments{
-\item{curveFits}{list of curve fits as returned by \code{MALDIcellassay::calculateCurveFit()}}
+\item{curveFits}{list of curve fits as returned by \code{MALDIcellassay::calculateCurveFit()}.}
 
-\item{intensityMatrix}{matrix of intensities with rownames as concentrations of the respective spectra}
+\item{singlePeaks}{list of MALDIquant::MassPeaks.}
 }
 \value{
-A tibble with peak statistics
+A tibble with peak statistics.
 }
 \description{
 Calculate peak statistics

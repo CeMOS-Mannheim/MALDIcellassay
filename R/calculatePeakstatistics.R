@@ -1,23 +1,27 @@
 #' Calculate peak statistics
 #'
-#' @param curveFits       list of curve fits as returned by ```MALDIcellassay::calculateCurveFit()```
-#' @param intensityMatrix matrix of intensities with rownames as concentrations of the respective spectra
+#' @param curveFits       list of curve fits as returned by `MALDIcellassay::calculateCurveFit()`.
+#' @param singlePeaks     list of MALDIquant::MassPeaks.
 #'
 #' @return
-#' A tibble with peak statistics
+#' A tibble with peak statistics.
 #' @export
 #' @importFrom dplyr join_by
+#' @importFrom MALDIquant intensityMatrix isMassPeaksList
 
-calculatePeakStatistics <- function(curveFits, intensityMatrix) {
+calculatePeakStatistics <- function(curveFits, singlePeaks) {
   if (!is.list(curveFits)) {
     stop("curveFits must be a list of curve fits. See MALDIcellassay::calculateCurveFit().\n")
   }
-  if (!is.matrix(intensityMatrix)) {
-    stop("intensityMatrix must be of class matrix. See MALDIquant::intensityMatrix().\n")
+  if (!isMassPeaksList(singlePeaks)) {
+    stop("singlePeaks must be a list of MALDIquant::MassPeaks.\n")
   }
-  if (is.null(rownames(intensityMatrix))) {
-    stop("intensityMatrix must have concentrations as rownames!\n")
+  if (is.null(names(singlePeaks))) {
+    stop("singlePeaks must have concentrations as names!\n")
   }
+
+  intensityMatrix <- intensityMatrix(singlePeaks)
+  rownames(intensityMatrix) <- names(singlePeaks)
 
   fit_df <- lapply(curveFits, function(x) {
     model <- x$model

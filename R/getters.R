@@ -263,7 +263,7 @@ getPeakStatistics <- function(object, summarise = FALSE) {
 #' @importFrom tibble tibble
 getRecalibrationError <- function(object) {
   peaks <- peaks2df(getAvgPeaks(object))
-  mzdev <- getMzShift(
+  mzdev <- .getMzShift(
     peaksdf = peaks,
     tol = getNormMzTol(object),
     targetMz = getNormMz(object),

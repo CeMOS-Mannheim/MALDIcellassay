@@ -171,15 +171,13 @@ fitCurve <- function(spec,
                                   spec = spec,
                                   tol = normTol)
 
-  intmatSingle <- intensityMatrix(singlePeaks, spec)
-  rownames(intmatSingle) <- names(spec)
-
   # fit curves
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
   res_list <- calculateCurveFit(intmat = avg$intmat, idx = idx)
 
   # peak statistics
-  stat_df <- calculatePeakStatistics(res_list, intmatSingle)
+  stat_df <- calculatePeakStatistics(curveFits = res_list,
+                                     singlePeaks = singlePeaks)
 
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
   res_class <- new("MALDIassay",
