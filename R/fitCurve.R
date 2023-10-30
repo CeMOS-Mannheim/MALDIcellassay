@@ -94,102 +94,60 @@ fitCurve <- function(spec,
          Either name spectra with concentrations or use 'conc' argument.")
   }
 
+  spots <- extractSpots(spec)
+
   #### re-calibration ####
   peaks_single <- .detectPeaks(spec, SNR = SNR, method = "SuperSmoother")
 
-  if (SinglePointRecal) {
-    # perform single point mass recalibration
-    mzShift <- getMzShift(
-      peaks = peaks_single,
-      tol = normTol,
-      targetMz = normMz,
-      tolppm = FALSE
-    )
-
-    spec <- shiftMassAxis(spec[mzShift$specIdx],
-                          mzShift$mzshift)
-    peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx],
-                                  mzShift$mzshift)
-    included_idx_recal <- mzShift$specIdx
-
-  } else {
-    mzShift <- list("mzshift" = 0)
-    included_idx_recal <- 1:length(spec)
-  }
-
-  #### normalization ####
-  cat(MALDIcellassay:::timeNow(), "normalizing... \n")
-  norm <- normalize(spec = spec, peaks = peaks_single, normMeth = normMeth)
-  spec <- norm$spec
-  peaks_single <- norm$peaks
-  norm_fac <- norm$factor
-  included_specIdx <- norm$idx
-
-  current_names <- names(spec)
-
-
-  #### alignment ####
-  cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
-  wf <- determineWarpingFunctions(l = peaks_single,
-                                  tolerance = alignTol,
-                                  method = "linear",
-                                  allowNoMatches = allowNoMatches)
-
-  spec <- warpMassSpectra(spec,
-                          w = wf,
-                          emptyNoMatches = allowNoMatches)
-  names(spec) <- current_names
-  peaks_single <- warpMassPeaks(peaks_single,
-                                w = wf,
-                                emptyNoMatches = allowNoMatches)
-  names(peaks_single) <- current_names
-
-
-  res_list <- vector("list", length = length(unique(current_names)))
-  names(res_list) <- unique(current_names)
+  prc <- .preprocess(peaks_single = peaks_single,
+                     spec = spec,
+                     SinglePointRecal = SinglePointRecal,
+                     normMz = normMz,
+                     normTol = normTol,
+                     normMeth = normMeth,
+                     alignTol = alignTol,
+                     allowNoMatches = allowNoMatches)
 
   #### average spectra ####
   cat(MALDIcellassay:::timeNow(), "calculating", averageMethod, "spectra... \n")
-  spots <- extractSpots(spec)
 
-  avg <- .aggregateSpectra(spec,
+  avg <- .aggregateSpectra(spec = prc$spec,
                            averageMethod = averageMethod,
                            SNR = SNR,
                            monoisotopicFilter = monoisotopicFilter,
                            binTol = binTol)
 
-  idx <- filterVariance(apply(avg$intmat, 2, var),
-                        method = varFilterMethod)
-
-  mzhits <- as.numeric(colnames(avg$intmat))[idx]
-
   # single spectra data
   allmz <- as.numeric(colnames(avg$intmat))
 
   singlePeaks <- extractIntensity(mz = allmz,
-                                  peaks = peaks_single,
-                                  spec = spec,
+                                  peaks = prc$singlePeaks,
+                                  spec = prc$spec,
                                   tol = normTol)
 
   # fit curves
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
-  res_list <- calculateCurveFit(intmat = avg$intmat, idx = idx)
+  res_list <- calculateCurveFit(intmat = avg$intmat,
+                                idx = filterVariance(apply(avg$intmat, 2, var),
+                                                     method = varFilterMethod))
 
   # peak statistics
   stat_df <- calculatePeakStatistics(curveFits = res_list,
-                                     singlePeaks = singlePeaks)
+                                     singlePeaks = singlePeaks,
+                                     spec = prc$spec)
 
   cat(MALDIcellassay:::timeNow(), "Done!", "\n")
+
   res_class <- new("MALDIassay",
                    avgSpectra = avg$avgSpec,
                    avgPeaks = avg$avgPeaksBinned,
                    singlePeaks = singlePeaks,
                    singleSpecSpots = spots,
-                   normFactors = norm_fac$norm_factor,
-                   mzShifts = mzShift$mzshift,
+                   normFactors = prc$normFac,
+                   mzShifts = prc$mzShift,
                    fits = res_list,
                    stats = stat_df,
-                   included_specIdx = included_specIdx,
+                   included_specIdx = prc$idx,
                    settings = list(
                      Conc = as.numeric(nm),
                      normMz = normMz,

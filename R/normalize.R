@@ -39,7 +39,7 @@ normalize <- function(spec, peaks, normMeth) {
            spec <- normalizeByFactor(spec, tic)
            peaks <- normalizeByFactor(peaks, tic)
 
-           norm_fac <- list("norm_factor" = tic)
+           norm_fac <- tic
            included_specIdx <- 1:length(spec)
          },
          "PQN" = {
@@ -48,7 +48,7 @@ normalize <- function(spec, peaks, normMeth) {
            spec <- normalizeByFactor(spec, pqn)
            peaks <- normalizeByFactor(peaks, pqn)
 
-           norm_fac <- list("norm_factor" = pqn)
+           norm_fac <- pqn
            included_specIdx <- 1:length(spec)
          },
          "median" = {
@@ -61,20 +61,22 @@ normalize <- function(spec, peaks, normMeth) {
            spec <- normalizeByFactor(spec, median)
            peaks <- normalizeByFactor(peaks, median)
 
-           norm_fac <- list("norm_factor" = median)
+           norm_fac <- median
            included_specIdx <- 1:length(spec)
          },
          "mz" = {
-           norm_fac <- getNormFactors(
+           mzNorm <- getNormFactors(
              peaksdf = peaks2df(peaks_single),
              targetMz = normMz,
              tol = normTol,
              allowNoMatch = TRUE,
              tolppm = TRUE
            )
-           spec <- normalizeByFactor(spec[norm_fac$specIdx], norm_fac$norm_factor)
-           peaks <- normalizeByFactor(peaks[norm_fac$specIdx], norm_fac$norm_factor)
-           included_specIdx <- norm_fac$specIdx
+
+           norm_fact <- mzNorm$norm_factor
+           spec <- normalizeByFactor(spec[mzNorm$specIdx], mzNorm$norm_factor)
+           peaks <- normalizeByFactor(peaks[mzNorm$specIdx], mzNorm$norm_factor)
+           included_specIdx <- mzNorm$specIdx
 
            u_nm <- unique(nm)
            u_fil <- unique(nm[included_specIdx])

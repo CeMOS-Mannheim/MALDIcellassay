@@ -1,0 +1,71 @@
+#' Internal function to perform preprocessing of spectra
+#'
+#' @param peaks_single        List of MALDIquant::MassPeaks objects.
+#' @param spec                List of MALDIquant::MassSpectrum objects.
+#' @param SinglePointRecal    Logcial, perform single point recalibration
+#' @param normMz              Numeric, m/z used for normalization and recalibration.
+#' @param normTol             Numeric, tolerance aroud `normMz` in Da.
+#' @param normMeth            Character, normalization method. Options are: "TIC", "median", "PQN" and "mz".
+#' @param alignTol            Numeric, tolerance for alignment in Da.
+#' @param allowNoMatches      Logical, allow no matches for normalization using "mz" method and/or recalibration.
+.preprocess <- function(peaks_single,
+                       spec,
+                       SinglePointRecal,
+                       normMz,
+                       normTol,
+                       normMeth,
+                       alignTol,
+                       allowNoMatches) {
+  if (SinglePointRecal) {
+    # perform single point mass recalibration
+    mzShift <- getMzShift(
+      peaks = peaks_single,
+      tol = normTol,
+      targetMz = normMz,
+      tolppm = FALSE
+    )
+
+    spec <- shiftMassAxis(spec[mzShift$specIdx],
+                          mzShift$mzshift)
+    peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx],
+                                  mzShift$mzshift)
+    included_idx_recal <- mzShift$specIdx
+
+  } else {
+    mzShift <- list("mzshift" = 0)
+    included_idx_recal <- 1:length(spec)
+  }
+
+  #### normalization ####
+  cat(MALDIcellassay:::timeNow(), "normalizing... \n")
+  norm <- normalize(spec = spec,
+                    peaks = peaks_single,
+                    normMeth = normMeth)
+  spec <- norm$spec
+  peaks_single <- norm$peaks
+
+  current_names <- names(spec)
+
+
+  #### alignment ####
+  cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
+  wf <- determineWarpingFunctions(l = peaks_single,
+                                  tolerance = alignTol,
+                                  method = "linear",
+                                  allowNoMatches = allowNoMatches)
+
+  spec <- warpMassSpectra(spec,
+                          w = wf,
+                          emptyNoMatches = allowNoMatches)
+  names(spec) <- current_names
+  peaks_single <- warpMassPeaks(peaks_single,
+                                w = wf,
+                                emptyNoMatches = allowNoMatches)
+  names(peaks_single) <- current_names
+
+  return(list(spec = spec,
+              singlePeaks = peaks_single,
+              idx = norm$idx,
+              mzShift = mzShift$mzshift,
+              normFac = norm$factor))
+}

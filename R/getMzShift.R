@@ -88,7 +88,7 @@ getMzShift <- function(peaks,
     allowNoMatch = TRUE
   )
   cat("found mz", normMz, "in", length(mzShift$specIdx), "/",
-      length(spec), "spectra\n")
+      length(peaks), "spectra\n")
   cat(MALDIcellassay:::timeNow(), "mzshift was", mean(mzShift$mzshift),
       "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")
 
