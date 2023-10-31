@@ -7,7 +7,7 @@
 #' @return
 #' ggplot object
 #'
-#' @importFrom ggplot2 ggplot aes geom_line scale_y_continuous scale_color_viridis_d theme_minimal labs
+#' @importFrom ggplot2 ggplot aes geom_line scale_y_continuous scale_color_viridis_d labs
 #' @importFrom dplyr filter between bind_rows
 #' @importFrom tibble tibble
 #' @importFrom MALDIquant mass intensity
@@ -52,7 +52,6 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     geom_line(data = df, aes(x = mass, y = intensity, col = idx)) +
     scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
-    theme_minimal(base_size = 14) +
     labs(
       x = "m/z",
       y = "Intensity",

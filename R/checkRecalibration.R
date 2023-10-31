@@ -10,7 +10,7 @@
 #' @return
 #' ggplot object
 #' @export
-#' @importFrom ggplot2 ggplot aes geom_line geom_linerange geom_vline scale_x_continuous scale_y_continuous labs theme_minimal
+#' @importFrom ggplot2 ggplot aes geom_line geom_linerange geom_vline scale_x_continuous scale_y_continuous labs
 #' @importFrom scales comma
 #' @importFrom MALDIquant mass intensity
 #' @importFrom tibble tibble
@@ -56,7 +56,8 @@ checkRecalibration <- function(object, idx) {
   names(peakdf_l) <- conc[idx]
   peakdf <- bind_rows(peakdf_l, .id = "idx")
 
-  df %>%
+  p <-
+    df %>%
     filter(between(mass, lowerVal, upperVal)) %>%
     ggplot(aes(x = mass, y = intensity, col = factor(idx))) +
     geom_line() +
@@ -73,9 +74,7 @@ checkRecalibration <- function(object, idx) {
       subtitle = paste("Dashed lines:", normMz, "±", tol, "m/z"),
       col = "Conc.",
       x = "m/z",
-      y = y_lab
-    ) +
-    theme_minimal() -> p
+      y = y_lab)
 
   if (length(idx) == 1) {
     p <- p +

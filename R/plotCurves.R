@@ -10,7 +10,7 @@
 #' @return
 #' list of ggplot objects
 #'
-#' @importFrom ggplot2 geom_errorbar geom_point ggplot aes geom_line scale_x_continuous theme_bw theme element_text labs
+#' @importFrom ggplot2 geom_errorbar geom_point ggplot aes geom_line scale_x_continuous theme element_text labs
 #' @importFrom dplyr group_by summarise n
 #' @importFrom tibble tibble
 #' @importFrom nplr getGoodness getEstimates getXcurve getYcurve getX getY convertToProp
@@ -64,11 +64,10 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
         geom_line(data = df_C, aes(x = xC, y = yC)) +
         geom_point() +
         scale_x_continuous(labels = c(0, 10^df_P$x[-1]), breaks = df_P$x) +
-        theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
         labs(
           x = "Conc.",
-          y = "relative Int. [% of max Int.]",
+          y = "Intensity",
           title = paste0(
             "mz ", round(mz, 2), " Da, R\u00B2=", round(R2, 3), "\n",
             "pIC50=", round(-log10(ic50), 3),
