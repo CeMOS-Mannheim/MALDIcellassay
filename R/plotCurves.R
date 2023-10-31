@@ -31,7 +31,7 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
     model <- res_list[[as.character(mz)]]$model
     df <- res_list[[as.character(mz)]]$df
 
-    ic50 <- .getEstimates(mode, 0.5)
+    ic50 <- .getEstimates(model, 0.5)
     min <- min(df$value)
     max <- max(df$value)
 
