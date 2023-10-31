@@ -1,3 +1,32 @@
+#' Convert numeric vector into proportions
+#'
+#' @param x Numeric vector
+#'
+#' @return
+#' Numeric vector in proportions (0 - 1)
+.absToProp <- function(x) {
+  prob <- (x - min(x)) / (max(x) - min(x))
+
+  return(prop)
+}
+
+#' Get value of curve for a give target effect size (e.g. 50%)
+#'
+#' @param model   `nplr::nplr` object
+#' @param target  Numeric, typically 0.5 for the EC50 or IC50
+#'
+#' @return
+#' Numeric, value on the fit curve.
+#' Used to provide the correct target for `nplr::getEstimates()`
+.getFitValue <- function(model, target) {
+  x <- getYcurve(model)
+  prop <- .absToProp(x)
+  idx <- which.min(abs(prop - target))
+
+  return(x[idx])
+}
+
+
 #' Calculate peak statistics
 #'
 #' @param curveFits       list of curve fits as returned by `MALDIcellassay::calculateCurveFit()`.
@@ -26,14 +55,17 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
 
   fit_df <- lapply(curveFits, function(x) {
     model <- x$model
-    pIC50 <- -suppressMessages(
+    pIC50 <-
+      -suppressMessages(
       suppressWarnings(
         getEstimates(model,
-                     targets = max(getYcurve(model))*0.5)[, 3]
+                     targets = .getFitValue(model, 0.5)))[, 3]
       )
-    )
+
     fc_window <- MALDIcellassay:::calculateFC(x$df)
-    res_df <- suppressMessages(
+
+    res_df <-
+      suppressMessages(
       suppressWarnings(
         as_tibble(
           nplr::getGoodness(model)
@@ -49,7 +81,8 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
     bind_rows(.id = "mz") %>%
     rename("R2" = "gof")
 
-  stat_df <- intensityMatrix %>%
+  stat_df <-
+    intensityMatrix %>%
     as_tibble() %>%
     mutate(sample = rownames(intensityMatrix)) %>%
     gather(mz, int, -sample) %>%
