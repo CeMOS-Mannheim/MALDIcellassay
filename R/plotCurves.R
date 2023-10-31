@@ -31,7 +31,7 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
     model <- res_list[[as.character(mz)]]$model
     df <- res_list[[as.character(mz)]]$df
 
-    ic50 <- 10^getEstimates(model, targets = 0.5)[, 3]
+    ic50 <- .getEstimates(mode, 0.5)
     min <- min(df$value)
     max <- max(df$value)
 
@@ -63,14 +63,14 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
       p <- ggplot(data = df_P, aes(x = x, y = y)) +
         geom_line(data = df_C, aes(x = xC, y = yC)) +
         geom_point() +
-        scale_x_continuous(labels = c(0, 10^df_P$x[-1]), breaks = df_P$x) +
+        scale_x_continuous(labels = scales::scientific(c(0, 10^df_P$x[-1])), breaks = df_P$x) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
         labs(
           x = "Conc.",
           y = "Intensity",
           title = paste0(
             "mz ", round(mz, 2), " Da, R\u00B2=", round(R2, 3), "\n",
-            "pIC50=", round(-log10(ic50), 3),
+            "pIC50=", round(ic50, 3),
             " min=", round(min, 3),
             " max=", round(max, 3),
             " FC=", round(fc_window, 2)
