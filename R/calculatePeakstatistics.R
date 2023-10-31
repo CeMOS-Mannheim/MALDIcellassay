@@ -28,7 +28,8 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
     model <- x$model
     pIC50 <- -suppressMessages(
       suppressWarnings(
-        getEstimates(model, targets = 0.5)[, 3]
+        getEstimates(model,
+                     targets = max(getYcurve(model))*0.5)[, 3]
       )
     )
     fc_window <- MALDIcellassay:::calculateFC(x$df)
