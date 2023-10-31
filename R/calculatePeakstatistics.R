@@ -5,7 +5,7 @@
 #' @return
 #' Numeric vector in proportions (0 - 1)
 .absToProp <- function(x) {
-  prob <- (x - min(x)) / (max(x) - min(x))
+  prop <- (x - min(x)) / (max(x) - min(x))
 
   return(prop)
 }
