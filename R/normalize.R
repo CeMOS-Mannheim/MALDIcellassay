@@ -73,7 +73,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
              tolppm = TRUE
            )
 
-           norm_fact <- mzNorm$norm_factor
+           norm_fac <- mzNorm$norm_factor
            spec <- normalizeByFactor(spec[mzNorm$specIdx], mzNorm$norm_factor)
            peaks <- normalizeByFactor(peaks[mzNorm$specIdx], mzNorm$norm_factor)
            included_specIdx <- mzNorm$specIdx
