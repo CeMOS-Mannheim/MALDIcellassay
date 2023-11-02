@@ -43,6 +43,7 @@
                     normMeth = normMeth,
                     normMz = normMz,
                     normTol = normTol)
+
   spec <- norm$spec
   peaks_single <- norm$peaks
 

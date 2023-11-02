@@ -1,7 +1,7 @@
 Package: MALDIcellassay
 Type: Package
 Title: Automated (untrageted) screening of MALDI cell based assays based on dose-response curve fitting. 
-Version: 0.4.10
+Version: 0.4.11
 Author: Thomas Enzlein 
 Maintainer: Thomas Enzlein <t.enzlein@hs-mannheim.de>
 Description: Detects high variance signals and generates dose-response curves to futher investigate candidate signals.

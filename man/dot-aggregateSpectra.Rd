@@ -4,7 +4,15 @@
 \alias{.aggregateSpectra}
 \title{Preprocessing function to average spectra, detect and bin peaks before turning them into an intensity matrix}
 \usage{
-.aggregateSpectra(spec, averageMethod, SNR, monoisotopicFilter, binTol)
+.aggregateSpectra(
+  spec,
+  averageMethod,
+  SNR,
+  monoisotopicFilter,
+  binTol,
+  normMz,
+  normTol
+)
 }
 \arguments{
 \item{spec}{List of MALDIquant::MassSpectrum}
@@ -16,6 +24,10 @@
 \item{monoisotopicFilter}{Logical, filter monoisotopic peaks}
 
 \item{binTol}{Numeric, tolerance for binning}
+
+\item{normMz}{Numeric, m/z value used for normalization/re-calibration}
+
+\item{normTol}{Numeric, tolerance around \code{normMz} in Da.}
 }
 \value{
 List of lists with intensity matrix, average spectra and average peaks

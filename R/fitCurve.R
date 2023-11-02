@@ -115,7 +115,9 @@ fitCurve <- function(spec,
                            averageMethod = averageMethod,
                            SNR = SNR,
                            monoisotopicFilter = monoisotopicFilter,
-                           binTol = binTol)
+                           binTol = binTol,
+                           normMz = normMz,
+                           normTol = normTol)
 
   # single spectra data
   allmz <- as.numeric(colnames(avg$intmat))

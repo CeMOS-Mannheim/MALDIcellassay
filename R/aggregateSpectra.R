@@ -5,10 +5,18 @@
 #' @param SNR                 Numeric, Signal noise value for peak detection
 #' @param monoisotopicFilter  Logical, filter monoisotopic peaks
 #' @param binTol              Numeric, tolerance for binning
+#' @param normMz              Numeric, m/z value used for normalization/re-calibration
+#' @param normTol             Numeric, tolerance around `normMz` in Da.
 #'
 #' @return
 #' List of lists with intensity matrix, average spectra and average peaks
-.aggregateSpectra <- function(spec, averageMethod, SNR, monoisotopicFilter, binTol) {
+.aggregateSpectra <- function(spec,
+                              averageMethod,
+                              SNR,
+                              monoisotopicFilter,
+                              binTol,
+                              normMz,
+                              normTol) {
   nm <- names(spec)
   stopifnot(!is.null(nm))
   stopifnot(isMassSpectrumList(spec))
@@ -25,10 +33,52 @@
     cat(MALDIcellassay:::timeNow(),
         "Filtering monoisotopic peaks...\n")
     # set it to be less restrictive then default settings
-    peaks <- monoisotopicPeaks(peaks,
-                               size = 2L:10L,
-                               minCor = 0.85,
-                               tolerance = 1e-3)
+    peaks_mono <- monoisotopicPeaks(peaks,
+                                    size = 2L:10L,
+                                    minCor = 0.85,
+                                    tolerance = 1e-3)
+
+    # check if normMz is still in spectra
+    # re-add it otherwise
+
+    peaks <- map(seq_along(peaks_mono),
+                 function(i) {
+                   mz_mono <- mass(peaks_mono[[i]])
+                   idx_mono <- match.closest(x = normMz,
+                                        table = mz_mono,
+                                        tolerance = normTol)
+
+                   if(!is.na(idx_mono)) {
+                     # if normMz present use peaks as they are
+                     return(peaks_mono[i])
+                   }
+
+                   int_mono <- intensity(peaks_mono[[i]])
+                   snr_mono <- intensity(peaks_mono[[i]])
+                   int <- intensity(peaks[[i]])
+                   snr <- snr(peaks[[i]])
+
+                   # get mz idx from peaks before monoisotopic filter
+                   mz <- mass(peaks[[i]])
+                   idx <- match.closest(x = normMz,
+                                             table = mz,
+                                             tolerance = normTol)
+
+                   # re-add normMz to end of mz/intensity/snr vector
+                   mz_mono <- append(mz_mono, mz[idx])
+                   int_mono <- append(int_mono, int[idx])
+                   snr_mono <- append(snr_mono, snr[idx])
+
+                   # order vector accending
+                   ord <- order(mz_mono)
+
+                   res <- createMassPeaks(mass = mz_mono[ord],
+                                          intensity = int_mono[ord],
+                                          snr = snr_mono[ord],
+                                          metaData = metaData(peaks_mono[[i]]))
+
+                   return(res)
+                 })
   }
 
   peaksBinned <- binPeaks(peaks, tolerance = binTol)

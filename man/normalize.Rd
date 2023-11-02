@@ -4,7 +4,7 @@
 \alias{normalize}
 \title{Normalize spectra and peaks}
 \usage{
-normalize(spec, peaks, normMeth)
+normalize(spec, peaks, normMeth, normMz, normTol)
 }
 \arguments{
 \item{spec}{List of MALDIquant::MassSpectrum}
