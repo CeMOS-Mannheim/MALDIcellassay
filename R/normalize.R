@@ -27,7 +27,7 @@
 #' List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::MassPeaks
 #'
 #' @export
-normalize <- function(spec, peaks, normMeth) {
+normalize <- function(spec, peaks, normMeth, normMz, normTol) {
   nm <- names(spec)
   stopifnot(!is.null(nm))
   stopifnot(is.numeric(as.numeric(nm)))

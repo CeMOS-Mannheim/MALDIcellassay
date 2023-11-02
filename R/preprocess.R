@@ -40,7 +40,9 @@
   cat(MALDIcellassay:::timeNow(), "normalizing... \n")
   norm <- normalize(spec = spec,
                     peaks = peaks_single,
-                    normMeth = normMeth)
+                    normMeth = normMeth,
+                    normMz = normMz,
+                    normTol = normTol)
   spec <- norm$spec
   peaks_single <- norm$peaks
 
