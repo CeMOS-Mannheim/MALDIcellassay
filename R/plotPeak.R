@@ -49,7 +49,7 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
                   ymax = max(pull(df, intensity))*1.05),
               alpha=0.2,
               fill="black") +
-    geom_line(data = df, aes(x = mass, y = intensity, col = idx)) +
+    geom_line(data = df, aes(x = mass, y = intensity, col = scales::scientific(idx))) +
     scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
     labs(
