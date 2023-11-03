@@ -19,37 +19,28 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
   }
   mz <- as.numeric(names(getCurveFits(object))[mzIdx])
   spec <- getAvgSpectra(object)
-  conc <- unique(getConc(object))
 
-  idx <- 1:length(spec)
-  df_l <- lapply(X = idx, FUN = function(i) {
-    df <- tibble(
-      mass = mass(spec[[i]]),
-      intensity = intensity(spec[[i]])
+  df <- map(spec, function(x) {
+    tibble(
+      mass = mass(x),
+      intensity = intensity(x)
     )
-  })
-  names(df_l) <- conc[idx]
-  df <- bind_rows(df_l, .id = "idx")
+  }) %>%
+    bind_rows(.id = "conc") %>%
+    filter(between(mass, mz - tol, mz + tol)) %>%
+    mutate(conc = as.numeric(conc)) %>%
+    mutate(conc = fct_reorder(scales::scientific(conc), conc))
 
   title <- paste0("Profile of m/z ", round(mz, 2), " ± ", round(tol, 2), "Da")
-  # for whatever reason, if mzIdx is not evaluated before the function it leads to an error
-  mzIdx_ <- mzIdx
-  center <- getMzFromMzIdx(object = object,
-                           mzIdx = mzIdx_)
-
-  df <-  df %>%
-    filter(between(mass, mz - tol, mz + tol)) %>%
-    mutate(conc = as.numeric(idx)) %>%
-    mutate(idx = fct_reorder(idx, conc))
 
   p <-ggplot() +
-    geom_rect(aes(xmin = center - getBinTol(object) * center,
-                  xmax = center + getBinTol(object) * center,
+    geom_rect(aes(xmin = mz - getBinTol(object) * mz,
+                  xmax = mz + getBinTol(object) * mz,
                   ymin = 0,
                   ymax = max(pull(df, intensity))*1.05),
               alpha=0.2,
               fill="black") +
-    geom_line(data = df, aes(x = mass, y = intensity, col = scales::scientific(idx))) +
+    geom_line(data = df, aes(x = mass, y = intensity, col = conc)) +
     scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
     labs(
