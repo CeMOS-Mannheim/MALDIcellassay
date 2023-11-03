@@ -14,22 +14,23 @@
 #' @importFrom scales comma
 #' @importFrom MALDIquant mass intensity
 #' @importFrom tibble tibble
+#' @importFrom purrr map
+#' @importFrom scales scientific
 
 checkRecalibration <- function(object, idx) {
   if (!class(object) == "MALDIassay") {
     stop("object needs to be of class MALDIassay.")
   }
 
-  conc <- unique(getConc(object))
-
-
   normMz <- getNormMz(object)
   tol <- getNormMzTol(object)
   lowerVal <- normMz - 10 * tol
   upperVal <- normMz + 10 * tol
 
-  spec <- getAvgSpectra(object)
-  peaks <- getAvgPeaks(object)
+  spec <- getAvgSpectra(object)[idx]
+  peaks <- getAvgPeaks(object)[idx]
+
+  names(peaks) <- names(spec)
   normMeth <- getNormMethod(object)
 
   if (normMeth == "mz") {
@@ -38,28 +39,28 @@ checkRecalibration <- function(object, idx) {
     y_lab <- paste0("Intensity (", normMeth, "-normalized)")
   }
 
-  df_l <- lapply(X = idx, FUN = function(i) {
+  df <- map(spec, function(x) {
     df <- tibble(
-      mass = mass(spec[[i]]),
-      intensity = intensity(spec[[i]])
+      mass = mass(x),
+      intensity = intensity(x)
     )
-  })
-  names(df_l) <- conc[idx]
-  df <- bind_rows(df_l, .id = "idx")
+  }) %>%
+    bind_rows(.id = "conc") %>%
+    mutate(conc = scientific(as.numeric(conc)))
 
-  peakdf_l <- lapply(X = idx, FUN = function(i) {
-    peakdf <- tibble(
-      mass = mass(peaks[[i]]),
-      intensity = intensity(peaks[[i]])
+  peakdf <- map(peaks, function(x) {
+    df <- tibble(
+      mass = mass(x),
+      intensity = intensity(x)
     )
-  })
-  names(peakdf_l) <- conc[idx]
-  peakdf <- bind_rows(peakdf_l, .id = "idx")
+  }) %>%
+    bind_rows(.id = "conc") %>%
+    mutate(conc = scientific(as.numeric(conc)))
 
   p <-
     df %>%
     filter(between(mass, lowerVal, upperVal)) %>%
-    ggplot(aes(x = mass, y = intensity, col = factor(idx))) +
+    ggplot(aes(x = mass, y = intensity, col = factor(conc))) +
     geom_line() +
     geom_linerange(
       data = peakdf %>%
@@ -76,9 +77,5 @@ checkRecalibration <- function(object, idx) {
       x = "m/z",
       y = y_lab)
 
-  if (length(idx) == 1) {
-    p <- p +
-      labs(title = paste("Avg. Spectrum of concentration", scales::comma(conc[idx], 0.0000001)))
-  }
   return(p)
 }
