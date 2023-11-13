@@ -16,7 +16,7 @@
 calculateChauvenetCriterion <- function(x) {
   mean <- mean(x, na.rm = TRUE)
   sd <- sd(x, na.rm = TRUE)
-  n <- length(x, na.rm = TRUE)
+  n <- length(x)
 
   if(n < 3) {
     warning("Chauvenet's criterion requires at least 3 data points.\n
