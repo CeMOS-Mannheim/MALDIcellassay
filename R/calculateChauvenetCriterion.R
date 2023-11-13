@@ -14,9 +14,16 @@
 #' logical vector, TRUE for detected outliers.
 #' @export
 calculateChauvenetCriterion <- function(x) {
-  mean <- mean(x)
-  sd <- sd(x)
-  n <- length(x)
+  mean <- mean(x, na.rm = TRUE)
+  sd <- sd(x, na.rm = TRUE)
+  n <- length(x, na.rm = TRUE)
+
+  if(n < 3) {
+    warning("Chauvenet's criterion requires at least 3 data points.\n
+            No outlier detection performed. Returning FALSE.\n")
+
+    return(FALSE)
+  }
 
   t <- abs(x-mean)/sd
   Dmax <- abs(qnorm(1/(4*n)))
