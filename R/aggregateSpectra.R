@@ -41,7 +41,8 @@
     # check if normMz is still in spectra
     # re-add it otherwise
 
-    peaks <- map(seq_along(peaks_mono),
+    peaks <- unlist(
+      map(seq_along(peaks_mono),
                  function(i) {
                    mz_mono <- mass(peaks_mono[[i]])
                    idx_mono <- match.closest(x = normMz,
@@ -79,6 +80,7 @@
 
                    return(res)
                  })
+    )
   }
 
   peaksBinned <- binPeaks(peaks, tolerance = binTol)
