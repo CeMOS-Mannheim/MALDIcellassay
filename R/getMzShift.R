@@ -16,25 +16,19 @@
 .getMzShift <- function(peaksdf, tol, targetMz, tolppm = TRUE, allowNoMatch = TRUE) {
   plot_Idx <- sort(unique(peaksdf$plotIdx))
 
-  if (tolppm) {
-    resdf <- peaksdf %>%
-      mutate(match = ifelse(mz > targetMz - mz * (tol / 1e6) & mz < targetMz + mz * (tol / 1e6), TRUE, FALSE))
-    f_resdf <- resdf %>%
-      filter(match) %>%
-      mutate(mz.diff = round(targetMz - mz, 4)) %>%
-      group_by(plotIdx) %>%
-      filter(abs(mz.diff) == min(abs(mz.diff))) %>%
-      arrange(plotIdx)
-  } else {
-    resdf <- peaksdf %>%
-      mutate(match = mz > targetMz - tol & mz < targetMz + tol)
-    f_resdf <- resdf %>%
-      filter(match) %>%
-      mutate(mz.diff = round(targetMz - mz, 4)) %>%
-      group_by(plotIdx) %>%
-      filter(abs(mz.diff) == min(abs(mz.diff))) %>%
-      arrange(plotIdx)
+  if(tolppm) {
+    tol <- tol / 1e6
   }
+
+
+  f_resdf <- peaksdf %>%
+    mutate(match = mz > targetMz - tol & mz < targetMz + tol) %>%
+    filter(match) %>%
+    mutate(mz.diff = round(targetMz - mz, 4)) %>%
+    group_by(plotIdx) %>%
+    filter(abs(mz.diff) == min(abs(mz.diff))) %>%
+    arrange(plotIdx)
+
 
 
   if (!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))) {

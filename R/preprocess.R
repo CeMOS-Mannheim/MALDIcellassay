@@ -9,13 +9,13 @@
 #' @param alignTol            Numeric, tolerance for alignment in Da.
 #' @param allowNoMatches      Logical, allow no matches for normalization using "mz" method and/or recalibration.
 .preprocess <- function(peaks_single,
-                       spec,
-                       SinglePointRecal,
-                       normMz,
-                       normTol,
-                       normMeth,
-                       alignTol,
-                       allowNoMatches) {
+                        spec,
+                        SinglePointRecal,
+                        normMz,
+                        normTol,
+                        normMeth,
+                        alignTol,
+                        allowNoMatches) {
   if (SinglePointRecal) {
     # perform single point mass recalibration
     mzShift <- getMzShift(
@@ -51,20 +51,26 @@
 
 
   #### alignment ####
-  cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
-  wf <- determineWarpingFunctions(l = peaks_single,
-                                  tolerance = alignTol,
-                                  method = "linear",
-                                  allowNoMatches = allowNoMatches)
+  if(alignTol > 0) {
+    cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
+    wf <- determineWarpingFunctions(l = peaks_single,
+                                    reference = referencePeaks(peaks_single,
+                                                               minFrequency = 0.75,
+                                                               tolerance = 0.002),
+                                    tolerance = alignTol,
+                                    method = "linear",
+                                    allowNoMatches = allowNoMatches)
 
-  spec <- warpMassSpectra(spec,
-                          w = wf,
-                          emptyNoMatches = allowNoMatches)
-  names(spec) <- current_names
-  peaks_single <- warpMassPeaks(peaks_single,
-                                w = wf,
-                                emptyNoMatches = allowNoMatches)
-  names(peaks_single) <- current_names
+    spec <- warpMassSpectra(spec,
+                            w = wf,
+                            emptyNoMatches = allowNoMatches)
+    names(spec) <- current_names
+
+    peaks_single <- warpMassPeaks(peaks_single,
+                                  w = wf,
+                                  emptyNoMatches = allowNoMatches)
+    names(peaks_single) <- current_names
+  }
 
   return(list(spec = spec,
               singlePeaks = peaks_single,
