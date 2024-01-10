@@ -40,12 +40,22 @@ calculateCurveFit <- function(intmat, idx, ...) {
         nplr(x = concLog, y = resp, useLog = FALSE, npars = 4, silent = TRUE, ...)
       )
     }, error = function(cond) {
-      cat("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
+      warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
           "failed. Re-trying with npar='all' setting")
-      suppressWarnings(
-
-        return(nplr(x = concLog, y = resp, useLog = FALSE, npars = "all", silent = TRUE, ...))
+      return(
+        tryCatch(expr = {
+        suppressWarnings(
+          nplr(x = concLog, y = resp, useLog = FALSE, npars = "all", silent = TRUE, ...)
+        )
+      }, error = function(cond) {
+        warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
+                "failed again. Re-trying with npar='3' setting.")
+        suppressWarnings(
+          return(nplr(x = concLog, y = resp, useLog = FALSE, npars = 3, silent = TRUE, ...))
+        )
+      })
       )
+
     })
 
     current_res[[j]] <- list(
