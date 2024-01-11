@@ -10,7 +10,7 @@ plotCurves(
   R2_tresh = 0,
   markValue = NA,
   mzIdx = NULL,
-  errorbars = FALSE
+  errorbars = c("none", "sd", "sem")
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ plotCurves(
 
 \item{mzIdx}{numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!}
 
-\item{errorbars}{logical, add errorbars to plot representing the standard error of the mean in regards to the measurment replicates.}
+\item{errorbars}{character, add error bars to plot. Either standard error of the mean (\code{sem}) or standard deviation (\code{sd}) in regards to the measurment replicates or no errorbars (\code{none}).}
 
 \item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }

@@ -1,3 +1,33 @@
+.calculateReducedChiSquareStatistic  <- function(res) {
+  fits <- getCurveFits(res)
+
+  intmat <- intensityMatrix(getSinglePeaks(res))
+
+  purrr::map_dbl(seq_along(fits),
+                 function(i) {
+                   fit <- fits[[i]]$model
+                   int <- intmat[,i]
+                   conc <- getConc(res)
+
+                   vars <- vapply(1:length(unique(conc)),
+                                  function(j) {
+                                    var(int[conc==unique(conc)[j]])
+                                  }, FUN.VALUE = numeric(1))
+
+                   var <- mean(vars)
+
+                   yfit <-  getFitValues(fit)
+                   yobs <- getY(fit)
+
+                   chisq <- sum(1 / var * (yobs - yfit)^2)
+
+                   redChisq <- chisq/(length(yfit) - getPar(fit)$npar)
+
+                   return(redChisq)
+                 })
+}
+
+
 .getSigmaFit <- function(res) {
   fits <- getCurveFits(res)
 
@@ -58,6 +88,8 @@
   return(list(pos = intmatPos,
               neg = intmatNeg))
 }
+
+
 
 .calculateMetric <- function(res, nConc = 2, fun) {
 
@@ -198,5 +230,28 @@ calculateVPrime <- function(res, internal = TRUE, nConc = 2) {
 
   return(v)
 }
+
+#' Calculate reduced Chi-squared statistic / mean squared weighted deviation (MSWD)
+#'
+#' @param res      Object of class MALDIassay
+#'
+#' @details
+#' The reduced chi-square statistic is used extensively in goodness of fit testing.
+#' It is also known as mean squared weighted deviation (**MSWD**) in isotopic dating
+#' and variance of unit weight in the context of weighted least squares.
+#'
+#' \deqn{\chi^2_\nu =\frac{\chi^2}{\nu}}
+#'
+#' \deqn{\chi^2=\sum_{N}{\frac{1}{\sigma^2_i}*[y_i - f(x_i)]^2}}
+#'
+#' \deqn{\nu = n - m}
+#' @return
+#' Numeric vector of MSWD
+#' @export
+calculateMSWD <- function(res, internal = TRUE, nConc = 2) {
+
+  .calculateReducedChiSquareStatistic(res)
+}
+
 
 

@@ -125,7 +125,7 @@ fitCurve <- function(spec,
   singlePeaks <- extractIntensity(mz = allmz,
                                   peaks = prc$singlePeaks,
                                   spec = prc$spec,
-                                  tol = normTol)
+                                  tol = normTol*0.5)
 
   # fit curves
   cat(MALDIcellassay:::timeNow(), "fitting curves... \n")

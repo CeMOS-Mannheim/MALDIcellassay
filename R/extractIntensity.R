@@ -15,7 +15,6 @@ extractIntensity <- function(mz, peaks, spec, tol) {
 
   res_peaks <-purrr::map(seq_along(peaks),
                          function(i) {
-                           #browser()
                            mz_peaks <- mass(peaks[[i]])
                            mz_spec <- mass(spec[[i]])
 
@@ -26,7 +25,7 @@ extractIntensity <- function(mz, peaks, spec, tol) {
                                                         table = mz_spec,
                                                         tol = Inf)
 
-                           # extract intensity from peaks is possible
+                           # extract intensity from peaks if possible
                            # otherwise use noise from spectra
                            # resulting in a dense intensity matrix
                            new_int <- ifelse(!is.na(peak_mz_idx),

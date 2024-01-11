@@ -2,6 +2,7 @@
 
 export(calculateChauvenetCriterion)
 export(calculateCurveFit)
+export(calculateMSWD)
 export(calculatePeakStatistics)
 export(calculateSSMD)
 export(calculateVPrime)

@@ -291,9 +291,7 @@ getRecalibrationError <- function(object) {
 #' @export
 getMzFromMzIdx <- function(object, mzIdx) {
   stopIfNotIsMALDIassay(object)
-  mz <- getPeakStatistics(object, TRUE) %>%
-    filter(mzIdx == {{mzIdx}}) %>%
-    pull(mz)
+  mz <- as.numeric(getPeakStatistics(object, TRUE)[mzIdx, "mz"])
 
   if(length(mz)>1) {
     warning("Something is wrong. There are multiple mz-values with this index!\n")
