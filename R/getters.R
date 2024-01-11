@@ -362,11 +362,21 @@ getFittingParameters <- function(object, summarise = FALSE) {
 
   fits <- getCurveFits(object)
 
-  res_list <- lapply(fits, function(x) {
-    getPar(x$model)
-  })
+  res_list <- lapply(seq_along(fits),
+                     function(i) {
+                       par <- getPar(fits[[i]]$model)
 
-  df <- bind_rows(res_list, .id = "mz")
+                       return(tibble(mz = names(fits)[i],
+                              npar = par$npar[[1]],
+                              bottom = par$params[["bottom"]],
+                              top = par$params[["top"]],
+                              xmid = par$params[["xmid"]],
+                              scal = par$params[["scal"]],
+                              s = par$params[["s"]]))
+                     })
+
+  df <- bind_rows(res_list, .id = "mzIdx") %>%
+    mutate(mzIdx = as.numeric(mzIdx))
 
   if(summarise) {
     df <- df %>%

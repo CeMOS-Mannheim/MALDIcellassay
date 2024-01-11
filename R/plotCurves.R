@@ -1,9 +1,6 @@
 #' generate ggplot objects for each of the curve fits in a MALDIassay object
 #'
 #' @param object    object of class MALDIassay
-#' @param fc_thresh numeric, max/min fold-change above which plots should be generated
-#' @param markValue numeric, a value to add as a reference to the plots
-#' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
 #' @param mzIdx     numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!
 #' @param errorbars character, add error bars to plot. Either standard error of the mean (`sem`) or standard deviation (`sd`) in regards to the measurment replicates or no errorbars (`none`).
 #'
@@ -15,7 +12,7 @@
 #' @importFrom tibble tibble
 #' @importFrom nplr getGoodness getEstimates getXcurve getYcurve getX getY convertToProp
 #' @export
-plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzIdx = NULL, errorbars = c("none", "sd", "sem")) {
+plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem")) {
   stopIfNotIsMALDIassay(object)
   errorbars <- match.arg(errorbars)
 
@@ -40,78 +37,74 @@ plotCurves <- function(object, fc_thresh = 1, R2_tresh = 0, markValue = NA, mzId
     fc_window <- MALDIcellassay:::calculateFC(df)
     R2 <- getGoodness(model)[[1]]
 
-    if ((abs(fc_window) >= fc_thresh & R2 >= R2_tresh) | !is.null(mzIdx)) {
-      df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
-      df_P <- tibble(x = getX(model), y = getY(model))
+    df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
+    df_P <- tibble(x = getX(model), y = getY(model))
 
-      int <- vapply(getSinglePeaks(object), function(x) {
-        targetmass <- mz
-        mass <- mass(x)
-        idx <- match.closest(targetmass, mass, tolerance = 0.01)
-        int <- intensity(x)
-        return(int[idx])
-      }, numeric(1))
+    int <- vapply(getSinglePeaks(object), function(x) {
+      targetmass <- mz
+      mass <- mass(x)
+      idx <- match.closest(targetmass, mass, tolerance = 0.01)
+      int <- intensity(x)
+      return(int[idx])
+    }, numeric(1))
 
-      df_singlePeaks <- tibble(
-        x = getConc(object),
-        int = int) %>%
-        group_by(x) %>%
-        summarise(
-          sd = sd(int),
-          sem = sd/sqrt(n())
+    df_singlePeaks <- tibble(
+      x = getConc(object),
+      int = int) %>%
+      group_by(x) %>%
+      summarise(
+        sd = sd(int),
+        sem = sd/sqrt(n())
+      )
+
+    df_P <- df_P %>%
+      mutate(sem = pull(df_singlePeaks, sem),
+             sd = pull(df_singlePeaks, sd))
+
+    p <- ggplot(data = df_P, aes(x = x, y = y)) +
+      geom_line(data = df_C, aes(x = xC, y = yC)) +
+      geom_point() +
+      scale_x_continuous(labels = scales::scientific(c(0, 10^df_P$x[-1])), breaks = df_P$x) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      labs(
+        x = "Conc.",
+        y = "Intensity",
+        title = paste0(
+          "mz ", round(mz, 2), " Da, R\u00B2=", round(R2, 3), "\n",
+          "pIC50=", round(ic50, 3),
+          " min=", round(min, 3),
+          " max=", round(max, 3),
+          " FC=", round(fc_window, 2)
         )
+      )
 
-      df_P <- df_P %>%
-        mutate(sem = pull(df_singlePeaks, sem),
-               sd = pull(df_singlePeaks, sd))
-
-      p <- ggplot(data = df_P, aes(x = x, y = y)) +
-        geom_line(data = df_C, aes(x = xC, y = yC)) +
-        geom_point() +
-        scale_x_continuous(labels = scales::scientific(c(0, 10^df_P$x[-1])), breaks = df_P$x) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        labs(
-          x = "Conc.",
-          y = "Intensity",
-          title = paste0(
-            "mz ", round(mz, 2), " Da, R\u00B2=", round(R2, 3), "\n",
-            "pIC50=", round(ic50, 3),
-            " min=", round(min, 3),
-            " max=", round(max, 3),
-            " FC=", round(fc_window, 2)
-          )
+    if (errorbars == "sem") {
+      p <- p +
+        geom_errorbar(
+          aes(
+            y = y,
+            ymin = y - sem,
+            ymax = y + sem
+          ),
+          alpha = 0.5
         )
-
-      if (errorbars == "sem") {
-        p <- p +
-          geom_errorbar(
-            aes(
-              y = y,
-              ymin = y - sem,
-              ymax = y + sem
-            ),
-            alpha = 0.5
-          )
-      }
-
-      if (errorbars == "sd") {
-        p <- p +
-          geom_errorbar(
-            aes(
-              y = y,
-              ymin = y - sd,
-              ymax = y + sd
-            ),
-            alpha = 0.5
-          )
-      }
-
-      if (!is.na(markValue)) {
-        p <- p + geom_vline(aes(xintercept = markValue), linetype = "dashed")
-      }
-      p_list[[i]] <- p
-      names(p_list) <- mz_vals
     }
+
+    if (errorbars == "sd") {
+      p <- p +
+        geom_errorbar(
+          aes(
+            y = y,
+            ymin = y - sd,
+            ymax = y + sd
+          ),
+          alpha = 0.5
+        )
+    }
+
+    p_list[[i]] <- p
+    names(p_list) <- mz_vals
+
   }
   # check for empty entries (result of filtering for FC or R2) and remove them
   idx <- vapply(p_list, function(x) {

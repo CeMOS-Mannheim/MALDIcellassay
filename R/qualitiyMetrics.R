@@ -1,33 +1,3 @@
-.calculateReducedChiSquareStatistic  <- function(res) {
-  fits <- getCurveFits(res)
-
-  intmat <- intensityMatrix(getSinglePeaks(res))
-
-  purrr::map_dbl(seq_along(fits),
-                 function(i) {
-                   fit <- fits[[i]]$model
-                   int <- intmat[,i]
-                   conc <- getConc(res)
-
-                   vars <- vapply(1:length(unique(conc)),
-                                  function(j) {
-                                    var(int[conc==unique(conc)[j]])
-                                  }, FUN.VALUE = numeric(1))
-
-                   var <- mean(vars)
-
-                   yfit <-  getFitValues(fit)
-                   yobs <- getY(fit)
-
-                   chisq <- sum(1 / var * (yobs - yfit)^2)
-
-                   redChisq <- chisq/(length(yfit) - getPar(fit)$npar)
-
-                   return(redChisq)
-                 })
-}
-
-
 .getSigmaFit <- function(res) {
   fits <- getCurveFits(res)
 
@@ -88,8 +58,6 @@
   return(list(pos = intmatPos,
               neg = intmatNeg))
 }
-
-
 
 .calculateMetric <- function(res, nConc = 2, fun) {
 
@@ -193,9 +161,6 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #' @param res      Object of class MALDIassay
 #' @param internal Logical, currently only the internal implementation,
 #'                 using `nConc` top and bottom concentrations, is implemented.
-#' @param nConc    Numeric, number of top and bottom concentrations to be used
-#'                 to calculate the pseudo positive and negative control.
-#'                 Only used if `internal` is TRUE
 #'
 #' @details
 #' The V'-factor is a generalization of the Z'-factor to a dose-response curve.
@@ -209,26 +174,42 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #'
 #' In other words, \eqn{\sigma_f} is the standard deviation of residuals.
 #'
+#' Note, we do not need to estimate the variance for the mean of the positive and negative value.
+#' So, this function uses the top and bottom asymptote directly instead of taking the top and bottom concentrations in consideration.
+#'
 #' @return
 #' Numeric vector of V'-factors
 #' @export
-calculateVPrime <- function(res, internal = TRUE, nConc = 2) {
+calculateVPrime <- function(res, internal = TRUE) {
   if(!internal) {
     cat("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
     return()
   }
 
-  int <- .getTopAndBottomIntensityMatrix(res = res,
-                                         nConc = nConc)
-  meanPos <- apply(int$pos, MARGIN = 2, FUN = mean)
-  meanNeg <- apply(int$neg, MARGIN = 2, FUN = mean)
+  param <- getFittingParameters(res)
+
+  meanPos <- as.numeric(param$top)
+  meanNeg <- as.numeric(param$bottom)
 
   sigmaFit <- .getSigmaFit(res)
 
   v <- 1 - 6 * (sigmaFit/(abs(meanNeg - meanPos)))
 
   return(v)
+}
+
+.integrateMSWD <- function(chi2, nu) {
+  result <- integrate(
+    function(x, nu) {
+      (x^(nu/2 - 1) * exp(-x/2)) / (2^(nu/2) * gamma(nu/2))
+    },
+    lower = chi2,
+    upper = Inf,
+    nu = nu,
+    stop.on.error = FALSE)
+
+  return(result$value)
 }
 
 #' Calculate reduced Chi-squared statistic / mean squared weighted deviation (MSWD)
@@ -244,14 +225,43 @@ calculateVPrime <- function(res, internal = TRUE, nConc = 2) {
 #'
 #' \deqn{\chi^2=\sum_{N}{\frac{1}{\sigma^2_i}*[y_i - f(x_i)]^2}}
 #'
-#' \deqn{\nu = n - m}
+#' \deqn{\nu = N - m - 1}
 #' @return
 #' Numeric vector of MSWD
 #' @export
-calculateMSWD <- function(res, internal = TRUE, nConc = 2) {
+#'
+calculateMSWD <- function(res) {
+  fits <- getCurveFits(res)
 
-  .calculateReducedChiSquareStatistic(res)
+  intmat <- intensityMatrix(getSinglePeaks(res))
+
+  pval <- purrr::map_dbl(seq_along(fits),
+                 function(i) {
+                   fit <- fits[[i]]$model
+                   int <- intmat[,i]
+                   conc <- getConc(res)
+
+                   vars <- vapply(1:length(unique(conc)),
+                                  function(j) {
+                                    var(int[conc==unique(conc)[j]])
+                                  },
+                                  FUN.VALUE = numeric(1))
+
+                   if(all(vars==0)) {
+                     return(NA)
+                   }
+
+                   yfit <-  getFitValues(fit)
+                   yobs <- getY(fit)
+
+                   chisq <- sum(1 / vars * (yobs - yfit)^2)
+
+                   redChisq <- chisq/(length(yfit) - getPar(fit)$npar - 1)
+
+                   q <- .integrateMSWD(chi2 = chisq, nu = (length(yfit) - getPar(fit)$npar - 1))
+
+                   return(q)
+                 })
+
+  return(q)
 }
-
-
-

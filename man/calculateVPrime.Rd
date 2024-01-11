@@ -4,17 +4,13 @@
 \alias{calculateVPrime}
 \title{Calculate V'-Factor}
 \usage{
-calculateVPrime(res, internal = TRUE, nConc = 2)
+calculateVPrime(res, internal = TRUE)
 }
 \arguments{
 \item{res}{Object of class MALDIassay}
 
 \item{internal}{Logical, currently only the internal implementation,
 using \code{nConc} top and bottom concentrations, is implemented.}
-
-\item{nConc}{Numeric, number of top and bottom concentrations to be used
-to calculate the pseudo positive and negative control.
-Only used if \code{internal} is TRUE}
 }
 \value{
 Numeric vector of V'-factors
@@ -33,4 +29,7 @@ with
 \deqn{\sigma_f = \sqrt{1/N * \sum{y_fit - y_measured}^2}}
 
 In other words, \eqn{\sigma_f} is the standard deviation of residuals.
+
+Note, we do not need to estimate the variance for the mean of the positive and negative value.
+So, this function uses the top and bottom asymptote directly instead of taking the top and bottom concentrations in consideration.
 }

@@ -4,7 +4,7 @@
 \alias{calculateMSWD}
 \title{Calculate reduced Chi-squared statistic / mean squared weighted deviation (MSWD)}
 \usage{
-calculateMSWD(res, internal = TRUE, nConc = 2)
+calculateMSWD(res)
 }
 \arguments{
 \item{res}{Object of class MALDIassay}
@@ -24,5 +24,5 @@ and variance of unit weight in the context of weighted least squares.
 
 \deqn{\chi^2=\sum_{N}{\frac{1}{\sigma^2_i}*[y_i - f(x_i)]^2}}
 
-\deqn{\nu = n - m}
+\deqn{\nu = N - m - 1}
 }

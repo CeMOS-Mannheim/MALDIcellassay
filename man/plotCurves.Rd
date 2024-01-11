@@ -4,27 +4,14 @@
 \alias{plotCurves}
 \title{generate ggplot objects for each of the curve fits in a MALDIassay object}
 \usage{
-plotCurves(
-  object,
-  fc_thresh = 1,
-  R2_tresh = 0,
-  markValue = NA,
-  mzIdx = NULL,
-  errorbars = c("none", "sd", "sem")
-)
+plotCurves(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
 }
 \arguments{
 \item{object}{object of class MALDIassay}
 
-\item{fc_thresh}{numeric, max/min fold-change above which plots should be generated}
-
-\item{markValue}{numeric, a value to add as a reference to the plots}
-
 \item{mzIdx}{numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!}
 
 \item{errorbars}{character, add error bars to plot. Either standard error of the mean (\code{sem}) or standard deviation (\code{sd}) in regards to the measurment replicates or no errorbars (\code{none}).}
-
-\item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 }
 \value{
 list of ggplot objects
