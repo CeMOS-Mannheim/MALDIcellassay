@@ -239,7 +239,7 @@ getPeakStatistics <- function(object, summarise = FALSE) {
         wgof = first(wgof),
         min = mean(min),
         max = mean(max),
-        FC = first(fc_window)
+        FC = first(fc)
       ) %>%
       ungroup() %>%
       arrange(mzIdx) %>%
