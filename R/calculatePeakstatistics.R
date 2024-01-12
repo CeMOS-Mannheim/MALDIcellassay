@@ -26,9 +26,6 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
 
   fit_df <- lapply(curveFits, function(x) {
     model <- x$model
-    pIC50 <- .getEstimates(model, 0.5)
-
-    fc_window <- MALDIcellassay:::calculateFC(x$df)
 
     res_df <-
       suppressMessages(
@@ -39,8 +36,8 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
       )
     ) %>%
       mutate(
-        fc_window = fc_window,
-        pIC50 = pIC50
+        fc = calculateFC(model),
+        pIC50 = .getEstimates(model, 0.5)
       )
     return(res_df)
   }) %>%

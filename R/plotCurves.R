@@ -34,7 +34,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
     min <- min(df$value)
     max <- max(df$value)
 
-    fc_window <- MALDIcellassay:::calculateFC(df)
+    fc <- calculateFC(model)
     R2 <- getGoodness(model)[[1]]
 
     df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
@@ -74,7 +74,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
           "pIC50=", round(ic50, 3),
           " min=", round(min, 3),
           " max=", round(max, 3),
-          " FC=", round(fc_window, 2)
+          " FC=", round(fc, 2)
         )
       )
 

@@ -4,15 +4,10 @@
 \alias{calculateFC}
 \title{Calculate the fold-change}
 \usage{
-calculateFC(df, absolute = FALSE, n_conc = 2)
+calculateFC(model)
 }
 \arguments{
-\item{df}{tibble with columns "conc" and "value".}
-
-\item{absolute}{logical, return the absolute FC.
-If FALSE (default) the FC is calculated by dividing the mean intensity of the highest concentrations by the mean intensity of the lowest concentrations.}
-
-\item{n_conc}{numeric, the FC is calculated on the top and bottom \code{n_conc} concentrations (default 2).}
+\item{model}{nplr model object}
 }
 \value{
 Numeric, fold-change
