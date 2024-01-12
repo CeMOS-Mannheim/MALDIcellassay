@@ -35,6 +35,7 @@ calculateCurveFit <- function(intmat, idx, ...) {
       mutate(concLog = concLog)
     resp <- df$value
       #convertToProp(y = df$value)
+
     model <- tryCatch(expr = {
       suppressWarnings(
         nplr(x = concLog, y = resp, useLog = FALSE, npars = 4, silent = TRUE, ...)
@@ -49,8 +50,8 @@ calculateCurveFit <- function(intmat, idx, ...) {
         )
       }, error = function(cond) {
         warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
-                " failed again. Re-trying with npar='3' setting and introducing a bit of noise (mean=0, sd=0.1).\n")
-        resp <- resp + rnorm(length(resp), mean = 0, sd = 0.1)
+                " failed again. Re-trying with npar='3' setting and introducing a bit of noise (mean=0, sd=1e-5).\n")
+        resp <- resp + rnorm(length(resp), mean = 0, sd = 1e-5)
         suppressWarnings( {
           nplr(x = concLog, y = resp, useLog = FALSE, npars = 3, silent = TRUE, ...)
         }
