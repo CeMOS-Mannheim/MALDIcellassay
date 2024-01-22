@@ -182,6 +182,15 @@ plotOverview <- function(object,
 calculateFC <- function(model) {
   par <- getPar(model)$params
 
+  if(par[["top"]] <= 0 | par[["bottom"]] <= 0) {
+    return(NA)
+  }
+
+  if(par[["scal"]] < 0) {
+    FC <- par[["bottom"]]/par[["top"]]
+    return(FC)
+  }
+
   FC <- par[["top"]]/par[["bottom"]]
 
   return(FC)
