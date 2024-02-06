@@ -4,7 +4,7 @@
 \alias{.detectPeaks}
 \title{Detect peaks}
 \usage{
-.detectPeaks(spec, SNR, method = "SuperSmoother")
+.detectPeaks(spec, SNR, method = "SuperSmoother", halfWindowSize = 3)
 }
 \arguments{
 \item{spec}{MALDIquant::MassSpectrum or list thereof}
@@ -12,6 +12,8 @@
 \item{SNR}{Numeric, signal to noise value}
 
 \item{method}{Character, method see MALDIquant::detectPeaks}
+
+\item{halfWindowSize}{Numeric, defines width of window for peak detection. See \code{MALDIquant::detectPeaks()}.}
 }
 \value{
 List of MALDIquant::MassPeaks with the same names as \code{spec}
