@@ -27,7 +27,7 @@
 
   cat(MALDIcellassay:::timeNow(),
       "building intensity matrix and applying variance filter... \n")
-  peaks <- detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
+  peaks <- .detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR)
 
   if(monoisotopicFilter) {
     cat(MALDIcellassay:::timeNow(),
