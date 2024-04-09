@@ -2,7 +2,6 @@
 #'
 #' @param spec                List of MALDIquant::MassSpectrum
 #' @param varFilterMethod     Character, function applied for high variance filtering. One of the following options `mean` (default), `median`, `q25`, `q75` or `none` (no filtering).
-#' @param conc                Numeric vector, concentration for each spectrum. Length has to be the same as length of spec
 #' @param unit                Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
 #'                            Set to "M" if you dont want changes in your concentrations.
 #' @param monoisotopicFilter  Logical, filter peaks and just use monoisotopic peaks for curve fit.
@@ -29,7 +28,6 @@
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
 
 fitCurve <- function(spec,
-                     conc = NA,
                      unit = c("M", "mM", "µM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
                      monoisotopicFilter = FALSE,
@@ -62,22 +60,22 @@ fitCurve <- function(spec,
     stop("Normalization to m/z is not possible when no m/z was supplied.\n")
   }
 
-  if (!any(is.na(conc))) {
-    if(as.numeric(conc)) {
-      stop("conc needs to be a numeric vector of concentrations!\n")
-    }
-    # if conc is given update spectra names with conc
-    names(spec) <- as.numeric(conc) * unitFactor
-    conc <- as.numeric(conc) * unitFactor
-  } else {
-    # if conc is not given assume that spectra names are concentrations
-    if(length(names(spec)) < 1) {
-      stop("No concentrations provided.
-           Either name spectra with concentrations or use conc. var
-           to set them.\n")
-    }
-    names(spec) <- as.numeric(names(spec)) * unitFactor
+
+  # check if spectra are named
+  if(length(names(spec)) < 1) {
+    stop("Spectra are not named.
+         Name spectra with concentrations\n")
   }
+
+
+  # check if spectra names are concentrations
+  if(any(is.na(as.numeric(names(spec))))) {
+    stop("No concentrations provided.
+         Name spectra with concentrations.")
+  }
+
+  names(spec) <- as.numeric(names(spec)) * unitFactor
+
   nm <- names(spec)
 
   # check spectra for problematic meta data and remove it of needed

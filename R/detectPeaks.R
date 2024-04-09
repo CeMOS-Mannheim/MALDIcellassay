@@ -11,7 +11,14 @@
 #' @return
 #' List of MALDIquant::MassPeaks with the same names as `spec`
 .detectPeaks <- function(spec, SNR, method = "SuperSmoother", halfWindowSize = 3) {
-  stopifnot(isMassSpectrum(spec)| isMassSpectrumList(spec))
+
+  if(!(isMassSpectrum(spec)| isMassSpectrumList(spec))) {
+    if(isMassPeaks(spec) | isMassPeaksList(spec)) {
+      message("Peaks are already present, skipping detection.\n")
+      return(spec)
+    }
+    stop("No valid spectra or peaks found.\n")
+  }
 
   peaks <- detectPeaks(spec,
                        SNR = SNR,

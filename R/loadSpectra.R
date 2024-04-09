@@ -11,8 +11,6 @@
 #' @importFrom MALDIquantForeign importBrukerFlex
 
 loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
-
-
   # get names of all anaylses
   analyses <- basename(list.dirs(Dir, recursive = F))
 
@@ -50,4 +48,47 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
   cat("\n")
 
   return(spectra)
+}
+
+#' load mzML spectra
+#'
+#' @param Dir         Character, parent directory of spectra.
+#' @param filter      Character vector, filter out spectra which match the given vector.
+#' @param nameSpectra Logical, if TRUE the spectra in the resulting list will be named according to the dirname.
+#'
+#' @return List of MALDIquant::MassSpectra
+#' @export
+#'
+#' @importFrom svMisc progress
+#' @importFrom MALDIquantForeign importMzMl
+loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE) {
+  # get names of all anaylses
+  analyses <- list.files(Dir, recursive = F)
+
+  # filter Calibration spectra
+  analyses <- analyses[which(!analyses %in% filter)]
+
+  spectra <- vector("list", length = length(analyses))
+
+  cat(MALDIcellassay:::timeNow(), "Loading spectra...\n\n")
+  counter <- 0
+  for (i in analyses) {
+    counter <- counter + 1
+    path <- file.path(Dir, i)
+
+    spec <- MALDIquantForeign::importMzMl(path = file.path(path), verbose = F)
+
+
+    if (nameSpectra) {
+      names(spec) <- rep(tools::file_path_sans_ext(i), length(spec))
+    }
+
+    spectra[[counter]] <- spec
+
+    svMisc::progress(counter / length(analyses) * 100)
+  }
+
+  cat("\n")
+
+  return(unlist(spectra))
 }

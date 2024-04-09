@@ -6,7 +6,6 @@
 \usage{
 fitCurve(
   spec,
-  conc = NA,
   unit = c("M", "mM", "µM", "nM", "pM", "fM"),
   varFilterMethod = c("mean", "median", "q25", "q75", "none"),
   monoisotopicFilter = FALSE,
@@ -23,8 +22,6 @@ fitCurve(
 }
 \arguments{
 \item{spec}{List of MALDIquant::MassSpectrum}
-
-\item{conc}{Numeric vector, concentration for each spectrum. Length has to be the same as length of spec}
 
 \item{unit}{Character, unit of concentration. Used to calculate the concentration in Moles so that pIC50 is correct.
 Set to "M" if you dont want changes in your concentrations.}
