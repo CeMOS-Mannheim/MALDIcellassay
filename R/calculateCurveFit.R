@@ -50,8 +50,8 @@ calculateCurveFit <- function(intmat, idx, ...) {
         )
       }, error = function(cond) {
         warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
-                " failed again. Re-trying with npar='3' setting and introducing a bit of noise (mean=0, sd=1e-5).\n")
-        resp <- resp + rnorm(length(resp), mean = 0, sd = 1e-5)
+                " failed again. Re-trying with npar='3' setting and introducing a bit of noise (mean=0, sd=1e-4).\n")
+        resp <- resp + rnorm(length(resp), mean = 0, sd = 1e-4)
         suppressWarnings( {
           nplr(x = concLog, y = resp, useLog = FALSE, npars = 3, silent = TRUE, ...)
         }
