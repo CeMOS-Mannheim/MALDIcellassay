@@ -54,7 +54,7 @@ calculateCurveFit <- function(intmat, idx, ...) {
       }, error = function(cond) {
         warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
                 " failed again. Forcing flat line.\n")
-        resp <- rnorm(n = length(resp))
+        resp <- rnorm(n = length(resp), sd = 0.5)
         suppressWarnings( {
           nplr(x = concLog, y = resp, useLog = FALSE, npars = 2, silent = TRUE, ...)
         }

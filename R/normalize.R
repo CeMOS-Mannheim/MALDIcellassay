@@ -70,7 +70,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
              targetMz = normMz,
              tol = normTol,
              allowNoMatch = TRUE,
-             tolppm = TRUE
+             tolppm = FALSE
            )
 
            norm_fac <- mzNorm$norm_factor
