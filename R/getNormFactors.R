@@ -17,18 +17,21 @@ getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch =
   plot_Idx <- sort(unique(peaksdf$plotIdx))
 
   if (tolppm) {
+    tol <- (tol / 1e6)
     resdf <- peaksdf %>%
-      mutate(match = ifelse(mz > targetMz - mz * (tol / 1e6) & mz < targetMz + mz * (tol / 1e6), TRUE, FALSE))
-    f_resdf <- resdf %>%
-      filter(match) %>%
-      arrange(plotIdx)
+      mutate(match = mz > targetMz - mz * tol& mz < targetMz + mz * tol)
   } else {
     resdf <- peaksdf %>%
       mutate(match = mz > targetMz - tol & mz < targetMz + tol)
-    f_resdf <- resdf %>%
-      filter(match) %>%
-      arrange(plotIdx)
   }
+
+  f_resdf <- resdf %>%
+    filter(match) %>%
+    mutate(mz.diff = round(targetMz - mz, 4)) %>%
+    group_by(plotIdx) %>%
+    filter(abs(mz.diff) == min(abs(mz.diff))) %>%
+    arrange(plotIdx)
+
 
   if (!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))) {
     if (!allowNoMatch) {
