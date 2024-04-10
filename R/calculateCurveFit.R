@@ -54,6 +54,8 @@ calculateCurveFit <- function(intmat, idx, ...) {
       }, error = function(cond) {
         warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
                 " failed again. Re-trying with npar='all' and more noise (µ=0, sd=1e-2).\n")
+        maxResp <- max(resp,
+                       na.rm = TRUE)
         resp <- resp + rnorm(length(resp),
                              mean = 0.1 * maxResp,
                              sd = 1e-2 * maxResp)
