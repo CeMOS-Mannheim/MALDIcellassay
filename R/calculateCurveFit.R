@@ -42,18 +42,23 @@ calculateCurveFit <- function(intmat, idx, ...) {
       )
     }, error = function(cond) {
       warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
-          " failed. Re-trying with npar='all' setting.\n")
+          " failed. Re-trying with npar='all' and additional noise (µ=0, sd=1e-4).\n")
       return(
         tryCatch(expr = {
+          resp <- resp + rnorm(length(resp),
+                               mean = 0,
+                               sd = 1e-4)
         suppressWarnings(
           nplr(x = concLog, y = resp, useLog = FALSE, npars = "all", silent = TRUE, ...)
         )
       }, error = function(cond) {
         warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
-                " failed again. Re-trying with npar='3' setting and introducing a bit of noise (mean=0, sd=1e-4).\n")
-        resp <- resp + rnorm(length(resp), mean = 0, sd = 1e-4)
+                " failed again. Re-trying with npar='all' and more noise (µ=0, sd=1e-2).\n")
+        resp <- resp + rnorm(length(resp),
+                             mean = 0.1 * maxResp,
+                             sd = 1e-2 * maxResp)
         suppressWarnings( {
-          nplr(x = concLog, y = resp, useLog = FALSE, npars = 3, silent = TRUE, ...)
+          nplr(x = concLog, y = resp, useLog = FALSE, npars = 2, silent = TRUE, ...)
         }
         )
       })
