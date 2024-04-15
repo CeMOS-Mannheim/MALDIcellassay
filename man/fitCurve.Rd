@@ -15,6 +15,7 @@ fitCurve(
   alignTol = 0.01,
   binTol = 2e-04,
   SNR = 3,
+  halfWindowSize = 3,
   allowNoMatches = TRUE,
   normMeth = c("mz", "TIC", "PQN", "median", "none"),
   SinglePointRecal = TRUE
@@ -41,6 +42,8 @@ Set to "M" if you dont want changes in your concentrations.}
 \item{binTol}{Numeric, tolerance for binning of peaks.}
 
 \item{SNR}{Numeric, signal to noise ratio for peak detection.}
+
+\item{halfWindowSize}{Numeric, defines the size of the window for peak detection. See \code{MALDIquant::detectPeaks()}.}
 
 \item{allowNoMatches}{Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop}
 
