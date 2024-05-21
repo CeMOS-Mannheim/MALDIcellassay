@@ -34,7 +34,9 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
     spots <- list.files(path, recursive = T)[grepl(pattern = "fid", x = list.files(path, recursive = T))]
     for (spot in spots) {
       counter <- counter + 1
-      spec <- MALDIquantForeign::importBrukerFlex(path = file.path(path, spot), verbose = F)
+      suppressWarnings(
+        spec <- MALDIquantForeign::importBrukerFlex(path = file.path(path, spot), verbose = F)
+        )
       # metaData(spec[[1]]) <- list(name = i)
       spectra[[counter]] <- spec[[1]]
 
