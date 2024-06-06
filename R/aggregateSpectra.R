@@ -64,6 +64,12 @@
                    idx <- match.closest(x = normMz,
                                              table = mz,
                                              tolerance = normTol)
+                   
+                   if(is.na(idx)) {
+                     # if normMz is also missing on original data
+                     # return the unchanged monoisotopic peaks
+                     return(peaks_mono[[i]])
+                   }
 
                    # re-add normMz to end of mz/intensity/snr vector
                    mz_mono <- append(mz_mono, mz[idx])

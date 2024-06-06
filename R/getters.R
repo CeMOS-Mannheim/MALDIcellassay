@@ -13,6 +13,22 @@ getConc <- function(object) {
 
 }
 
+#' get direction of curve
+#'
+#' @param model nplr model
+#'
+#' @return Numeric direction (positive or negative)
+#'
+#' @noRd
+getDirection <- function(model) {
+  y <- getYcurve(model)
+  
+  y0 <- y[1]
+  y1 <- y[length(y)]
+  
+  return(y1 - y0)
+}
+
 #' Extract the intensities of single spectra for a given mzIdx
 #'
 #' @param object         Object of class MALDIassay

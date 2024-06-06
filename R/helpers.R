@@ -21,22 +21,6 @@ transformConc2Log <- function(conc) {
   return(concLog)
 }
 
-#' get direction of curve
-#'
-#' @param model nplr model
-#'
-#' @return Numeric direction (positive or negative)
-#'
-#' @noRd
-getDirection <- function(model) {
-  y <- getYcurve(model)
-
-  y0 <- y[1]
-  y1 <- y[length(y)]
-
-  return(y1 - y0)
-}
-
 #' go up x folders
 #'
 #' @param path Character, Path
