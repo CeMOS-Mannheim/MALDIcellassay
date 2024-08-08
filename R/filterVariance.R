@@ -1,9 +1,9 @@
 #' Filter for high variance signals
 #'
-#' @param vars    Numeric vector, veriances of signals
+#' @param vars    Numeric vector, variances of signals
 #' @param method  Character, filtering method. One of "mean" (default), "median", "q25", "q75" (25 and 75% quantile) or "none".
 #'
-#' @return Indicies of spectra with a high variance
+#' @return Indices of spectra with a high variance
 #'
 #' @export
 #' 

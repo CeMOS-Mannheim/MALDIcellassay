@@ -235,7 +235,7 @@ getDirectory <- function(object) {
 #' Extract peak statistics
 #'
 #' @param object Object of class MALDIassay
-#' @param summarise Logical, return summarised results (one result per mz and not per mz and spectra)
+#' @param summarise Logical, return summarized results (one result per mz and not per mz and spectra)
 #'
 #' @return
 #' A tibble with peak statistics (R², fold-change, CV%, etc.)

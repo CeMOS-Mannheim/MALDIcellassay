@@ -1,8 +1,8 @@
 #' Check the recalibration of spectra from a MALDIassay object
 #'
-#' Dashed gray lines indicate the mz used for recalibration ± the tolerance.
-#' Red dashed line indicate the mz used for recalibration and solid dashed lines indicate peaks.
-#' The spectrum will show the peak used for recalibration ± 10x the tolerance.
+#' Dashed gray lines indicate the mz used for re-calibration ± the tolerance.
+#' Red dashed line indicate the mz used for re-calibration and solid dashed lines indicate peaks.
+#' The spectrum will show the peak used for re-calibration ± 10x the tolerance.
 #'
 #' @param object  Object of class MALDIassay
 #' @param idx     Numeric, index of spectrum to plot

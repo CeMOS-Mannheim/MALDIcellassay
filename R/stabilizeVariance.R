@@ -1,4 +1,4 @@
-#' Stabilize varience in spectra
+#' Stabilize variance in spectra
 #'
 #' @param spec             List of MALDIquant::MassSpectrum
 #' @param method           Method for stabilization

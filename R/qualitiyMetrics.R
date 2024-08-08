@@ -142,7 +142,7 @@ calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
 #'
 #' @details
 #' The strictly standardized mean difference (SSMD) is a measure of effect size.
-#' It is the mean divided by the standard deviation of a difference between the positve and negative control.
+#' It is the mean divided by the standard deviation of a difference between the positive and negative control.
 #'
 #' \deqn{γ=|\mu_n - \muμ_p|/\sqrt{\sigma_n^2 + \sigma_p^2}}
 #'
