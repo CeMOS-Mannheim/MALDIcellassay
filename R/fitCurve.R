@@ -29,7 +29,7 @@
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
 
 fitCurve <- function(spec,
-                     unit = c("M", "mM", "µM", "nM", "pM", "fM"),
+                     unit = c("M", "mM", "uM", "nM", "pM", "fM"),
                      varFilterMethod = c("mean", "median", "q25", "q75", "none"),
                      monoisotopicFilter = FALSE,
                      averageMethod = c("mean", "median", "sum"),
@@ -52,7 +52,7 @@ fitCurve <- function(spec,
   unitFactor <- switch (unit,
                         "M" = 1,
                         "mM" = 1e-3,
-                        "µM" = 1e-6,
+                        "uM" = 1e-6,
                         "nM" = 1e-9,
                         "pM" = 1e-12,
                         "fM" = 1e-15

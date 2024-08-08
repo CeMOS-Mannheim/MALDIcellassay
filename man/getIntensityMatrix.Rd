@@ -9,7 +9,9 @@ getIntensityMatrix(object, avg = FALSE, excludeNormMz = FALSE)
 \arguments{
 \item{object}{Object of class MALDIassay}
 
-\item{avg}{logical, return single spectra intensity matrix (default) or average spectra intensity matrix}
+\item{avg}{Logical, return single spectra intensity matrix (default) or average spectra intensity matrix}
+
+\item{excludeNormMz}{Logical, exclude normMz from intensity matrix.}
 }
 \value{
 A matrix with columns as \emph{m/z} values and rows as concentrations/spectra

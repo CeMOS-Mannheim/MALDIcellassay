@@ -8,6 +8,8 @@ getFittingParameters(object, summarise = FALSE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}
+
+\item{summarise}{Logical, remove everything other then npar and mz from result.}
 }
 \value{
 tibble of fitting parameters for each fitted m/z-value

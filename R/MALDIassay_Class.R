@@ -38,7 +38,7 @@ show_MALDIassay <- function(object) {
 
   # Compose normalization information
   if (getNormMethod(object) == "mz") {
-    normStr <- paste("Normalization on m/z", mz, "±", tol, "Da.\n")
+    normStr <- paste("Normalization on m/z", mz, "\u00B1", tol, "Da.\n")
   } else {
     normStr <- paste("Normalization using", getNormMethod(object), "method.\n")
   }
@@ -62,7 +62,7 @@ show_MALDIassay <- function(object) {
   cat("using variance filtering method:", paste0(varFilterMethod, ".\n"))
   cat("\n")
 
-  cat("Top5-features based on Fold-Change and R²:\n")
+  cat("Top5-features based on Fold-Change and R\u00B2:\n")
   print(getPeakStatistics(object, summarise = TRUE) %>%
     arrange(desc(FC), desc(R2)) %>%
     as.data.frame() %>%

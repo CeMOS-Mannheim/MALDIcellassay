@@ -22,6 +22,8 @@
 #' @param spec     List of MALDIquant::MassSpectrum
 #' @param peaks    List of MALDIquant::MassPeaks
 #' @param normMeth Character, normalization method. Options are "TIC", "PQN", "median" and "mz".
+#' @param normMz   Numeric, mz used to normalize.
+#' @param normTol  Numeric, tolerance around normMz.
 #'
 #' @return
 #' List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::MassPeaks

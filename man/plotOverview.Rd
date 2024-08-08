@@ -11,9 +11,9 @@ plotOverview(object, fc_thresh = 1, R2_tresh = 0, markValue = NA)
 
 \item{fc_thresh}{numeric, min. Fold-change (max/min value) to plot curve}
 
-\item{markValue}{numeric, value to display as vertical line in plots for reference}
+\item{R2_tresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
 
-\item{R2_thresh}{numeric, min. R-squared (goodness of curve fit) to plot curve}
+\item{markValue}{numeric, value to display as vertical line in plots for reference}
 }
 \value{
 arranged plots

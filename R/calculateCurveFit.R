@@ -42,7 +42,7 @@ calculateCurveFit <- function(intmat, idx, ...) {
       )
     }, error = function(cond) {
       warning("m/z ", round(as.numeric(colnames(intmat)[j]), 3),
-          " failed. Re-trying with npar='all' and additional noise (µ=0, sd=1e-4).\n")
+          " failed. Re-trying with npar='all' and additional noise (mean=0, sd=1e-4).\n")
       return(
         tryCatch(expr = {
           resp <- resp + rnorm(length(resp),

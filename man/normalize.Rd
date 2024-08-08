@@ -12,6 +12,10 @@ normalize(spec, peaks, normMeth, normMz, normTol)
 \item{peaks}{List of MALDIquant::MassPeaks}
 
 \item{normMeth}{Character, normalization method. Options are "TIC", "PQN", "median" and "mz".}
+
+\item{normMz}{Numeric, mz used to normalize.}
+
+\item{normTol}{Numeric, tolerance around normMz.}
 }
 \value{
 List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::MassPeaks

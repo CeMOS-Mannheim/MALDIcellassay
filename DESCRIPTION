@@ -1,14 +1,15 @@
 Package: MALDIcellassay
 Type: Package
-Title: Automated (untrageted) screening of MALDI cell based assays based on dose-response curve fitting. 
+Title: Automated (untrageted) screening of MALDI cell based assays based on dose-response curve fitting 
 Version: 0.4.40
 Author: Thomas Enzlein 
 Maintainer: Thomas Enzlein <t.enzlein@hs-mannheim.de>
 Description: Detects high variance signals and generates dose-response curves to further investigate candidate signals.
 License: MIT + file LICENSE
-Imports: ggplot2, nplr, dplyr, tidyr, forcats, ggpubr, scales, MALDIquant, MALDIquantForeign, tibble, svMisc
+Imports: ggplot2, nplr, dplyr, tidyr, forcats, ggpubr, scales, MALDIquant, MALDIquantForeign, tibble, svMisc, purrr
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression:xz
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Suggests: 

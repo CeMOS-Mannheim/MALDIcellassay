@@ -10,8 +10,6 @@ sdMassSpectraFun(l, mergeMetaData = TRUE)
 \item{l}{see MALDIquant}
 
 \item{mergeMetaData}{see MALDIquant}
-
-\item{fun}{see MALDIquant}
 }
 \value{
 see MALDIquant

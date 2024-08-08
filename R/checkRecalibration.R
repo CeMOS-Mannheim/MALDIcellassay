@@ -72,7 +72,7 @@ checkRecalibration <- function(object, idx) {
     geom_vline(aes(xintercept = normMz), alpha = 0.6, linetype = "dashed", col = "red") +
     scale_color_viridis_d(end = 0.75, option = "C") +
     labs(
-      subtitle = paste("Dashed lines:", normMz, "±", tol, "m/z"),
+      subtitle = paste("Dashed lines:", normMz, "\u00B1", tol, "m/z"),
       col = "Conc.",
       x = "m/z",
       y = y_lab)

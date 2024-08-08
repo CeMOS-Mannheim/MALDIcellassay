@@ -85,8 +85,9 @@ stopIfNotIsMALDIassay <- function(object) {
 #' Write ggplot objects to disk as png
 #'
 #' @param object    object of class MALDIassay
-#' @param fc_tresh  numeric, max/min fold-change above which plots should be generated
-#' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
+#' @param fc_thresh  numeric, max/min fold-change above which plots should be generated
+#' @param R2_tresh numeric, min. R-squared (goodness of curve fit) to plot curve
+#' @param dir       character, path to save plots.
 #'
 #' @importFrom ggplot2 ggsave
 #'
@@ -115,7 +116,7 @@ savePlots <- function(object, dir = NULL, fc_thresh = 1, R2_tresh = 0) {
 #'
 #' @param object object of class MALDIassay
 #' @param fc_thresh numeric, min. Fold-change (max/min value) to plot curve
-#' @param R2_thresh numeric, min. R-squared (goodness of curve fit) to plot curve
+#' @param R2_tresh numeric, min. R-squared (goodness of curve fit) to plot curve
 #' @param markValue numeric, value to display as vertical line in plots for reference
 #'
 #' @return

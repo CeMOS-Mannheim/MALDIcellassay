@@ -8,6 +8,8 @@ getAllMz(object, excludeNormMz = FALSE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}
+
+\item{excludeNormMz}{Logical, remove normMz from list of mz values.}
 }
 \value{
 numeric vector of mz values

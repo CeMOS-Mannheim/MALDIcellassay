@@ -21,7 +21,6 @@ colSdColMeans <- function(x, na.rm = TRUE) {
 #' Still fork from sgibb MALDIquant
 #'
 #' @param l       see MALDIquant
-#' @param fun     see MALDIquant
 #' @param mergeMetaData see MALDIquant
 #'
 #' @return see MALDIquant

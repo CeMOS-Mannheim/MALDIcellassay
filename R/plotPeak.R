@@ -31,7 +31,7 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     mutate(conc = as.numeric(conc)) %>%
     mutate(conc = fct_reorder(scales::scientific(conc), conc))
 
-  title <- paste0("Profile of m/z ", round(mz, 2), " ± ", round(tol, 2), "Da")
+  title <- paste0("Profile of m/z ", round(mz, 2), " \u00B1 ", round(tol, 2), "Da")
 
   p <-ggplot() +
     geom_rect(aes(xmin = mz - getBinTol(object) * mz,

@@ -54,8 +54,9 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 
 #' Get the intensity matrix of single spectra for all fitted curves
 #'
-#' @param object Object of class MALDIassay
-#' @param avg    logical, return single spectra intensity matrix (default) or average spectra intensity matrix
+#' @param object          Object of class MALDIassay
+#' @param avg             Logical, return single spectra intensity matrix (default) or average spectra intensity matrix
+#' @param excludeNormMz   Logical, exclude normMz from intensity matrix.
 #'
 #' @details
 #' Note that the returned matrix only contains *m/z* values that were actually fitted.
@@ -317,7 +318,8 @@ getMzFromMzIdx <- function(object, mzIdx) {
 
 #' Get all mz value of an MALDIassay-object
 #'
-#' @param object Object of class MALDIassay
+#' @param object        Object of class MALDIassay
+#' @param excludeNormMz Logical, remove normMz from list of mz values.
 #'
 #' @return
 #' numeric vector of mz values
@@ -368,6 +370,7 @@ getSpots <- function(object, singleSpec = TRUE) {
 #' Get fitting parameters
 #'
 #' @param object      Object of class MALDIassay
+#' @param summarise   Logical, remove everything other then npar and mz from result.
 #'
 #' @return
 #' tibble of fitting parameters for each fitted m/z-value
