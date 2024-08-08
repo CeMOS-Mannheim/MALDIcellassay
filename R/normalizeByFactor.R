@@ -5,7 +5,7 @@
 #'
 #' @return             List of normalized Spectra or Peaks
 #'
-#' @importFrom MALDIquant intensity
+#' @importFrom MALDIquant intensity intensity<-
 #' @importFrom purrr map
 #' @export
 normalizeByFactor <- function(spec, factors) {
