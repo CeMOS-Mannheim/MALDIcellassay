@@ -68,7 +68,8 @@ First we need to detect the peaks, then we convert the peaks to a data.frame and
 
 ```{r mzShift}
 peaks <- MALDIquant::detectPeaks(spec, method = "SuperSmoother", SNR = 3)
-mz_shift <- getMzShift(peaksdf = peaks2df(peaks), targetMz = 760.585, tol = 500)
+names(peaks) <- names(spec)
+mz_shift <- getMzShift(peaks = peaks, targetMz = 760.585, tol = 500)
 summary(mz_shift$mzshift)
 
 ```
@@ -135,14 +136,10 @@ As said during the introduction we did each step manually.
 To do what we did in an automated way for each signal of interest use the following function:
 ```{r fitCruve, eval = FALSE}
 fitCurve(spec = spec,
-         dir = getwd(),
-         conc = conc, 
-         saveIntensityMatrix = TRUE, 
          SinglePointRecal = TRUE, 
          normMz = 760.585, 
          alignTol = 500, 
-         normTol = 100, 
-         markValue= log10(0.5))
+         normTol = 100)
 ```
 
 ## Session Info

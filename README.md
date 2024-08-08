@@ -1,5 +1,5 @@
 # MALDIcellassay
-Detects high variance signals and generates dose-response curves to futher investigate candidate signals from MALDI cell based assays.
+Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays.
 More information in Unger et. Al. 2021
 
 ## Main functionality

@@ -20,17 +20,17 @@
 
 \item{spec}{List of MALDIquant::MassSpectrum objects.}
 
-\item{SinglePointRecal}{Logcial, perform single point recalibration}
+\item{SinglePointRecal}{Logical, perform single point re-calibration}
 
-\item{normMz}{Numeric, m/z used for normalization and recalibration.}
+\item{normMz}{Numeric, m/z used for normalization and re-calibration.}
 
-\item{normTol}{Numeric, tolerance aroud \code{normMz} in Da.}
+\item{normTol}{Numeric, tolerance around \code{normMz} in Da.}
 
 \item{normMeth}{Character, normalization method. Options are: "TIC", "median", "PQN" and "mz".}
 
 \item{alignTol}{Numeric, tolerance for alignment in Da.}
 
-\item{allowNoMatches}{Logical, allow no matches for normalization using "mz" method and/or recalibration.}
+\item{allowNoMatches}{Logical, allow no matches for normalization using "mz" method and/or re-calibration.}
 }
 \description{
 Internal function to perform preprocessing of spectra

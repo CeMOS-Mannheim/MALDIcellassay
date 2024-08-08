@@ -15,7 +15,7 @@ checkRecalibration(object, idx)
 ggplot object
 }
 \description{
-Dashed grey lines indicate the mz used for recalibration ± the tolerance.
+Dashed gray lines indicate the mz used for recalibration ± the tolerance.
 Red dashed line indicate the mz used for recalibration and solid dashed lines indicate peaks.
 The spectrum will show the peak used for recalibration ± 10x the tolerance.
 }

@@ -11,7 +11,9 @@
   monoisotopicFilter,
   binTol,
   normMz,
-  normTol
+  normTol,
+  halfWindowSize,
+  peakMethod = "SuperSmoother"
 )
 }
 \arguments{
@@ -28,6 +30,10 @@
 \item{normMz}{Numeric, m/z value used for normalization/re-calibration}
 
 \item{normTol}{Numeric, tolerance around \code{normMz} in Da.}
+
+\item{halfWindowSize}{Numeric, halfWindowSize for peak detection.}
+
+\item{peakMethod}{Character, method for peak detection. Either "SuperSmoother" or "MAD".}
 }
 \value{
 List of lists with intensity matrix, average spectra and average peaks

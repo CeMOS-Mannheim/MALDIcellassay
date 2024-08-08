@@ -13,9 +13,9 @@
 
 \item{targetMz}{Numeric, target mass}
 
-\item{tolppm}{Logical, is the tolerance provided in ppm (TRUE) or Daltion (FALSE)}
+\item{tolppm}{Logical, is the tolerance provided in ppm (TRUE) or Dalton (FALSE)}
 
-\item{allowNoMatch}{Logical, stop if targetMz is not fround in single spectrum?
+\item{allowNoMatch}{Logical, stop if targetMz is not found in single spectrum?
 If TRUE spectra without targetMz match will be excluded.}
 }
 \value{

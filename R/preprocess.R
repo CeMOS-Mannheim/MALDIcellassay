@@ -2,12 +2,12 @@
 #'
 #' @param peaks_single        List of MALDIquant::MassPeaks objects.
 #' @param spec                List of MALDIquant::MassSpectrum objects.
-#' @param SinglePointRecal    Logcial, perform single point recalibration
-#' @param normMz              Numeric, m/z used for normalization and recalibration.
-#' @param normTol             Numeric, tolerance aroud `normMz` in Da.
+#' @param SinglePointRecal    Logical, perform single point re-calibration
+#' @param normMz              Numeric, m/z used for normalization and re-calibration.
+#' @param normTol             Numeric, tolerance around `normMz` in Da.
 #' @param normMeth            Character, normalization method. Options are: "TIC", "median", "PQN" and "mz".
 #' @param alignTol            Numeric, tolerance for alignment in Da.
-#' @param allowNoMatches      Logical, allow no matches for normalization using "mz" method and/or recalibration.
+#' @param allowNoMatches      Logical, allow no matches for normalization using "mz" method and/or re-calibration.
 .preprocess <- function(peaks_single,
                         spec,
                         SinglePointRecal,

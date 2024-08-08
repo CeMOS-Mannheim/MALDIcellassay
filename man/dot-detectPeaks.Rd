@@ -4,7 +4,7 @@
 \alias{.detectPeaks}
 \title{Detect peaks}
 \usage{
-.detectPeaks(spec, SNR, method = "SuperSmoother", halfWindowSize = 3)
+.detectPeaks(spec, SNR, method = "SuperSmoother", halfWindowSize = 20)
 }
 \arguments{
 \item{spec}{MALDIquant::MassSpectrum or list thereof}
