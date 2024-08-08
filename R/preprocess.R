@@ -8,6 +8,8 @@
 #' @param normMeth            Character, normalization method. Options are: "TIC", "median", "PQN" and "mz".
 #' @param alignTol            Numeric, tolerance for alignment in Da.
 #' @param allowNoMatches      Logical, allow no matches for normalization using "mz" method and/or re-calibration.
+#' 
+#' @importFrom MALDIquant determineWarpingFunctions warpMassSpectra warpMassPeaks referencePeaks
 .preprocess <- function(peaks_single,
                         spec,
                         SinglePointRecal,
@@ -37,7 +39,7 @@
   }
 
   #### normalization ####
-  cat(MALDIcellassay:::timeNow(), "normalizing... \n")
+  cat(timeNow(), "normalizing... \n")
   norm <- normalize(spec = spec,
                     peaks = peaks_single,
                     normMeth = normMeth,
@@ -52,7 +54,7 @@
 
   #### alignment ####
   if(alignTol > 0) {
-    cat(MALDIcellassay:::timeNow(), "aligning spectra... \n")
+    cat(timeNow(), "aligning spectra... \n")
     wf <- determineWarpingFunctions(l = peaks_single,
                                     reference = referencePeaks(peaks_single,
                                                                minFrequency = 0.75,

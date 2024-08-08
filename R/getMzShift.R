@@ -11,7 +11,7 @@
 #'                                       MzShift The mass shift for each spectrum
 #'                                       specIdx The index of the spectra with a match for targetMz
 #'
-#' @importFrom dplyr %>% mutate filter group_by arrange pull
+#' @importFrom dplyr %>% mutate filter group_by arrange pull .data
 
 .getMzShift <- function(peaksdf, tol, targetMz, tolppm = TRUE, allowNoMatch = TRUE) {
   plot_Idx <- sort(unique(peaksdf$plotIdx))
@@ -22,21 +22,21 @@
 
 
   f_resdf <- peaksdf %>%
-    mutate(match = mz > targetMz - tol & mz < targetMz + tol) %>%
+    mutate(match = .data$mz > targetMz - tol & .data$mz < targetMz + tol) %>%
     filter(match) %>%
-    mutate(mz.diff = round(targetMz - mz, 4)) %>%
-    group_by(plotIdx) %>%
-    filter(abs(mz.diff) == min(abs(mz.diff))) %>%
-    arrange(plotIdx)
+    mutate(mz.diff = round(targetMz - .data$mz, 4)) %>%
+    group_by(.data$plotIdx) %>%
+    filter(abs(.data$mz.diff) == min(abs(.data$mz.diff))) %>%
+    arrange(.data$plotIdx)
 
 
 
-  if (!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))) {
+  if (!all(plot_Idx %in% (f_resdf %>% pull(.data$plotIdx)))) {
     if (!allowNoMatch) {
       stop("Could not find ", targetMz, " for all spectra! Consider adjusting tol.\n")
     }
-    warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(plotIdx)))), collapse = ", "), ".\n")
-    specIdx <- sort(which(plot_Idx %in% (f_resdf %>% pull(plotIdx))))
+    warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(.data$plotIdx)))), collapse = ", "), ".\n")
+    specIdx <- sort(which(plot_Idx %in% (f_resdf %>% pull(.data$plotIdx))))
   } else {
     specIdx <- plot_Idx
   }
@@ -45,7 +45,7 @@
   }
 
   return(list(
-    mzshift = pull(f_resdf, mz.diff),
+    mzshift = pull(f_resdf, .data$mz.diff),
     specIdx = specIdx
   ))
 }
@@ -83,7 +83,7 @@ getMzShift <- function(peaks,
   )
   cat("found mz", targetMz, "in", length(mzShift$specIdx), "/",
       length(peaks), "spectra\n")
-  cat(MALDIcellassay:::timeNow(), "mzshift was", mean(mzShift$mzshift),
+  cat(timeNow(), "mzshift was", mean(mzShift$mzshift),
       "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")
 
   if(length(unique(nm)) != length(unique(nm[mzShift$specIdx]))) {

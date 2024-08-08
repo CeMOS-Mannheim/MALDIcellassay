@@ -10,8 +10,9 @@
 #' List of curve fits.
 #' @export
 #' @importFrom nplr nplr convertToProp
-#' @importFrom dplyr mutate arrange %>%
+#' @importFrom dplyr mutate arrange %>% .data
 #' @importFrom tibble as_tibble
+#' @importFrom stats rnorm
 calculateCurveFit <- function(intmat, idx, ...) {
   if (length(rownames(intmat)) == 0) {
     stop("intmat must have concentrations as rownames!\n")
@@ -25,8 +26,8 @@ calculateCurveFit <- function(intmat, idx, ...) {
     df <- intmat[, idx[j]] %>%
       as_tibble() %>%
       mutate(conc = rownames(intmat)) %>%
-      mutate(conc = as.numeric(conc)) %>%
-      arrange(conc)
+      mutate(conc = as.numeric(.data$conc)) %>%
+      arrange(.data$conc)
 
     # transform concentrations to log10 and handle zero concentrations.
     concLog <- transformConc2Log(df$conc)

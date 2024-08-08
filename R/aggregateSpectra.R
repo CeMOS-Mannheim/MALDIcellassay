@@ -12,6 +12,8 @@
 #'
 #' @return
 #' List of lists with intensity matrix, average spectra and average peaks
+#' 
+#' @importFrom MALDIquant monoisotopicPeaks
 .aggregateSpectra <- function(spec,
                               averageMethod,
                               SNR,
@@ -29,14 +31,14 @@
                                  labels = nm,
                                  method = averageMethod)
 
-  cat(MALDIcellassay:::timeNow(),
+  cat(timeNow(),
       "building intensity matrix and applying variance filter... \n")
   peaks <- .detectPeaks(avg_spec, method = peakMethod, 
                         SNR = SNR, 
                         halfWindowSize = halfWindowSize)
 
   if(monoisotopicFilter) {
-    cat(MALDIcellassay:::timeNow(),
+    cat(timeNow(),
         "Filtering monoisotopic peaks...\n")
     # set it to be less restrictive then default settings
     peaks_mono <- monoisotopicPeaks(peaks,

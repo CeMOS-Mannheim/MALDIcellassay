@@ -51,18 +51,18 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
     df_singlePeaks <- tibble(
       x = getConc(object),
       int = int) %>%
-      group_by(x) %>%
+      group_by(.data$x) %>%
       summarise(
-        sd = sd(int),
-        sem = sd/sqrt(n())
+        sd = sd(.data$int),
+        sem = .data$sd/sqrt(n())
       )
 
     df_P <- df_P %>%
-      mutate(sem = pull(df_singlePeaks, sem),
-             sd = pull(df_singlePeaks, sd))
+      mutate(sem = pull(df_singlePeaks, .data$sem),
+             sd = pull(df_singlePeaks, .data$sd))
 
-    p <- ggplot(data = df_P, aes(x = x, y = y)) +
-      geom_line(data = df_C, aes(x = xC, y = yC), size = 1, alpha = 0.75) +
+    p <- ggplot(data = df_P, aes(x = .data$x, y = .data$y)) +
+      geom_line(data = df_C, aes(x = .data$xC, y = .data$yC), size = 1, alpha = 0.75) +
       geom_point(size = 3) +
       scale_x_continuous(labels = scales::scientific(c(0, 10^df_P$x[-1])), breaks = df_P$x) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -82,9 +82,9 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
       p <- p +
         geom_errorbar(
           aes(
-            y = y,
-            ymin = y - sem,
-            ymax = y + sem
+            y = .data$y,
+            ymin = .data$y - .data$sem,
+            ymax = .data$y + .data$sem
           ),
           alpha = 0.5,
           width = 0.1,
@@ -96,9 +96,9 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
       p <- p +
         geom_errorbar(
           aes(
-            y = y,
-            ymin = y - sd,
-            ymax = y + sd
+            y = .data$y,
+            ymin = .data$y - .data$sd,
+            ymax = .data$y + .data$sd
           ),
           alpha = 0.5,
           width = 0.1,

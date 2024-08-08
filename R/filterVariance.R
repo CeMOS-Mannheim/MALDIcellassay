@@ -6,6 +6,8 @@
 #' @return Indicies of spectra with a high variance
 #'
 #' @export
+#' 
+#' @importFrom stats median quantile
 filterVariance <- function(vars, method = c("mean", "median", "q25", "q75", "none")) {
   method <- match.arg(method)
   switch(method,

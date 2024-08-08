@@ -72,7 +72,7 @@ loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE) {
 
   spectra <- vector("list", length = length(analyses))
 
-  cat(MALDIcellassay:::timeNow(), "Loading spectra...\n\n")
+  cat(timeNow(), "Loading spectra...\n\n")
   counter <- 0
   for (i in analyses) {
     counter <- counter + 1

@@ -1,27 +1,8 @@
-.getPQN <- function(l) {
-  ## copied and modified from MALDIquant https://github.com/sgibb/MALDIquant/blob/master/R/calibrateIntensity-functions.R
-
-  ## 1. normalization
-  l <- calibrateIntensity(l, method="TIC")
-  ## 2. median spectrum
-  reference <- .averageMassSpectra(l, fun=.colMedians, mergeMetaData=FALSE)
-
-  factor <- vapply(l,
-                   function(x) {
-                     ## 3. quotient
-                     q <- approxfun(x)(reference@mass) / reference@intensity
-                     ## 4. median of quotient
-                     m <- median(q, na.rm=TRUE)
-                   }, numeric(1))
-  return(factor)
-}
-
-
 #' Normalize spectra and peaks
 #'
 #' @param spec     List of MALDIquant::MassSpectrum
 #' @param peaks    List of MALDIquant::MassPeaks
-#' @param normMeth Character, normalization method. Options are "TIC", "PQN", "median" and "mz".
+#' @param normMeth Character, normalization method. Options are "TIC", "median" and "mz".
 #' @param normMz   Numeric, mz used to normalize.
 #' @param normTol  Numeric, tolerance around normMz.
 #'
@@ -29,6 +10,7 @@
 #' List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::MassPeaks
 #'
 #' @export
+#' @importFrom MALDIquant totalIonCurrent
 normalize <- function(spec, peaks, normMeth, normMz, normTol) {
   nm <- names(spec)
   stopifnot(!is.null(nm))
@@ -42,15 +24,6 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
            peaks <- normalizeByFactor(peaks, tic)
 
            norm_fac <- tic
-           included_specIdx <- 1:length(spec)
-         },
-         "PQN" = {
-           pqn <- .getPQN(spec)
-
-           spec <- normalizeByFactor(spec, pqn)
-           peaks <- normalizeByFactor(peaks, pqn)
-
-           norm_fac <- pqn
            included_specIdx <- 1:length(spec)
          },
          "median" = {

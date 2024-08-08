@@ -13,6 +13,8 @@
 #' @return
 #' logical vector, TRUE for detected outliers.
 #' @export
+#' 
+#' @importFrom stats qnorm
 calculateChauvenetCriterion <- function(x) {
   mean <- mean(x, na.rm = TRUE)
   sd <- sd(x, na.rm = TRUE)

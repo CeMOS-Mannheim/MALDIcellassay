@@ -8,6 +8,8 @@
 #' @return MALDIquant::MassPeaks list with extracted intensities from spec at m/z of peaks = pseudo peaks.
 #' Useful in combination with sdMassSpectrum to get standard deviation of peaks as intensity matrix.
 #' @export
+#' 
+#' @importFrom MALDIquant snr
 extractIntensity <- function(mz, peaks, spec, tol) {
   if(!(length(peaks) == length(spec))) {
     stop("length of peaks and spec must match.\n")
@@ -20,10 +22,10 @@ extractIntensity <- function(mz, peaks, spec, tol) {
 
                            peak_mz_idx <- match.closest(x = mz,
                                                         table = mz_peaks,
-                                                        tol = tol)
+                                                        tolerance = tol)
                            spec_mz_idx <- match.closest(x = mz,
                                                         table = mz_spec,
-                                                        tol = Inf)
+                                                        tolerance = Inf)
 
                            # extract intensity from peaks if possible
                            # otherwise use noise from spectra

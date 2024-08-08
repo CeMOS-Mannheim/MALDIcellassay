@@ -248,22 +248,22 @@ getPeakStatistics <- function(object, summarise = FALSE) {
 
   if (summarise) {
     stats <- stats %>%
-      mutate(mz = as.numeric(mz)) %>%
-      group_by(mz, mzIdx) %>%
+      mutate(mz = as.numeric(.data$mz)) %>%
+      group_by(.data$mz, .data$mzIdx) %>%
       summarise(
-        pIC50 = first(pIC50),
-        R2 = first(R2),
-        wgof = first(wgof),
-        min = mean(min),
-        max = mean(max),
-        FC = first(fc)
+        pIC50 = first(.data$pIC50),
+        R2 = first(.data$R2),
+        wgof = first(.data$wgof),
+        min = mean(.data$min),
+        max = mean(.data$max),
+        FC = first(.data$fc)
       ) %>%
       ungroup() %>%
-      arrange(mzIdx) %>%
+      arrange(.data$mzIdx) %>%
       left_join(getFittingParameters(object, summarise = TRUE),
-                by = join_by(mz)) %>%
-      mutate(symetric = ifelse(npar < 5, TRUE, FALSE)) %>%
-      select(-npar)
+                by = join_by(.data$mz)) %>%
+      mutate(symetric = ifelse(.data$npar < 5, TRUE, FALSE)) %>%
+      select(-.data$npar)
   }
 
   return(stats)
@@ -395,12 +395,12 @@ getFittingParameters <- function(object, summarise = FALSE) {
                      })
 
   df <- bind_rows(res_list, .id = "mzIdx") %>%
-    mutate(mzIdx = as.numeric(mzIdx))
+    mutate(mzIdx = as.numeric(.data$mzIdx))
 
   if(summarise) {
     df <- df %>%
-      mutate(mz = as.numeric(mz)) %>%
-      select(mz, npar)
+      mutate(mz = as.numeric(.data$mz)) %>%
+      select(.data$mz, .data$npar)
   }
 
   return(df)

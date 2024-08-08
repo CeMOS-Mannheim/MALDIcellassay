@@ -19,26 +19,26 @@ getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch =
   if (tolppm) {
     tol <- (tol / 1e6)
     resdf <- peaksdf %>%
-      mutate(match = mz > targetMz - mz * tol& mz < targetMz + mz * tol)
+      mutate(match = .data$mz > targetMz - .data$mz * tol & .data$mz < targetMz + .data$mz * tol)
   } else {
     resdf <- peaksdf %>%
-      mutate(match = mz > targetMz - tol & mz < targetMz + tol)
+      mutate(match = .data$mz > targetMz - tol & .data$mz < targetMz + tol)
   }
 
   f_resdf <- resdf %>%
     filter(match) %>%
-    mutate(mz.diff = round(targetMz - mz, 4)) %>%
-    group_by(plotIdx) %>%
-    filter(abs(mz.diff) == min(abs(mz.diff))) %>%
-    arrange(plotIdx)
+    mutate(mz.diff = round(targetMz - .data$mz, 4)) %>%
+    group_by(.data$plotIdx) %>%
+    filter(abs(.data$mz.diff) == min(abs(.data$mz.diff))) %>%
+    arrange(.data$plotIdx)
 
 
-  if (!all(plot_Idx %in% (f_resdf %>% pull(plotIdx)))) {
+  if (!all(plot_Idx %in% (f_resdf %>% pull(.data$plotIdx)))) {
     if (!allowNoMatch) {
       stop("Could not find ", targetMz, " for all spectra! Consider adjusting tol.\n")
     }
-    warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(plotIdx)))), collapse = ", "), ".\n")
-    specIdx <- which(plot_Idx %in% (f_resdf %>% pull(plotIdx)))
+    warning("Could not find ", targetMz, " in spectrum ", paste(which(!(plot_Idx %in% (f_resdf %>% pull(.data$plotIdx)))), collapse = ", "), ".\n")
+    specIdx <- which(plot_Idx %in% (f_resdf %>% pull(.data$plotIdx)))
   } else {
     specIdx <- plot_Idx
   }
@@ -46,7 +46,7 @@ getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch =
     stop("Could not find targetMz in any spectrum! Consider adjusting tol.\n")
   }
   return(list(
-    norm_factor = pull(f_resdf, int),
+    norm_factor = pull(f_resdf, .data$int),
     specIdx = specIdx
   ))
 }

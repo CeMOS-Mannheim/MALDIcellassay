@@ -8,6 +8,8 @@
 #'
 #' @return sd
 #' @export
+#' 
+#' @importFrom MALDIquant isEmpty
 colSdColMeans <- function(x, na.rm = TRUE) {
   if (na.rm) {
     n <- colSums(!is.na(x)) # thanks @flodel

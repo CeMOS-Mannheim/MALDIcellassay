@@ -16,9 +16,10 @@
 #' @importFrom tibble tibble
 #' @importFrom purrr map
 #' @importFrom scales scientific
+#' @importFrom methods is
 
 checkRecalibration <- function(object, idx) {
-  if (!class(object) == "MALDIassay") {
+  if (!is(object, "MALDIassay")) {
     stop("object needs to be of class MALDIassay.")
   }
 
@@ -46,7 +47,7 @@ checkRecalibration <- function(object, idx) {
     )
   }) %>%
     bind_rows(.id = "conc") %>%
-    mutate(conc = scientific(as.numeric(conc)))
+    mutate(conc = scientific(as.numeric(.data$conc)))
 
   peakdf <- map(peaks, function(x) {
     df <- tibble(
@@ -55,17 +56,17 @@ checkRecalibration <- function(object, idx) {
     )
   }) %>%
     bind_rows(.id = "conc") %>%
-    mutate(conc = scientific(as.numeric(conc)))
+    mutate(conc = scientific(as.numeric(.data$conc)))
 
   p <-
     df %>%
-    filter(between(mass, lowerVal, upperVal)) %>%
-    ggplot(aes(x = mass, y = intensity, col = factor(conc))) +
+    filter(between(.data$mass, .data$lowerVal, .data$upperVal)) %>%
+    ggplot(aes(x = .data$mass, y = .data$intensity, col = factor(.data$conc))) +
     geom_line() +
     geom_linerange(
       data = peakdf %>%
-        filter(between(mass, lowerVal, upperVal)),
-      aes(x = mass, ymin = 0, ymax = intensity)
+        filter(between(.data$mass, .data$lowerVal, .data$upperVal)),
+      aes(x = .data$mass, ymin = 0, ymax = .data$intensity)
     ) +
     geom_vline(aes(xintercept = normMz - tol), alpha = 0.6, linetype = "dashed") +
     geom_vline(aes(xintercept = normMz + tol), alpha = 0.6, linetype = "dashed") +

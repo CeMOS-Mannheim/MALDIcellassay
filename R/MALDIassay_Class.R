@@ -6,6 +6,7 @@
 #'
 #' @importFrom dplyr arrange group_by first summarise desc
 #' @importFrom MALDIquant mass
+#' @importFrom utils head
 
 
 setClass("MALDIassay",
@@ -64,12 +65,12 @@ show_MALDIassay <- function(object) {
 
   cat("Top5-features based on Fold-Change and R\u00B2:\n")
   print(getPeakStatistics(object, summarise = TRUE) %>%
-    arrange(desc(FC), desc(R2)) %>%
+    arrange(desc(.data$FC), desc(.data$R2)) %>%
     as.data.frame() %>%
     head(n = 5))
 }
 
 setMethod(
   "show", signature(object = "MALDIassay"),
-  MALDIcellassay:::show_MALDIassay
+  show_MALDIassay
 )

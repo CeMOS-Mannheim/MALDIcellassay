@@ -26,6 +26,8 @@
 #' @importFrom dplyr summarise mutate group_by %>% arrange left_join rename bind_rows filter pull slice_head slice_tail
 #' @importFrom tibble tibble as_tibble
 #' @importFrom tidyr gather
+#' @importFrom methods new
+#' @importFrom stats var
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
 
 fitCurve <- function(spec,
@@ -81,7 +83,7 @@ fitCurve <- function(spec,
   nm <- names(spec)
 
   # check spectra for problematic meta data and remove it of needed
-  spec <- MALDIcellassay:::.repairMetaData(spec)
+  spec <- .repairMetaData(spec)
 
   # make sure that spectra are in ascending order in regards to concentration
   order <- order(as.numeric(nm))
@@ -109,7 +111,7 @@ fitCurve <- function(spec,
                      allowNoMatches = allowNoMatches)
 
   #### average spectra ####
-  cat(MALDIcellassay:::timeNow(), "calculating", averageMethod, "spectra... \n")
+  cat(timeNow(), "calculating", averageMethod, "spectra... \n")
 
   avg <- .aggregateSpectra(spec = prc$spec,
                            averageMethod = averageMethod,
@@ -129,7 +131,7 @@ fitCurve <- function(spec,
                                   tol = normTol*0.5)
 
   # fit curves
-  cat(MALDIcellassay:::timeNow(), "fitting curves... \n")
+  cat(timeNow(), "fitting curves... \n")
   res_list <- calculateCurveFit(intmat = avg$intmat,
                                 idx = filterVariance(apply(avg$intmat, 2, var),
                                                      method = varFilterMethod))
@@ -139,7 +141,7 @@ fitCurve <- function(spec,
                                      singlePeaks = singlePeaks,
                                      spec = prc$spec)
 
-  cat(MALDIcellassay:::timeNow(), "Done!", "\n")
+  cat(timeNow(), "Done!", "\n")
 
   res_class <- new("MALDIassay",
                    avgSpectra = avg$avgSpec,
