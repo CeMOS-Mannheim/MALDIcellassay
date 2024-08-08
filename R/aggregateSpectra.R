@@ -8,6 +8,7 @@
 #' @param normMz              Numeric, m/z value used for normalization/re-calibration
 #' @param normTol             Numeric, tolerance around `normMz` in Da.
 #' @param halfWindowSize      Numeric, halfWindowSize for peak detection.
+#' @param peakMethod          Character, method for peak detection. Either "SuperSmoother" or "MAD".
 #'
 #' @return
 #' List of lists with intensity matrix, average spectra and average peaks
@@ -18,7 +19,8 @@
                               binTol,
                               normMz,
                               normTol,
-                              halfWindowSize) {
+                              halfWindowSize,
+                              peakMethod = "SuperSmoother") {
   nm <- names(spec)
   stopifnot(!is.null(nm))
   stopifnot(isMassSpectrumList(spec))
@@ -29,7 +31,9 @@
 
   cat(MALDIcellassay:::timeNow(),
       "building intensity matrix and applying variance filter... \n")
-  peaks <- .detectPeaks(avg_spec, method = "SuperSmoother", SNR = SNR, halfWindowSize = halfWindowSize)
+  peaks <- .detectPeaks(avg_spec, method = peakMethod, 
+                        SNR = SNR, 
+                        halfWindowSize = halfWindowSize)
 
   if(monoisotopicFilter) {
     cat(MALDIcellassay:::timeNow(),

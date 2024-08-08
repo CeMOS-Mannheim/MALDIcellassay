@@ -22,7 +22,7 @@
 
   peaks <- detectPeaks(spec,
                        SNR = SNR,
-                       method = "SuperSmoother",
+                       method = method,
                        halfWindowSize = halfWindowSize)
   names(peaks) <- names(spec)
 
