@@ -21,7 +21,7 @@
 #' The most important slot is `fits` which contains the IC50 curve fits.
 #' @export
 #'
-#' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest createMassPeaks
+#' @importFrom MALDIquant removeBaseline calibrateIntensity alignSpectra averageMassSpectra detectPeaks binPeaks intensityMatrix match.closest createMassPeaks metaData
 #' @importFrom nplr nplr convertToProp getXcurve getYcurve getFitValues getX getY getEstimates getGoodness
 #' @importFrom dplyr summarise mutate group_by %>% arrange left_join rename bind_rows filter pull slice_head slice_tail
 #' @importFrom tibble tibble as_tibble
@@ -81,7 +81,7 @@ fitCurve <- function(spec,
   nm <- names(spec)
 
   # check spectra for problematic meta data and remove it of needed
-  spec <- .repairMetaData(spec)
+  spec <- MALDIcellassay:::.repairMetaData(spec)
 
   # make sure that spectra are in ascending order in regards to concentration
   order <- order(as.numeric(nm))
@@ -117,7 +117,8 @@ fitCurve <- function(spec,
                            monoisotopicFilter = monoisotopicFilter,
                            binTol = binTol,
                            normMz = normMz,
-                           normTol = normTol)
+                           normTol = normTol,
+                           halfWindowSize = halfWindowSize)
 
   # single spectra data
   allmz <- as.numeric(colnames(avg$intmat))
