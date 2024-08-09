@@ -9,7 +9,7 @@ getPeakStatistics(object, summarise = FALSE)
 \arguments{
 \item{object}{Object of class MALDIassay}
 
-\item{summarise}{Logical, return summarised results (one result per mz and not per mz and spectra)}
+\item{summarise}{Logical, return summarized results (one result per mz and not per mz and spectra)}
 }
 \value{
 A tibble with peak statistics (R², fold-change, CV\%, etc.)

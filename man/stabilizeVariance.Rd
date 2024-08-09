@@ -2,7 +2,7 @@
 % Please edit documentation in R/stabilizeVariance.R
 \name{stabilizeVariance}
 \alias{stabilizeVariance}
-\title{Stabilize varience in spectra}
+\title{Stabilize variance in spectra}
 \usage{
 stabilizeVariance(
   spec,
@@ -21,5 +21,5 @@ stabilizeVariance(
 stabilized spectra
 }
 \description{
-Stabilize varience in spectra
+Stabilize variance in spectra
 }

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width=8,
 
 In this document we will apply an automated screening for possible candidate signals that show a response to treatment with a compound.
 For details how to do the experimental part check out our Nature Protocols publication Unger 2021 "Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry".
-Briefly, cells were treated with the following concentration of a compound: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10, 30 µM.
+Briefly, cells were treated with the following concentration of a compound: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10, 30 uM.
 After incubation the cells were washed, transferred to a MALDI target plate and matrix was applied.
 For each concentration 4 spots were applied which means that we also have 4 "measurement replicates" for each concentration.
 
@@ -40,7 +40,7 @@ data("spec")
 
 First we will check the spectra for general quality.
 ```{r qualityCheck}
-MALDIquant::plot(spec[[1]], main = "0µM, replicate 1")
+MALDIquant::plot(spec[[1]], main = "0uM, replicate 1")
 ```
 
 ## Preprocessing
