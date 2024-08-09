@@ -1,9 +1,12 @@
 Package: MALDIcellassay
 Type: Package
-Title: Automated (untrageted) screening of MALDI cell based assays based on dose-response curve fitting 
+Title: Automated (Untargeted) Screening of MALDI Cell Based Assays Based on Dose-Response Curve Fitting
 Version: 0.4.40
-Author: Thomas Enzlein 
-Maintainer: Thomas Enzlein <t.enzlein@hs-mannheim.de>
+Authors@R: person(given = "Enzlein",
+                  family = "Thomas",
+                  role = c("aut", "cre"),
+                  email = "t.enzlein@hs-mannheim.de",
+                  comment = c(ORCID = "0000-0003-1789-4090"))
 Description: Detects high variance signals and generates dose-response curves to further investigate candidate signals.
 License: MIT + file LICENSE
 Imports: methods, ggplot2, nplr, dplyr, tidyr, forcats, scales, MALDIquant, MALDIquantForeign, tibble, svMisc, purrr
@@ -17,4 +20,4 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 4.3)
