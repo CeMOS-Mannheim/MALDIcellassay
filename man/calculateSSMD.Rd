@@ -26,7 +26,7 @@ Calculate strictly standardized mean difference (SSMD)
 The strictly standardized mean difference (SSMD) is a measure of effect size.
 It is the mean divided by the standard deviation of a difference between the positive and negative control.
 
-\deqn{\gamma=|\mu_n - \mu\micro_p|/\sqrt{\sigma_n^2 + \sigma_p^2}}
+\deqn{\gamma=\frac{\mid\mu_n - \mu_p\mid}{\sqrt{\sigma_n^2 + \sigma_p^2}}}
 
 The SSMD can be easily be interpreted as it denotes the difference between positve and negative controls in units of standard deviation.
 }
