@@ -8,7 +8,7 @@
 #' ggplot object
 #'
 #' @importFrom ggplot2 ggplot aes geom_line scale_y_continuous scale_color_viridis_d labs geom_rect
-#' @importFrom dplyr filter between bind_rows
+#' @importFrom dplyr filter between bind_rows .data
 #' @importFrom tibble tibble
 #' @importFrom MALDIquant mass intensity
 #' @importFrom forcats fct_reorder
@@ -37,10 +37,10 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     geom_rect(aes(xmin = mz - getBinTol(object) * mz,
                   xmax = mz + getBinTol(object) * mz,
                   ymin = 0,
-                  ymax = max(pull(df, intensity))*1.05),
+                  ymax = max(pull(df, .data$intensity))*1.05),
               alpha=0.2,
               fill="black") +
-    geom_line(data = df, aes(x = mass, y = intensity, col = .data$conc)) +
+    geom_line(data = df, aes(x = .data$mass, y = .data$intensity, col = .data$conc)) +
     scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
     labs(
