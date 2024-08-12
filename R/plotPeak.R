@@ -37,10 +37,10 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     geom_rect(aes(xmin = mz - getBinTol(object) * mz,
                   xmax = mz + getBinTol(object) * mz,
                   ymin = 0,
-                  ymax = max(pull(df, .data$intensity))*1.05),
+                  ymax = max(pull(df, .data[["intensity"]]))*1.05),
               alpha=0.2,
               fill="black") +
-    geom_line(data = df, aes(x = .data$mass, y = .data$intensity, col = .data$conc)) +
+    geom_line(data = df, aes(x = .data[["mass"]], y = .data[["intensity"]], col = .data[["conc"]])) +
     scale_y_continuous(limits = c(0, NA), expand = c(0,0)) +
     scale_color_viridis_d(end = 0.75, option = "C") +
     labs(
