@@ -1,7 +1,7 @@
 Package: MALDIcellassay
 Type: Package
 Title: Automated (Untargeted) Screening of MALDI Cell Based Assays Based on Dose-Response Curve Fitting
-Version: 0.4.40
+Version: 0.4.41
 Authors@R: person(given = "Enzlein",
                   family = "Thomas",
                   role = c("aut", "cre"),

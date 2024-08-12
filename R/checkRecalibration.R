@@ -60,12 +60,12 @@ checkRecalibration <- function(object, idx) {
 
   p <-
     df %>%
-    filter(between(.data$mass, .data$lowerVal, .data$upperVal)) %>%
+    filter(between(.data$mass, lowerVal, upperVal)) %>%
     ggplot(aes(x = .data$mass, y = .data$intensity, col = factor(.data$conc))) +
     geom_line() +
     geom_linerange(
       data = peakdf %>%
-        filter(between(.data$mass, .data$lowerVal, .data$upperVal)),
+        filter(between(.data$mass, lowerVal, upperVal)),
       aes(x = .data$mass, ymin = 0, ymax = .data$intensity)
     ) +
     geom_vline(aes(xintercept = normMz - tol), alpha = 0.6, linetype = "dashed") +

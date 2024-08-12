@@ -27,7 +27,7 @@ plotPeak <- function(object, mzIdx, tol = 0.8) {
     )
   }) %>%
     bind_rows(.id = "conc") %>%
-    filter(between(mass, mz - tol, mz + tol)) %>%
+    filter(between(.data$mass, mz - tol, mz + tol)) %>%
     mutate(conc = as.numeric(.data$conc)) %>%
     mutate(conc = fct_reorder(scales::scientific(.data$conc), .data$conc))
 

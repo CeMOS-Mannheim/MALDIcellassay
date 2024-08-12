@@ -64,7 +64,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
     p <- ggplot(data = df_P, aes(x = .data$x, y = .data$y)) +
       geom_line(data = df_C, aes(x = .data$xC, y = .data$yC), size = 1, alpha = 0.75) +
       geom_point(size = 3) +
-      scale_x_continuous(labels = scales::scientific(c(0, 10^df_P$x[-1])), breaks = df_P$x) +
+      scale_x_continuous(labels = scales::scientific(10^df_P$x), breaks = df_P$x) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
       labs(
         x = "Conc.",

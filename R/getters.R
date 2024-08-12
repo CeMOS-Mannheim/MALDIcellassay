@@ -261,7 +261,7 @@ getPeakStatistics <- function(object, summarise = FALSE) {
       ungroup() %>%
       arrange(.data$mzIdx) %>%
       left_join(getFittingParameters(object, summarise = TRUE),
-                by = join_by(.data$mz)) %>%
+                by = join_by("mz")) %>%
       mutate(symetric = ifelse(.data$npar < 5, TRUE, FALSE)) %>%
       select(-.data$npar)
   }

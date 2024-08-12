@@ -48,18 +48,18 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
     intensityMatrix %>%
     as_tibble() %>%
     mutate(sample = rownames(intensityMatrix)) %>%
-    gather(.data$mz, .data$int, -sample) %>%
+    gather("mz", "int", -"sample") %>%
     arrange(as.numeric(.data$mz)) %>%
-    group_by(sample, .data$mz) %>%
+    group_by(.data$sample, .data$mz) %>%
     summarise(
       min = min(.data$int, na.rm = TRUE),
       mean = mean(.data$int, na.rm = TRUE),
       max = max(.data$int, na.rm = TRUE),
       stdev = sd(.data$int, na.rm = TRUE),
-      "cv%" = .data$stdev / mean * 100
+      "cv%" = .data$stdev / .data$mean * 100
     ) %>%
     ungroup() %>%
-    left_join(fit_df, by = join_by(.data$mz)) %>%
+    left_join(fit_df, by = join_by("mz")) %>%
     filter(!is.na(.data$R2)) %>%
     mutate(mzIdx = as.numeric(as.factor(as.numeric(.data$mz))))
   return(stat_df)
