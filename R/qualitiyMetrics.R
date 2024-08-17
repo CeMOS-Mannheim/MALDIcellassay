@@ -97,7 +97,7 @@
 #' @details
 #' The most common way to measure the quality of an assay is the so-called Z'-factor,
 #' which describes the separation of the positive and negative control in terms of their standard deviations \eqn{\sigma_p} and \eqn{\sigma_n}.
-#' The Z'-factor is defined as [Ji-Hu Zhang et al., A simple statistical parameter for use in evaluation and validation of high throughput screening assays](https://journals.sagepub.com/doi/abs/10.1177/108705719900400206).
+#' The Z'-factor is defined as [Ji-Hu Zhang et al., A simple statistical parameter for use in evaluation and validation of high throughput screening assays](https://doi.org/10.1177/108705719900400206).
 #' \deqn{Z' = 1 - (3 * (\sigma_p+\sigma_n))/|\mu_p-\mu_n|}
 #'
 #' where \eqn{\mu_p} and \eqn{\mu_p} is the mean value of the positive (response expected) and negative (no response expected) control, respectively.
