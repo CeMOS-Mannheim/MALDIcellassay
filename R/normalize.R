@@ -1,3 +1,31 @@
+#' .scalingFactor re implemented from sgibb/MALDIquant
+#'
+#' @param object AbstractMassObject
+#' @param method character
+#' @param range double
+#'
+#' @return
+#' double
+#' @importFrom MALDIquant trim
+.scalingFactor <- function(object, method=c("TIC", "median"), range) {
+  
+  method <- match.arg(method)
+  
+  if (!missing(range)) {
+    object <- trim(object, range=range)
+  }
+  
+  switch(method,
+         "TIC" = {
+           totalIonCurrent(object)
+         },
+         "median" = {
+           median(object@intensity)
+         }
+  )
+}
+
+
 #' Normalize spectra and peaks
 #'
 #' @param spec     List of MALDIquant::MassSpectrum
@@ -29,7 +57,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
          "median" = {
            median <- vapply(spec,
                             FUN = function(x)
-                              MALDIquant:::.scalingFactor(object = x,
+                              .scalingFactor(object = x,
                                                           method = "median"),
                             numeric(1))
 
