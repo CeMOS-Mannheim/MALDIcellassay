@@ -29,6 +29,16 @@
 #' @importFrom methods new
 #' @importFrom stats var
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
+#' 
+#' @examples
+#' data(Blank2022spec)
+#' 
+#' fitCurve(spec = Blank2022spec,
+#'          SinglePointRecal = TRUE, 
+#'          normMz = 760.585, 
+#'          alignTol = 0.1, 
+#'          normTol = 0.1,
+#'          varFilterMethod = "mean") 
 
 fitCurve <- function(spec,
                      unit = c("M", "mM", "uM", "nM", "pM", "fM"),

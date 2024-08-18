@@ -2,7 +2,7 @@
 % Please edit documentation in R/sdMassSpectrum.R
 \name{sdMassSpectraFun}
 \alias{sdMassSpectraFun}
-\title{Still fork from sgibb MALDIquant}
+\title{Still fork from sgibb/MALDIquant}
 \usage{
 sdMassSpectraFun(l, mergeMetaData = TRUE)
 }
@@ -15,5 +15,5 @@ sdMassSpectraFun(l, mergeMetaData = TRUE)
 see MALDIquant
 }
 \description{
-Still fork from sgibb MALDIquant
+Still fork from sgibb/MALDIquant
 }

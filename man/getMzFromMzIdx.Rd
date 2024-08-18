@@ -17,3 +17,8 @@ numeric, mz value
 \description{
 Get the mz value associated with a mzIdx
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getMzFromMzIdx(Blank2022res, mzIdx = 2)
+}

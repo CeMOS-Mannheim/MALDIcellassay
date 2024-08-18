@@ -17,3 +17,9 @@ Indices of spectra with a high variance
 \description{
 Filter for high variance signals
 }
+\examples{
+data(Blank2022intmat)
+# get variance of each peak
+vars <- apply(Blank2022intmat, 2, var)
+filterVariance(vars, method = "mean")
+}

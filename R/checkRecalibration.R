@@ -17,6 +17,11 @@
 #' @importFrom purrr map
 #' @importFrom scales scientific
 #' @importFrom methods is
+#' 
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' checkRecalibration(Blank2022res, idx = 1:8)       
 
 checkRecalibration <- function(object, idx) {
   if (!is(object, "MALDIassay")) {

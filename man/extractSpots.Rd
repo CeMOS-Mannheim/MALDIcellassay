@@ -15,3 +15,7 @@ Character vector of spot names. If multiple spots are used (e.g. for average spe
 \description{
 Extract the spot coordinates
 }
+\examples{
+data(Blank2022spec)
+extractSpots(Blank2022spec)
+}

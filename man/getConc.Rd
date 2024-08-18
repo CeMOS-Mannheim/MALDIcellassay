@@ -15,3 +15,8 @@ Numeric vector, concentrations used in a MALDIassay
 \description{
 Extract the concentrations used in a MALDIassay
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getConc(Blank2022res)
+}

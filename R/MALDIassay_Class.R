@@ -7,8 +7,6 @@
 #' @importFrom dplyr arrange group_by first summarise desc
 #' @importFrom MALDIquant mass
 #' @importFrom utils head
-
-
 setClass("MALDIassay",
   representation = representation(
     avgSpectra = "list",
@@ -23,8 +21,6 @@ setClass("MALDIassay",
     settings = "list"
   )
 )
-
-
 
 show_MALDIassay <- function(object) {
   mz <- round(getNormMz(object), digits = 2)

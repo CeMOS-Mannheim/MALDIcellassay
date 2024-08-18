@@ -14,6 +14,17 @@
 #' logical vector, TRUE for detected outliers.
 #' @export
 #' 
+#' @examples
+#' set.seed(42) 
+#' 
+#' #no outlier
+#' sample <- rnorm(n = 8, mean = 0, sd = 0.01)
+#' calculateChauvenetCriterion(sample)
+#' 
+#' # introduce outlier
+#' sample[1] <- 1
+#' calculateChauvenetCriterion(sample)
+#' 
 #' @importFrom stats qnorm
 calculateChauvenetCriterion <- function(x) {
   mean <- mean(x, na.rm = TRUE)

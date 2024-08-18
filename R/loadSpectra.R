@@ -9,6 +9,11 @@
 #'
 #' @importFrom svMisc progress
 #' @importFrom MALDIquantForeign importBrukerFlex
+#' 
+#' @examples
+#'
+
+
 
 loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
   # get names of all anaylses

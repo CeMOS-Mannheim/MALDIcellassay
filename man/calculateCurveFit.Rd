@@ -21,3 +21,9 @@ List of curve fits.
 \description{
 Calculate the fit for a dose-response curve
 }
+\examples{
+data(Blank2022intmat)
+
+# for faster runtime we let it run on 5 peaks only
+calculateCurveFit(Blank2022intmat, idx = 1:5)
+}

@@ -33,3 +33,9 @@ In other words, \eqn{\sigma_f} is the standard deviation of residuals.
 Note, we do not need to estimate the variance for the mean of the positive and negative value.
 So, this function uses the top and bottom asymptote directly instead of taking the top and bottom concentrations in consideration.
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+
+calculateVPrime(Blank2022res) 
+}

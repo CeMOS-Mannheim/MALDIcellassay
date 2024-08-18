@@ -15,3 +15,8 @@ List, containing the data used to do the fits as well as the nlpr curve fit .
 \description{
 Extract curve fits
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getCurveFits(Blank2022res)
+}

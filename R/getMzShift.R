@@ -63,6 +63,10 @@
 #' `MzShift` The mass shift for each spectrum
 #' `specIdx` The index of the spectra with a match for targetMz
 #' @export
+#' 
+#' @examples
+#' data(Blank2022peaks)
+#' getMzShift(Blank2022peaks, targetMz = 760.585, tol = 0.1, tolppm = FALSE)
 getMzShift <- function(peaks,
                        targetMz,
                        tol,

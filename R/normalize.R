@@ -39,6 +39,9 @@
 #'
 #' @export
 #' @importFrom MALDIquant totalIonCurrent
+#' @examples
+#' # example code
+#' 
 normalize <- function(spec, peaks, normMeth, normMz, normTol) {
   nm <- names(spec)
   stopifnot(!is.null(nm))

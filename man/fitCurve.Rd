@@ -58,3 +58,13 @@ The most important slot is \code{fits} which contains the IC50 curve fits.
 \description{
 Fit dose-response curves
 }
+\examples{
+data(Blank2022spec)
+
+fitCurve(spec = Blank2022spec,
+         SinglePointRecal = TRUE, 
+         normMz = 760.585, 
+         alignTol = 0.1, 
+         normTol = 0.1,
+         varFilterMethod = "mean") 
+}

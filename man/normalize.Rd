@@ -23,3 +23,7 @@ List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::
 \description{
 Normalize spectra and peaks
 }
+\examples{
+# example code
+
+}

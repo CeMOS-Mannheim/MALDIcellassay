@@ -13,6 +13,12 @@
 #' @importFrom dplyr mutate arrange %>% .data
 #' @importFrom tibble as_tibble
 #' @importFrom stats rnorm
+#' 
+#' @examples
+#' data(Blank2022intmat)
+#' 
+#' # for faster runtime we let it run on 5 peaks only
+#' calculateCurveFit(Blank2022intmat, idx = 1:5)
 calculateCurveFit <- function(intmat, idx, ...) {
   if (length(rownames(intmat)) == 0) {
     stop("intmat must have concentrations as rownames!\n")

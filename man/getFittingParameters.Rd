@@ -17,3 +17,8 @@ tibble of fitting parameters for each fitted m/z-value
 \description{
 Get fitting parameters
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getFittingParameters(Blank2022res, summarise = FALSE)
+}

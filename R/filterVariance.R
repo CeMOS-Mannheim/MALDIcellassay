@@ -8,6 +8,12 @@
 #' @export
 #' 
 #' @importFrom stats median quantile
+#' 
+#' @examples
+#' data(Blank2022intmat)
+#' # get variance of each peak
+#' vars <- apply(Blank2022intmat, 2, var)
+#' filterVariance(vars, method = "mean")
 filterVariance <- function(vars, method = c("mean", "median", "q25", "q75", "none")) {
   method <- match.arg(method)
   switch(method,

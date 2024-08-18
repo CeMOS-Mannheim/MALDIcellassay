@@ -15,3 +15,8 @@ Character of variance filtering method used
 \description{
 Extract variance filtering method
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getVarFilterMethod(Blank2022res)
+}

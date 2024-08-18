@@ -22,3 +22,12 @@ Useful in combination with sdMassSpectrum to get standard deviation of peaks as 
 \description{
 Extract intensity using peaks as template
 }
+\examples{
+data(Blank2022peaks)
+data(Blank2022spec)
+
+extractIntensity(mz = c(409, 423, 440), 
+                 peaks = Blank2022peaks, 
+                 spec = Blank2022spec, 
+                 tol = 0.2)
+}

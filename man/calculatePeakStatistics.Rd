@@ -19,3 +19,9 @@ A tibble with peak statistics.
 \description{
 Calculate peak statistics
 }
+\examples{
+data(Blank2022intmat)
+fits <- calculateCurveFit(Blank2022intmat, idx = 1:5)
+
+calculatePeakStatistics(curveFits = fits, singlePeaks = Blank2022peaks, spec = Blank2022spec)
+}

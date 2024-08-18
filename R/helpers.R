@@ -13,6 +13,8 @@ timeNow <- function() {
 #' @return
 #' numeric, log10 transformed concentrations
 #' @export
+#' @examples
+#' transformConc2Log(c(0.1, 0.01,0.001))
 transformConc2Log <- function(conc) {
   concLog <- log10(conc)
   if (any(concLog == -Inf)) {
@@ -59,11 +61,17 @@ spec2df <- function(specs) {
 
 #' Check if object if of class MALDIassay
 #'
-#' @param object object
+#' @param object object to text
 #'
 #' @return
-#' logical
+#' logical, TRUE if object is of class MALDIassay
 #' @export
+#' @example 
+#' x <- 1
+#' # FALSE
+#' isMALDIassay(x)
+#' # TRUE
+#' isMALDIassay(Blank2022res)
 isMALDIassay <- function(object) {
   if (!is(object, "MALDIassay")) {
     return(FALSE)

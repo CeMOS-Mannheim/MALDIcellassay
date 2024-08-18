@@ -15,3 +15,8 @@ Numeric, SNR used for peak detection
 \description{
 Extract SNR used for peak detection
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getSNR(Blank2022res)
+}
