@@ -18,5 +18,5 @@ Extract curve fits
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getCurveFits(Blank2022res)
+fits <- getCurveFits(Blank2022res)
 }

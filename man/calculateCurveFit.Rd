@@ -25,5 +25,5 @@ Calculate the fit for a dose-response curve
 data(Blank2022intmat)
 
 # for faster runtime we let it run on 5 peaks only
-calculateCurveFit(Blank2022intmat, idx = 1:5)
+fits <- calculateCurveFit(Blank2022intmat, idx = 1:5)
 }

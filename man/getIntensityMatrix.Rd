@@ -28,5 +28,5 @@ For average spectra intensity matrix with \strong{all} \emph{m/z} values use \co
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getIntensityMatrix(Blank2022res, avg = TRUE, excludeNormMz = TRUE) 
+head(getIntensityMatrix(Blank2022res, avg = TRUE, excludeNormMz = TRUE) )
 }

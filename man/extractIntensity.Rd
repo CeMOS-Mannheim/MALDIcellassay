@@ -26,8 +26,9 @@ Extract intensity using peaks as template
 data(Blank2022peaks)
 data(Blank2022spec)
 
-extractIntensity(mz = c(409, 423, 440), 
-                 peaks = Blank2022peaks, 
-                 spec = Blank2022spec, 
-                 tol = 0.2)
+int <- extractIntensity(mz = c(409, 423, 440), 
+                        peaks = Blank2022peaks, 
+                        spec = Blank2022spec, 
+                        tol = 0.2)
+head(int)
 }

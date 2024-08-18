@@ -8,7 +8,7 @@
 #' @examples 
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getConc(Blank2022res)
+#' head(getConc(Blank2022res))
 
 getConc <- function(object) {
   stopIfNotIsMALDIassay(object)
@@ -45,7 +45,7 @@ getDirection <- function(model) {
 #' 
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getSingleSpecIntensity(Blank2022res, 2)
+#' head(getSingleSpecIntensity(Blank2022res, 2))
 getSingleSpecIntensity <- function(object, mz_idx) {
   s <- getSinglePeaks(object)
   mz <- mass(s[[1]]) # all single spectra have same mass axis
@@ -80,7 +80,7 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getIntensityMatrix(Blank2022res, avg = TRUE, excludeNormMz = TRUE) 
+#' head(getIntensityMatrix(Blank2022res, avg = TRUE, excludeNormMz = TRUE) )
 getIntensityMatrix <- function(object, avg = FALSE, excludeNormMz =FALSE) {
 
   if(avg) {
@@ -159,7 +159,7 @@ getSNR <- function(object) {
 #' 
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getAvgSpectra(Blank2022res)
+#' getAvgSpectra(Blank2022res)[[1]]
 getAvgSpectra <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@avgSpectra)
@@ -175,7 +175,7 @@ getAvgSpectra <- function(object) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getAvgPeaks(Blank2022res)
+#' getAvgPeaks(Blank2022res)[[1]]
 getAvgPeaks <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@avgPeaks)
@@ -191,7 +191,7 @@ getAvgPeaks <- function(object) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getSinglePeaks(Blank2022res)
+#' getSinglePeaks(Blank2022res)[[1]]
 getSinglePeaks <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@singlePeaks)
@@ -239,7 +239,7 @@ getVarFilterMethod <- function(object) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getAppliedMzShift(Blank2022res)
+#' head(getAppliedMzShift(Blank2022res))
 getAppliedMzShift <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@mzShifts)
@@ -255,7 +255,7 @@ getAppliedMzShift <- function(object) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getAppliedNormFactors(Blank2022res)
+#' head(getAppliedNormFactors(Blank2022res))
 getAppliedNormFactors <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@normFactors)
@@ -271,7 +271,7 @@ getAppliedNormFactors <- function(object) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getCurveFits(Blank2022res)
+#' fits <- getCurveFits(Blank2022res)
 getCurveFits <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@fits)
@@ -306,7 +306,7 @@ getDirectory <- function(object) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getPeakStatistics(Blank2022res, summarise = TRUE)
+#' head(getPeakStatistics(Blank2022res, summarise = TRUE))
 getPeakStatistics <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
   stats <- object@stats
@@ -400,7 +400,7 @@ getMzFromMzIdx <- function(object, mzIdx) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getAllMz(Blank2022res)
+#' head(getAllMz(Blank2022res))
 getAllMz <- function(object, excludeNormMz = FALSE) {
   stopIfNotIsMALDIassay(object)
   if(!excludeNormMz) {
@@ -436,7 +436,10 @@ getAllMz <- function(object, excludeNormMz = FALSE) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
+#' # spots per spectrum
 #' getSpots(Blank2022res, singleSpec = TRUE)
+#' 
+#' #spots per concentration
 #' getSpots(Blank2022res, singleSpec = FALSE)
 getSpots <- function(object, singleSpec = TRUE) {
   stopIfNotIsMALDIassay(object)
@@ -461,7 +464,7 @@ getSpots <- function(object, singleSpec = TRUE) {
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
-#' getFittingParameters(Blank2022res, summarise = FALSE)
+#' head(getFittingParameters(Blank2022res, summarise = FALSE))
 getFittingParameters <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
 

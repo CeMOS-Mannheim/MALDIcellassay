@@ -18,5 +18,5 @@ Extract applied mz-shift
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getAppliedMzShift(Blank2022res)
+head(getAppliedMzShift(Blank2022res))
 }

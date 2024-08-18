@@ -196,7 +196,7 @@ sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
 #' @examples
 #' data(Blank2022spec)
 #' 
-#' sdMassSpectrum(Blank2022spec, labels = names(Blank2022spec))
+#' sdMassSpectrum(Blank2022spec, labels = names(Blank2022spec))[[1]]
 
 sdMassSpectrum <- function(l, labels, ...) {
 

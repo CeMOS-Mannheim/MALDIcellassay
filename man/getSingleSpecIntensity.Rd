@@ -21,5 +21,5 @@ Extract the intensities of single spectra for a given mzIdx
 
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getSingleSpecIntensity(Blank2022res, 2)
+head(getSingleSpecIntensity(Blank2022res, 2))
 }

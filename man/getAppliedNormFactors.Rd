@@ -18,5 +18,5 @@ Extract applied normalization factors
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getAppliedNormFactors(Blank2022res)
+head(getAppliedNormFactors(Blank2022res))
 }

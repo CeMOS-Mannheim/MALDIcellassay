@@ -20,5 +20,5 @@ Extract peak statistics
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getPeakStatistics(Blank2022res, summarise = TRUE)
+head(getPeakStatistics(Blank2022res, summarise = TRUE))
 }

@@ -7,7 +7,7 @@
 #' @export
 #' @examples
 #' data(Blank2022spec)
-#' extractSpots(Blank2022spec)
+#' head(extractSpots(Blank2022spec))
 extractSpots <- function(spec) {
   if(!isMassSpectrumList(spec)) {
     if(!isMassPeaksList(spec)) {

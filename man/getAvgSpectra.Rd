@@ -19,5 +19,5 @@ Extract average spectra
 
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getAvgSpectra(Blank2022res)
+getAvgSpectra(Blank2022res)[[1]]
 }

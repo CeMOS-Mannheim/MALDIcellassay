@@ -18,5 +18,5 @@ Extract peaks of single spectra spectra (before average calculation)
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getSinglePeaks(Blank2022res)
+getSinglePeaks(Blank2022res)[[1]]
 }

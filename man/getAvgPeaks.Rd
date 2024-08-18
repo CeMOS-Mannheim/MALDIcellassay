@@ -18,5 +18,5 @@ Extract peaks of average spectra
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-getAvgPeaks(Blank2022res)
+getAvgPeaks(Blank2022res)[[1]]
 }

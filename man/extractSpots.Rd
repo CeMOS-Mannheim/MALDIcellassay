@@ -17,5 +17,5 @@ Extract the spot coordinates
 }
 \examples{
 data(Blank2022spec)
-extractSpots(Blank2022spec)
+head(extractSpots(Blank2022spec))
 }
