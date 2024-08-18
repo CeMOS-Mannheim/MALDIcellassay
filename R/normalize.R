@@ -35,13 +35,18 @@
 #' @param normTol  Numeric, tolerance around normMz.
 #'
 #' @return
-#' List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::MassPeaks
+#' List of lists of normalized MALDIquant::MassSpectrum, normalized MALDIquant::MassPeaks,
+#' normalization factors as well as indicies of spectra containing the `normMz` in case of `normMeth = "mz"`,
 #'
 #' @export
 #' @importFrom MALDIquant totalIonCurrent
 #' @examples
-#' # example code
+#' data(Blank2022spec)
+#' data(Blank2022peaks)
+#' norm <- normalize(Blank2022spec, Blank2022peaks, normMeth = "mz", normMz = 760.585, normTol = 0.1)
 #' 
+#' # normalization factors
+#' norm$factor 
 normalize <- function(spec, peaks, normMeth, normMz, normTol) {
   nm <- names(spec)
   stopifnot(!is.null(nm))

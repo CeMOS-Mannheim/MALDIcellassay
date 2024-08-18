@@ -17,3 +17,13 @@ List of MALDIquant::MassSpectrum or MALDIquant::MassPeaks with shifted mass axis
 \description{
 Shift mass axis
 }
+\examples{
+data(Blank2022spec)
+# raw mz
+head(Blank2022spec[[1]]@mass)
+
+# shifted mz
+shifted <-shiftMassAxis(Blank2022spec[1:2], c(0.5, 0.5))
+head(shifted[[1]]@mass)
+
+}

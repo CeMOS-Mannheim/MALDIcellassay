@@ -54,4 +54,4 @@
 #' @format Matrix with concentrations of original spectra as rownames and m/z-values as colnames.
 #' @references Blank, M., Enzlein, T. & Hopf, C. LPS-induced lipid alterations in microglia revealed by MALDI mass spectrometry-based cell fingerprinting in neuroinflammation studies. Sci Rep 12, 2908 (2022). https://doi.org/10.1038/s41598-022-06894-1
 #' @usage data(Blank2022res)
-"Blank2022rs"
+"Blank2022res"

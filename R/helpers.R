@@ -66,7 +66,7 @@ spec2df <- function(specs) {
 #' @return
 #' logical, TRUE if object is of class MALDIassay
 #' @export
-#' @example 
+#' @examples 
 #' x <- 1
 #' # FALSE
 #' isMALDIassay(x)

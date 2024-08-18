@@ -18,3 +18,12 @@ normalizeByFactor(spec, factors)
 \description{
 Apply normalization factors to spectra
 }
+\examples{
+#' data(Blank2022peaks)
+normFactors <-  getNormFactors(peaks2df(Blank2022peaks), 
+                               targetMz = 760.585, 
+                               tol = 0.1, 
+                               tolppm = FALSE)
+normPeaks <- normalizeByFactor(Blank2022peaks, 
+                               normFactors$norm_factor)
+}

@@ -23,3 +23,7 @@ List with two entries:
 \description{
 Get mass shift for target mz
 }
+\examples{
+data(Blank2022peaks)
+getMzShift(Blank2022peaks, targetMz = 760.585, tol = 0.1, tolppm = FALSE)
+}

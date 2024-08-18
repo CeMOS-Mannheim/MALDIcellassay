@@ -19,3 +19,8 @@ list of ggplot objects
 \description{
 generate ggplot objects for each of the curve fits in a MALDIassay object
 }
+\examples{
+
+data(Blank2022res)
+plotCurves(Blank2022res, mzIdx = 2, errorbars = "sd")
+}

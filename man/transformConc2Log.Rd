@@ -15,3 +15,6 @@ numeric, log10 transformed concentrations
 \description{
 Convert concentration to log10 and replace zero's
 }
+\examples{
+transformConc2Log(c(0.1, 0.01,0.001))
+}

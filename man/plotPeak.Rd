@@ -19,3 +19,8 @@ ggplot object
 \description{
 Plot a peak of interest from a MALDIassay object
 }
+\examples{
+
+data(Blank2022res)
+plotPeak(Blank2022res, mzIdx = 2)
+}

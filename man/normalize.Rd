@@ -18,12 +18,17 @@ normalize(spec, peaks, normMeth, normMz, normTol)
 \item{normTol}{Numeric, tolerance around normMz.}
 }
 \value{
-List of lists of normalized MALDIquant::MassSpectrum and normalized MALDIquant::MassPeaks
+List of lists of normalized MALDIquant::MassSpectrum, normalized MALDIquant::MassPeaks,
+normalization factors as well as indicies of spectra containing the \code{normMz} in case of \code{normMeth = "mz"},
 }
 \description{
 Normalize spectra and peaks
 }
 \examples{
-# example code
+data(Blank2022spec)
+data(Blank2022peaks)
+norm <- normalize(Blank2022spec, Blank2022peaks, normMeth = "mz", normMz = 760.585, normTol = 0.1)
 
+# normalization factors
+norm$factor 
 }

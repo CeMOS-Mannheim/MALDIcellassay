@@ -10,7 +10,6 @@
 #' @importFrom svMisc progress
 #' @importFrom MALDIquantForeign importBrukerFlex
 #' 
-#' @examples
 #'
 
 

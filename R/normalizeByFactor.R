@@ -8,6 +8,14 @@
 #' @importFrom MALDIquant intensity intensity<-
 #' @importFrom purrr map
 #' @export
+#' @examples
+#' #' data(Blank2022peaks)
+#' normFactors <-  getNormFactors(peaks2df(Blank2022peaks), 
+#'                                targetMz = 760.585, 
+#'                                tol = 0.1, 
+#'                                tolppm = FALSE)
+#' normPeaks <- normalizeByFactor(Blank2022peaks, 
+#'                                normFactors$norm_factor)
 normalizeByFactor <- function(spec, factors) {
   if (!length(spec) == length(factors)) {
     stop("Number of spectra and normalization factors not equal!\n")

@@ -12,6 +12,10 @@
 #' @importFrom tibble tibble
 #' @importFrom nplr getGoodness getEstimates getXcurve getYcurve getX getY convertToProp
 #' @export
+#' @examples
+#' 
+#' data(Blank2022res)
+#' plotCurves(Blank2022res, mzIdx = 2, errorbars = "sd")
 plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem")) {
   stopIfNotIsMALDIassay(object)
   errorbars <- match.arg(errorbars)
