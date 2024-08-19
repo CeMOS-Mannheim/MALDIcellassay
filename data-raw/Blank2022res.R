@@ -5,4 +5,4 @@ Blank2022res <- fitCurve(spec = Blank2022spec,
                          alignTol = 0.1, 
                          normTol = 0.1)
 
-usethis::use_data(Blank2022res, overwrite = TRUE)
+usethis::use_data(Blank2022res, overwrite = TRUE, compress = "xz")
