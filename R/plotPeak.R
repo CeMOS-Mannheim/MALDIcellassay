@@ -13,6 +13,10 @@
 #' @importFrom MALDIquant mass intensity
 #' @importFrom forcats fct_reorder
 #' @export
+#' @examples
+#' 
+#' data(Blank2022res)
+#' plotPeak(Blank2022res, mzIdx = 2)
 plotPeak <- function(object, mzIdx, tol = 0.8) {
   if (missing(mzIdx)) {
     stop("No mzIdx supplied.\n")

@@ -17,3 +17,8 @@ numeric vector of mz values
 \description{
 Get all mz value of an MALDIassay-object
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+head(getAllMz(Blank2022res))
+}

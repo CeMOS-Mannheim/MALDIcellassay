@@ -18,7 +18,8 @@ fitCurve(
   halfWindowSize = 3,
   allowNoMatches = TRUE,
   normMeth = c("mz", "TIC", "PQN", "median", "none"),
-  SinglePointRecal = TRUE
+  SinglePointRecal = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ Set to "M" if you dont want changes in your concentrations.}
 \item{normMeth}{Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.}
 
 \item{SinglePointRecal}{Logical, perform single point recalibration to normMz}
+
+\item{verbose}{Logical, print logs to console.}
 }
 \value{
 Object of class \code{MALDIassay}.
@@ -57,4 +60,14 @@ The most important slot is \code{fits} which contains the IC50 curve fits.
 }
 \description{
 Fit dose-response curves
+}
+\examples{
+data(Blank2022spec)
+
+fitCurve(spec = Blank2022spec,
+         SinglePointRecal = TRUE, 
+         normMz = 760.585, 
+         alignTol = 0.1, 
+         normTol = 0.1,
+         varFilterMethod = "mean") 
 }

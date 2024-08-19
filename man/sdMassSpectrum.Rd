@@ -20,3 +20,8 @@ Returns a single (no labels given) or a list (labels given) of standard-deviatio
 This is a fork from sgibb's MALDIquant::averageMassSpectra() function.
 It is now able to compute "standard-deviation spectra".
 }
+\examples{
+data(Blank2022spec)
+
+sdMassSpectrum(Blank2022spec, labels = names(Blank2022spec))[[1]]
+}

@@ -17,3 +17,12 @@ character vector of spot coordinates. In case of average spectra multiple spots 
 \description{
 Get the spot coordinates of spectra
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+# spots per spectrum
+getSpots(Blank2022res, singleSpec = TRUE)
+
+#spots per concentration
+getSpots(Blank2022res, singleSpec = FALSE)
+}

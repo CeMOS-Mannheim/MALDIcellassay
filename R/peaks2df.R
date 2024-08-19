@@ -4,6 +4,12 @@
 #'
 #' @return  Data.frame with peak data
 #' @export
+#' @examples
+#' data(Blank2022peaks)
+#' 
+#' peakdf <- peaks2df(Blank2022peaks[1:2])
+#' head(peakdf)
+#' 
 peaks2df <- function(peaks) {
   if (!MALDIquant::isMassPeaksList(peaks)) {
     if (!MALDIquant::isMassPeaks(peaks)) {

@@ -13,6 +13,10 @@
 #'
 #' @importFrom dplyr pull %>% filter arrange
 #' @export
+#' 
+#' @examples
+#' data(Blank2022peaks)
+#' getNormFactors(peaks2df(Blank2022peaks), targetMz = 760.585, tol = 0.1, tolppm = FALSE)
 getNormFactors <- function(peaksdf, targetMz, tol, tolppm = TRUE, allowNoMatch = TRUE) {
   plot_Idx <- sort(unique(peaksdf$plotIdx))
 

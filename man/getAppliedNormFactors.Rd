@@ -15,3 +15,8 @@ Numeric vector of normalization factors applied to spectra
 \description{
 Extract applied normalization factors
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+head(getAppliedNormFactors(Blank2022res))
+}

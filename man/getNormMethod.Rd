@@ -15,3 +15,8 @@ Character, normalization method used.
 \description{
 Extract normalization method
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getNormMethod(Blank2022res)
+}

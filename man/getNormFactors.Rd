@@ -27,3 +27,7 @@ If TRUE spectra without targetMz match will be excluded.}
 \description{
 Get normalization factors from peak data.frame
 }
+\examples{
+data(Blank2022peaks)
+getNormFactors(peaks2df(Blank2022peaks), targetMz = 760.585, tol = 0.1, tolppm = FALSE)
+}

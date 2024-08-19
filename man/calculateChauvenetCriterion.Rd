@@ -22,3 +22,15 @@ Even if this (or any other) function tells you that a data point is an outlier,
 you might still want to have it in your sample population especially if you are not sure if your data is normal distributed.
 See \href{https://en.wikipedia.org/wiki/Chauvenet\%27s_criterion}{Wikipedia} for details of the algorithm.
 }
+\examples{
+set.seed(42) 
+
+#no outlier
+sample <- rnorm(n = 8, mean = 0, sd = 0.01)
+calculateChauvenetCriterion(sample)
+
+# introduce outlier
+sample[1] <- 1
+calculateChauvenetCriterion(sample)
+
+}

@@ -3,14 +3,22 @@
 #' @param Dir         Character, parent directory of spectra.
 #' @param filter      Character vector, filter out spectra which match the given vector.
 #' @param nameSpectra Logical, if TRUE the spectra in the resulting list will be named according to the dirname.
+#' @param verbose     Logical, print logs to the console.
 #'
 #' @return List of MALDIquant::MassSpectra
 #' @export
 #'
 #' @importFrom svMisc progress
 #' @importFrom MALDIquantForeign importBrukerFlex
-
-loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
+#' 
+#' @examples
+#' dataDir <- system.file("extdata", package="MALDIcellassay")
+#' unzip(file.path(dataDir, "example-raw-spectra.zip"))
+#'
+#' loadSpectra("example-raw-spectra/")
+#'
+#' unlink("example-raw-spectra/", recursive = TRUE)
+loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE) {
   # get names of all anaylses
   analyses <- basename(list.dirs(Dir, recursive = F))
 
@@ -28,7 +36,10 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
 
   spectra <- vector("list", length = total_n)
   counter <- 0
-  cat(timeNow(), "Loading spectra...\n\n")
+  if(verbose) {
+    cat(timeNow(), "Loading spectra...\n\n")
+  }
+  
   for (i in analyses) {
     path <- file.path(Dir, i)
     spots <- list.files(path, recursive = T)[grepl(pattern = "fid", x = list.files(path, recursive = T))]
@@ -43,11 +54,15 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
       if (nameSpectra) {
         names(spectra)[counter] <- i
       }
-
-      svMisc::progress(counter / total_n * 100)
+      if(verbose) {
+        svMisc::progress(counter / total_n * 100)
+      }
     }
   }
-  cat("\n")
+  if(verbose) {
+    cat("\n")
+  }
+  
 
   return(spectra)
 }
@@ -57,13 +72,18 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
 #' @param Dir         Character, parent directory of spectra.
 #' @param filter      Character vector, filter out spectra which match the given vector.
 #' @param nameSpectra Logical, if TRUE the spectra in the resulting list will be named according to the dirname.
-#'
+#' @param verbose     Logical, print logs to console
 #' @return List of MALDIquant::MassSpectra
 #' @export
 #'
 #' @importFrom svMisc progress
 #' @importFrom MALDIquantForeign importMzMl
-loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE) {
+#' 
+#' @examples
+#' dataDir <- system.file("extdata", package="MALDIcellassay")
+#' 
+#' loadSpectraMzML(file.path(dataDir, "Koch2024mzML"))
+loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE) {
   # get names of all anaylses
   analyses <- list.files(Dir, recursive = F)
 
@@ -71,8 +91,11 @@ loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE) {
   analyses <- analyses[which(!analyses %in% filter)]
 
   spectra <- vector("list", length = length(analyses))
-
-  cat(timeNow(), "Loading spectra...\n\n")
+  
+  if(verbose) {
+    cat(timeNow(), "Loading spectra...\n\n")  
+  }
+  
   counter <- 0
   for (i in analyses) {
     counter <- counter + 1
@@ -86,11 +109,14 @@ loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE) {
     }
 
     spectra[[counter]] <- spec
-
-    svMisc::progress(counter / length(analyses) * 100)
+    if(verbose) {
+      svMisc::progress(counter / length(analyses) * 100)  
+    }
+    
   }
-
-  cat("\n")
+  if(verbose) {
+    cat("\n")  
+  }
 
   return(unlist(spectra))
 }

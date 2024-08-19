@@ -34,6 +34,7 @@
 #'
 #' @return ssmd
 #' @importFrom stats sd
+#' @noRd
 
 .calculateSSMD <- function(pos, neg) {
   # strictly standardized mean difference
@@ -118,11 +119,15 @@
 #' Numeric vector of Z'-factors.
 #' @importFrom purrr map_dbl
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' calculateZPrime(Blank2022res, nConc = 2)       
+#'  
 calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   .calculateMetric(res = res,
@@ -153,11 +158,17 @@ calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
 #' @return
 #' Numeric vector of strictly standardized mean differences (SSMD)
 #' @export
+#' 
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' 
+#' calculateSSMD(Blank2022res, nConc = 2)       
+#' 
 calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   .calculateMetric(res = res,
@@ -189,11 +200,16 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #' @return
 #' Numeric vector of V'-factors
 #' @export
+#' 
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' 
+#' calculateVPrime(Blank2022res) 
 calculateVPrime <- function(res, internal = TRUE) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   param <- getFittingParameters(res)

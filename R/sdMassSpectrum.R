@@ -56,7 +56,7 @@
     }
     
     ## replace tapply by split to preserve order
-    tmp <- lapply(split(unlist(l), labels), FUN=FUN, ..., mc.cores=mc.cores)
+    tmp <- lapply(split(unlist(l), labels), FUN=FUN, ...)
     
     k <- unlist(tmp)
     
@@ -118,16 +118,15 @@ setMethod(f="approxfun",
 
 #' Column wise standard deviation
 #'
-#'
 #' also a function of sgibb
 #' see https://stackoverflow.com/questions/17549762/is-there-such-colsd-in-r
 #' @param x     matrix
 #' @param na.rm logical
 #'
 #' @return sd
-#' @export
 #' 
 #' @importFrom MALDIquant isEmpty
+#' @noRd
 colSdColMeans <- function(x, na.rm = TRUE) {
   if (na.rm) {
     n <- colSums(!is.na(x)) # thanks @flodel
@@ -138,13 +137,14 @@ colSdColMeans <- function(x, na.rm = TRUE) {
   return(sqrt(colVar * n / (n - 1)))
 }
 
-#' Still fork from sgibb MALDIquant
+#' Still fork from sgibb/MALDIquant
 #'
 #' @param l       see MALDIquant
 #' @param mergeMetaData see MALDIquant
 #'
 #' @return see MALDIquant
 #' @importFrom stats approxfun
+#' @noRd
 sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
 
   ## merge metaData
@@ -183,10 +183,6 @@ sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
   createMassPeaks(mass = mass, intensity = intensity, snr = rep(NA_integer_, length(intensity)),metaData = metaData)
 }
 
-
-
-
-
 #' Compute standard-deviation spectra
 #'
 #' This is a fork from sgibb's MALDIquant::averageMassSpectra() function.
@@ -199,6 +195,10 @@ sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
 #' @return
 #' Returns a single (no labels given) or a list (labels given) of standard-deviation spectra as MassSpectrum objects.
 #' @export
+#' @examples
+#' data(Blank2022spec)
+#' 
+#' sdMassSpectrum(Blank2022spec, labels = names(Blank2022spec))[[1]]
 
 sdMassSpectrum <- function(l, labels, ...) {
 

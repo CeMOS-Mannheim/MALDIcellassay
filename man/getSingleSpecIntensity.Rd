@@ -17,3 +17,9 @@ Numeric vector, intensities of mzIdx
 \description{
 Extract the intensities of single spectra for a given mzIdx
 }
+\examples{
+
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+head(getSingleSpecIntensity(Blank2022res, 2))
+}

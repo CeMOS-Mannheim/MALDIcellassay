@@ -1,10 +1,10 @@
 Package: MALDIcellassay
 Type: Package
 Title: Automated ('un-targeted') Screening of 'MALDI' Cell Based Assays Based on Dose-Response Curve Fitting
-Version: 0.4.45
+Version: 0.4.46
 Authors@R: person(given = "Thomas",
                   family = "Enzlein",
-                  role = c("aut", "cre"),
+                  role = c("aut", "cre", "cph"),
                   email = "t.enzlein@hs-mannheim.de",
                   comment = c(ORCID = "0000-0003-1789-4090"))
 Description: Detects high variance signals and generates dose-response curves to further investigate candidate signals.
@@ -13,7 +13,7 @@ Imports: methods, ggplot2, nplr, dplyr, tidyr, forcats, scales, MALDIquant, MALD
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
     rmarkdown,

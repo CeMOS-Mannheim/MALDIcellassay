@@ -15,3 +15,8 @@ Numeric, tolerance used for binning in Dalton.
 \description{
 Get binning tolerance
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getBinTol(Blank2022res)
+}
