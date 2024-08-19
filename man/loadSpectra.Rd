@@ -4,7 +4,7 @@
 \alias{loadSpectra}
 \title{load bruker MALDI target plate spectra}
 \usage{
-loadSpectra(Dir, filter = NA, nameSpectra = TRUE)
+loadSpectra(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{Dir}{Character, parent directory of spectra.}
@@ -12,6 +12,8 @@ loadSpectra(Dir, filter = NA, nameSpectra = TRUE)
 \item{filter}{Character vector, filter out spectra which match the given vector.}
 
 \item{nameSpectra}{Logical, if TRUE the spectra in the resulting list will be named according to the dirname.}
+
+\item{verbose}{Logical, print logs to the console.}
 }
 \value{
 List of MALDIquant::MassSpectra

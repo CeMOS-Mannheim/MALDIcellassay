@@ -8,6 +8,7 @@
 #' @param normMeth            Character, normalization method. Options are: "TIC", "median", "PQN" and "mz".
 #' @param alignTol            Numeric, tolerance for alignment in Da.
 #' @param allowNoMatches      Logical, allow no matches for normalization using "mz" method and/or re-calibration.
+#' @param verbose             Logical, print logs to the console.
 #' 
 #' @importFrom MALDIquant determineWarpingFunctions warpMassSpectra warpMassPeaks referencePeaks
 .preprocess <- function(peaks_single,
@@ -17,14 +18,16 @@
                         normTol,
                         normMeth,
                         alignTol,
-                        allowNoMatches) {
+                        allowNoMatches,
+                        verbose = TRUE) {
   if (SinglePointRecal) {
     # perform single point mass recalibration
     mzShift <- getMzShift(
       peaks = peaks_single,
       tol = normTol,
       targetMz = normMz,
-      tolppm = FALSE
+      tolppm = FALSE, 
+      verbose = verbose
     )
 
     spec <- shiftMassAxis(spec[mzShift$specIdx],
@@ -39,7 +42,10 @@
   }
 
   #### normalization ####
-  cat(timeNow(), "normalizing... \n")
+  if(verbose) {
+    cat(timeNow(), "normalizing... \n")  
+  }
+  
   norm <- normalize(spec = spec,
                     peaks = peaks_single,
                     normMeth = normMeth,
@@ -54,7 +60,10 @@
 
   #### alignment ####
   if(alignTol > 0) {
-    cat(timeNow(), "aligning spectra... \n")
+    if(verbose) {
+      cat(timeNow(), "aligning spectra... \n")
+    }
+    
     wf <- determineWarpingFunctions(l = peaks_single,
                                     reference = referencePeaks(peaks_single,
                                                                minFrequency = 0.75,

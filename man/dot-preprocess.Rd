@@ -12,7 +12,8 @@
   normTol,
   normMeth,
   alignTol,
-  allowNoMatches
+  allowNoMatches,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@
 \item{alignTol}{Numeric, tolerance for alignment in Da.}
 
 \item{allowNoMatches}{Logical, allow no matches for normalization using "mz" method and/or re-calibration.}
+
+\item{verbose}{Logical, print logs to the console.}
 }
 \description{
 Internal function to perform preprocessing of spectra

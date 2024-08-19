@@ -4,12 +4,18 @@
 \alias{filterVariance}
 \title{Filter for high variance signals}
 \usage{
-filterVariance(vars, method = c("mean", "median", "q25", "q75", "none"))
+filterVariance(
+  vars,
+  method = c("mean", "median", "q25", "q75", "none"),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{vars}{Numeric vector, variances of signals}
 
 \item{method}{Character, filtering method. One of "mean" (default), "median", "q25", "q75" (25 and 75\% quantile) or "none".}
+
+\item{verbose}{Logical, print logs to console.}
 }
 \value{
 Indices of spectra with a high variance
@@ -21,5 +27,5 @@ Filter for high variance signals
 data(Blank2022intmat)
 # get variance of each peak
 vars <- apply(Blank2022intmat, 2, var)
-filterVariance(vars, method = "mean")
+highVarIndicies <- filterVariance(vars, method = "mean", verbose = TRUE)
 }

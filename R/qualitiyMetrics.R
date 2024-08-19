@@ -125,9 +125,8 @@
 #'  
 calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   .calculateMetric(res = res,
@@ -167,9 +166,8 @@ calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
 #' 
 calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   .calculateMetric(res = res,
@@ -209,9 +207,8 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #' calculateVPrime(Blank2022res) 
 calculateVPrime <- function(res, internal = TRUE) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   param <- getFittingParameters(res)

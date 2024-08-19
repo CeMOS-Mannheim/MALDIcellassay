@@ -13,7 +13,8 @@
   normMz,
   normTol,
   halfWindowSize,
-  peakMethod = "SuperSmoother"
+  peakMethod = "SuperSmoother",
+  verbose = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@
 \item{halfWindowSize}{Numeric, halfWindowSize for peak detection.}
 
 \item{peakMethod}{Character, method for peak detection. Either "SuperSmoother" or "MAD".}
+
+\item{verbose}{Logical, print logs to the console.}
 }
 \value{
 List of lists with intensity matrix, average spectra and average peaks

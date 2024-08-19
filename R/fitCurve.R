@@ -15,6 +15,7 @@
 #' @param allowNoMatches      Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop
 #' @param normMeth            Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.
 #' @param SinglePointRecal    Logical, perform single point recalibration to normMz
+#' @param verbose             Logical, print logs to console.
 #'
 #' @return
 #' Object of class `MALDIassay`.
@@ -53,7 +54,8 @@ fitCurve <- function(spec,
                      halfWindowSize = 3,
                      allowNoMatches = TRUE,
                      normMeth = c("mz", "TIC", "PQN", "median", "none"),
-                     SinglePointRecal = TRUE) {
+                     SinglePointRecal = TRUE,
+                     verbose = TRUE) {
 
   ##### match & evaluate arguments ####
   normMeth <- match.arg(normMeth)
@@ -118,10 +120,14 @@ fitCurve <- function(spec,
                      normTol = normTol,
                      normMeth = normMeth,
                      alignTol = alignTol,
-                     allowNoMatches = allowNoMatches)
+                     allowNoMatches = allowNoMatches, 
+                     verbose = verbose)
 
   #### average spectra ####
-  cat(timeNow(), "calculating", averageMethod, "spectra... \n")
+  if(verbose) {
+    cat(timeNow(), "calculating", averageMethod, "spectra... \n")
+  }
+  
 
   avg <- .aggregateSpectra(spec = prc$spec,
                            averageMethod = averageMethod,
@@ -130,7 +136,8 @@ fitCurve <- function(spec,
                            binTol = binTol,
                            normMz = normMz,
                            normTol = normTol,
-                           halfWindowSize = halfWindowSize)
+                           halfWindowSize = halfWindowSize,
+                           verbose = verbose)
 
   # single spectra data
   allmz <- as.numeric(colnames(avg$intmat))
@@ -141,17 +148,24 @@ fitCurve <- function(spec,
                                   tol = normTol*0.5)
 
   # fit curves
-  cat(timeNow(), "fitting curves... \n")
+  if(verbose) {
+    cat(timeNow(), "fitting curves... \n")
+  }
+  
   res_list <- calculateCurveFit(intmat = avg$intmat,
                                 idx = filterVariance(apply(avg$intmat, 2, var),
-                                                     method = varFilterMethod))
+                                                     method = varFilterMethod,
+                                                     verbose = verbose),
+                                verbose = verbose)
 
   # peak statistics
   stat_df <- calculatePeakStatistics(curveFits = res_list,
                                      singlePeaks = singlePeaks,
                                      spec = prc$spec)
-
-  cat(timeNow(), "Done!", "\n")
+  if(verbose) {
+    cat(timeNow(), "Done!", "\n")
+  }
+ 
 
   res_class <- new("MALDIassay",
                    avgSpectra = avg$avgSpec,

@@ -57,6 +57,7 @@
 #' @param targetMz Numeric, target mass
 #' @param tol      Numeric, tolerance around targetMz
 #' @param tolppm   Logical, tolerance supplied in ppm
+#' @param verbose  Logical, print logs to the console.
 #'
 #' @return
 #' List with two entries:
@@ -70,12 +71,12 @@
 getMzShift <- function(peaks,
                        targetMz,
                        tol,
-                       tolppm = FALSE) {
+                       tolppm = FALSE,
+                       verbose = TRUE) {
   stopifnot(isMassPeaksList(peaks))
   nm <- names(peaks)
   stopifnot(!is.null(nm))
   stopifnot(is.numeric(as.numeric(nm)))
-
 
   # perform single point mass recalibration
   mzShift <- .getMzShift(
@@ -85,10 +86,13 @@ getMzShift <- function(peaks,
     tolppm = tolppm,
     allowNoMatch = TRUE
   )
-  cat("found mz", targetMz, "in", length(mzShift$specIdx), "/",
-      length(peaks), "spectra\n")
-  cat(timeNow(), "mzshift was", mean(mzShift$mzshift),
-      "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")
+  if(verbose) {
+    cat("found mz", targetMz, "in", length(mzShift$specIdx), "/",
+        length(peaks), "spectra\n")
+    cat(timeNow(), "mzshift was", mean(mzShift$mzshift),
+        "in mean and", max(abs(mzShift$mzshift)), " abs. max.\n")  
+  }
+  
 
   if(length(unique(nm)) != length(unique(nm[mzShift$specIdx]))) {
     # stop if a single condition got filtered completely
