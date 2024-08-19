@@ -19,3 +19,11 @@ List of MALDIquant::MassSpectra
 \description{
 load bruker MALDI target plate spectra
 }
+\examples{
+dataDir <- system.file("extdata", package="MALDIcellassay")
+unzip(file.path(dataDir, "example-raw-spectra.zip"))
+
+loadSpectra("example-raw-spectra/")
+
+unlink("example-raw-spectra/", recursive = TRUE)
+}

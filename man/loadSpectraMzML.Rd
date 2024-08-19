@@ -19,3 +19,8 @@ List of MALDIquant::MassSpectra
 \description{
 load mzML spectra
 }
+\examples{
+dataDir <- system.file("extdata", package="MALDIcellassay")
+
+loadSpectraMzML(file.path(dataDir, "Koch2024mzML"))
+}

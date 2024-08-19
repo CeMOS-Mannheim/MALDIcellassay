@@ -82,8 +82,6 @@ isMALDIassay <- function(object) {
 #' Stop and throw an error if object is not of class MALDIassay
 #'
 #' @param object object
-#'
-#' @export
 stopIfNotIsMALDIassay <- function(object) {
   if (!isMALDIassay(object)) {
     stop("object needs to be of class MALDIassay.")

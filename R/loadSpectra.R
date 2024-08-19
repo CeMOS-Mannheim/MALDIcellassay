@@ -10,10 +10,13 @@
 #' @importFrom svMisc progress
 #' @importFrom MALDIquantForeign importBrukerFlex
 #' 
+#' @examples
+#' dataDir <- system.file("extdata", package="MALDIcellassay")
+#' unzip(file.path(dataDir, "example-raw-spectra.zip"))
 #'
-
-
-
+#' loadSpectra("example-raw-spectra/")
+#'
+#' unlink("example-raw-spectra/", recursive = TRUE)
 loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
   # get names of all anaylses
   analyses <- basename(list.dirs(Dir, recursive = F))
@@ -67,6 +70,11 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE) {
 #'
 #' @importFrom svMisc progress
 #' @importFrom MALDIquantForeign importMzMl
+#' 
+#' @examples
+#' dataDir <- system.file("extdata", package="MALDIcellassay")
+#' 
+#' loadSpectraMzML(file.path(dataDir, "Koch2024mzML"))
 loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE) {
   # get names of all anaylses
   analyses <- list.files(Dir, recursive = F)
