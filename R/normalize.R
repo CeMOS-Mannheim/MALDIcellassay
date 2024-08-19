@@ -7,6 +7,7 @@
 #' @return
 #' double
 #' @importFrom MALDIquant trim
+#' @noRd
 .scalingFactor <- function(object, method=c("TIC", "median"), range) {
   
   method <- match.arg(method)

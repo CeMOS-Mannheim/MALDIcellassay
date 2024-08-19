@@ -7,6 +7,7 @@
 #' @return
 #' stabilized spectra
 #' @importFrom MALDIquant transformIntensity
+#' @noRd
 stabilizeVariance <- function(spec,
                               method = c("sqrt", "log", "log2", "log10"),
                               correctBaseline = c(NA, "SNIP", "TopHat", "ConvexHull", "median")) {

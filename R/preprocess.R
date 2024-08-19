@@ -11,6 +11,7 @@
 #' @param verbose             Logical, print logs to the console.
 #' 
 #' @importFrom MALDIquant determineWarpingFunctions warpMassSpectra warpMassPeaks referencePeaks
+#' @noRd
 .preprocess <- function(peaks_single,
                         spec,
                         SinglePointRecal,

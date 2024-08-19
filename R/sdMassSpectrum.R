@@ -126,6 +126,7 @@ setMethod(f="approxfun",
 #' @return sd
 #' 
 #' @importFrom MALDIquant isEmpty
+#' @noRd
 colSdColMeans <- function(x, na.rm = TRUE) {
   if (na.rm) {
     n <- colSums(!is.na(x)) # thanks @flodel
@@ -143,6 +144,7 @@ colSdColMeans <- function(x, na.rm = TRUE) {
 #'
 #' @return see MALDIquant
 #' @importFrom stats approxfun
+#' @noRd
 sdMassSpectraFun <- function(l, mergeMetaData = TRUE) {
 
   ## merge metaData

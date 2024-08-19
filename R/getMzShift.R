@@ -12,6 +12,7 @@
 #'                                       specIdx The index of the spectra with a match for targetMz
 #'
 #' @importFrom dplyr %>% mutate filter group_by arrange pull .data
+#' @noRd
 
 .getMzShift <- function(peaksdf, tol, targetMz, tolppm = TRUE, allowNoMatch = TRUE) {
   plot_Idx <- sort(unique(peaksdf$plotIdx))

@@ -82,6 +82,7 @@ isMALDIassay <- function(object) {
 #' Stop and throw an error if object is not of class MALDIassay
 #'
 #' @param object object
+#' @noRd
 stopIfNotIsMALDIassay <- function(object) {
   if (!isMALDIassay(object)) {
     stop("object needs to be of class MALDIassay.")
@@ -97,6 +98,7 @@ stopIfNotIsMALDIassay <- function(object) {
 #' Numeric, fold-change
 #'
 #' @importFrom tibble is_tibble
+#' @noRd
 calculateFC <- function(model) {
   par <- getPar(model)$params
 
