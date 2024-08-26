@@ -1,6 +1,6 @@
 #' Blank2022spec
 #' @description
-#' MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+#' MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
 #' @details
 #' The concentrations include: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10 and 30 uM of SAHA at 4 replicates each.
@@ -12,7 +12,7 @@
 
 #' Blank2022peaks
 #' @description
-#' Peaks from MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+#' Peaks from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
 #' @details
 #' The concentrations include: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10 and 30 uM of SAHA at 4 replicates each.
@@ -26,7 +26,7 @@
 
 #' Blank2022intmat
 #' @description
-#' Intensity matrix from MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+#' Intensity matrix from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
 #' @details
 #' The concentrations include: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10 and 30 uM of SAHA at 4 replicates each.
@@ -40,7 +40,7 @@
 
 #' Blank2022res
 #' @description
-#' Object of class MALDIcellassay from MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+#' Object of class MALDIcellassay from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
 #' @details
 #' The concentrations include: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10 and 30 uM of SAHA at 4 replicates each.

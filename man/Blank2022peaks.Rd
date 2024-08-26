@@ -11,7 +11,7 @@ A list of MALDIquant::MassPeaks-objects named with the respective concentration.
 data(Blank2022peaks)
 }
 \description{
-Peaks from MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+Peaks from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 It is used to demonstrate the usage of \code{MALDIcellassay}.
 }
 \details{

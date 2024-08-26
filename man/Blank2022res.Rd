@@ -11,7 +11,7 @@ Matrix with concentrations of original spectra as rownames and m/z-values as col
 data(Blank2022res)
 }
 \description{
-Object of class MALDIcellassay from MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+Object of class MALDIcellassay from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 It is used to demonstrate the usage of \code{MALDIcellassay}.
 }
 \details{

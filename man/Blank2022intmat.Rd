@@ -11,7 +11,7 @@ Matrix with concentrations of original spectra as rownames and m/z-values as col
 data(Blank2022intmat)
 }
 \description{
-Intensity matrix from MALDI mass spectromety data of EOC cells treated with different concentrations of SAHA.
+Intensity matrix from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 It is used to demonstrate the usage of \code{MALDIcellassay}.
 }
 \details{

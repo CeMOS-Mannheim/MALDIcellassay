@@ -44,7 +44,7 @@ Set to "M" if you dont want changes in your concentrations.}
 
 \item{SNR}{Numeric, signal to noise ratio for peak detection.}
 
-\item{halfWindowSize}{Numeric, defines the size of the window for peak detection. See \code{MALDIquant::detectPeaks()}.}
+\item{halfWindowSize}{2ction. See \code{MALDIquant::detectPeaks()}.}
 
 \item{allowNoMatches}{Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop}
 

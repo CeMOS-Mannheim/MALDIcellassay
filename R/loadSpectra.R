@@ -3,9 +3,9 @@
 #' @param Dir         Character, parent directory of spectra.
 #' @param filter      Character vector, filter out spectra which match the given vector.
 #' @param nameSpectra Logical, if TRUE the spectra in the resulting list will be named according to the dirname.
-#' @param verbose     Logical, print logs to the console.
+#' @param verbose     Logical, print logs to the console. 
 #'
-#' @return List of MALDIquant::MassSpectra
+#' @return List of MALDIquant::MassSpectra 
 #' @export
 #'
 #' @importFrom svMisc progress

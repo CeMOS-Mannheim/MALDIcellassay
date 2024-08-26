@@ -11,7 +11,7 @@
 #' @param alignTol            Numeric, tolerance for spectral alignment in Dalton.
 #' @param binTol              Numeric, tolerance for binning of peaks.
 #' @param SNR                 Numeric, signal to noise ratio for peak detection.
-#' @param halfWindowSize      Numeric, defines the size of the window for peak detection. See `MALDIquant::detectPeaks()`.
+#' @param halfWindowSize      2ction. See `MALDIquant::detectPeaks()`.
 #' @param allowNoMatches      Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop
 #' @param normMeth            Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.
 #' @param SinglePointRecal    Logical, perform single point recalibration to normMz
