@@ -1,3 +1,6 @@
+# MALDIcellassay 0.4.47
+* fix problems with description and title field in DESCRITPION file
+
 # MALDIcellassay 0.4.46
 * fix problems related to invalid file URI in man/calculateZPrime.Rd 
 * add examples to all functions
