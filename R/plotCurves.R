@@ -73,7 +73,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
              sd = pull(df_singlePeaks, .data$sd))
     
     p <- ggplot(data = df_P, aes(x = .data$x, y = .data$y)) +
-      geom_line(data = df_C, aes(x = .data$xC, y = .data$yC), size = 1, alpha = 0.75) +
+      geom_line(data = df_C, aes(x = .data$xC, y = .data$yC), linewidth = 1, alpha = 0.75) +
       geom_point(size = 3) +
       scale_x_continuous(labels = scales::scientific(10^df_P$x), breaks = df_P$x) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -99,7 +99,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
           ),
           alpha = 0.5,
           width = 0.1,
-          size = 0.8
+          linewidth = 0.8
         )
     }
     
@@ -113,7 +113,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
           ),
           alpha = 0.5,
           width = 0.1,
-          size = 0.8
+          linewidth = 0.8
         )
     }
     

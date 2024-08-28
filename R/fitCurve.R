@@ -28,7 +28,7 @@
 #' @importFrom tibble tibble as_tibble
 #' @importFrom tidyr gather
 #' @importFrom methods new
-#' @importFrom stats var
+#' @importFrom stats var na.omit
 #' @importFrom ggplot2 ggplot geom_line geom_point scale_x_continuous theme_bw theme element_text labs aes ggsave geom_vline
 #' 
 #' @examples
