@@ -18,5 +18,5 @@ Get fitting parameters
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-head(getFittingParameters(Blank2022res, summarise = FALSE))
+head(getFittingParameters(Blank2022res))
 }
