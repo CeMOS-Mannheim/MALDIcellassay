@@ -5,6 +5,10 @@
 #' @return
 #' Numeric vector, concentrations used in a MALDIassay
 #' @export
+#' @examples 
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getConc(Blank2022res))
 
 getConc <- function(object) {
   stopIfNotIsMALDIassay(object)
@@ -37,6 +41,11 @@ getDirection <- function(model) {
 #' @return
 #' Numeric vector, intensities of mzIdx
 #' @export
+#' @examples
+#' 
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getSingleSpecIntensity(Blank2022res, 2))
 getSingleSpecIntensity <- function(object, mz_idx) {
   s <- getSinglePeaks(object)
   mz <- mass(s[[1]]) # all single spectra have same mass axis
@@ -68,6 +77,10 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 #' A matrix with columns as *m/z* values and rows as concentrations/spectra
 #'
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getIntensityMatrix(Blank2022res, avg = TRUE, excludeNormMz = TRUE) )
 getIntensityMatrix <- function(object, avg = FALSE, excludeNormMz =FALSE) {
   
   if(avg) {
@@ -93,6 +106,10 @@ getIntensityMatrix <- function(object, avg = FALSE, excludeNormMz =FALSE) {
 #' @return
 #' Numeric, m/z used for normalization
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getNormMz(Blank2022res) 
 
 getNormMz <- function(object) {
   stopIfNotIsMALDIassay(object)
@@ -106,6 +123,10 @@ getNormMz <- function(object) {
 #' @return
 #' Numeric, tolerance used for normalization
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getNormMzTol(Blank2022res)
 getNormMzTol <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@settings$normTol)
@@ -118,6 +139,10 @@ getNormMzTol <- function(object) {
 #' @return
 #' Numeric, SNR used for peak detection
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getSNR(Blank2022res)
 getSNR <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@settings$SNR)
@@ -130,6 +155,11 @@ getSNR <- function(object) {
 #' @return
 #' List of MALDIquantMassSpectrum
 #' @export
+#' @examples
+#' 
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getAvgSpectra(Blank2022res)[[1]]
 getAvgSpectra <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@avgSpectra)
@@ -142,6 +172,10 @@ getAvgSpectra <- function(object) {
 #' @return
 #' List of MALDIquantMassPeaks
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getAvgPeaks(Blank2022res)[[1]]
 getAvgPeaks <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@avgPeaks)
@@ -154,11 +188,14 @@ getAvgPeaks <- function(object) {
 #' @return
 #' List of MALDIquantMassPeaks
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getSinglePeaks(Blank2022res)[[1]]
 getSinglePeaks <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@singlePeaks)
 }
-
 
 #' Extract normalization method
 #'
@@ -167,6 +204,10 @@ getSinglePeaks <- function(object) {
 #' @return
 #' Character, normalization method used.
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getNormMethod(Blank2022res)
 getNormMethod <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@settings$normMeth)
@@ -179,6 +220,10 @@ getNormMethod <- function(object) {
 #' @return
 #' Character of variance filtering method used
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getVarFilterMethod(Blank2022res)
 getVarFilterMethod <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@settings$varFilterMethod)
@@ -191,6 +236,10 @@ getVarFilterMethod <- function(object) {
 #' @return
 #' Numeric vector of mz-shits applied to spectra
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getAppliedMzShift(Blank2022res))
 getAppliedMzShift <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@mzShifts)
@@ -203,6 +252,10 @@ getAppliedMzShift <- function(object) {
 #' @return
 #' Numeric vector of normalization factors applied to spectra
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getAppliedNormFactors(Blank2022res))
 getAppliedNormFactors <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@normFactors)
@@ -215,6 +268,10 @@ getAppliedNormFactors <- function(object) {
 #' @return
 #' List, containing the data used to do the fits as well as the nlpr curve fit .
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' fits <- getCurveFits(Blank2022res)
 getCurveFits <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@fits)
@@ -227,6 +284,10 @@ getCurveFits <- function(object) {
 #' @return
 #' List, containing the data used to do the fits as well as the nlpr curve fit .
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getDirectory(Blank2022res)
 getDirectory <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@settings$dir)
@@ -242,6 +303,10 @@ getDirectory <- function(object) {
 #' @export
 #'
 #' @importFrom dplyr select ungroup arrange
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getPeakStatistics(Blank2022res, summarise = TRUE))
 getPeakStatistics <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
   stats <- object@stats
@@ -285,6 +350,10 @@ getPeakStatistics <- function(object, summarise = FALSE) {
 #' @export
 #'
 #' @importFrom tibble tibble
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getRecalibrationError(Blank2022res)
 getRecalibrationError <- function(object) {
   peaks <- peaks2df(getAvgPeaks(object))
   mzdev <- .getMzShift(
@@ -313,6 +382,10 @@ getRecalibrationError <- function(object) {
 #' @return
 #' numeric, mz value
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getMzFromMzIdx(Blank2022res, mzIdx = 2)
 getMzFromMzIdx <- function(object, mzIdx) {
   stopIfNotIsMALDIassay(object)
   mz <- as.numeric(getPeakStatistics(object, TRUE)[mzIdx, "mz"])
@@ -331,6 +404,10 @@ getMzFromMzIdx <- function(object, mzIdx) {
 #' @return
 #' numeric vector of mz values
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getAllMz(Blank2022res))
 getAllMz <- function(object, excludeNormMz = FALSE) {
   stopIfNotIsMALDIassay(object)
   mz <- as.numeric(sort(unique(object@stats[["mz"]])))
@@ -371,6 +448,14 @@ getAllMz <- function(object, excludeNormMz = FALSE) {
 #' @return
 #' character vector of spot coordinates. In case of average spectra multiple spots are concatenated.
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' # spots per spectrum
+#' getSpots(Blank2022res, singleSpec = TRUE)
+#' 
+#' #spots per concentration
+#' getSpots(Blank2022res, singleSpec = FALSE)
 getSpots <- function(object, singleSpec = TRUE) {
   stopIfNotIsMALDIassay(object)
   if(singleSpec) {
@@ -391,6 +476,10 @@ getSpots <- function(object, singleSpec = TRUE) {
 #' tibble of fitting parameters for each fitted m/z-value
 #' @export
 #' @importFrom nplr getPar
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' head(getFittingParameters(Blank2022res, summarise = FALSE))
 getFittingParameters <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
   
@@ -428,6 +517,10 @@ getFittingParameters <- function(object, summarise = FALSE) {
 #' @return
 #' Numeric, tolerance used for binning in Dalton.
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getBinTol(Blank2022res)
 getBinTol <- function(object) {
   return(object@settings$binTol)
 }

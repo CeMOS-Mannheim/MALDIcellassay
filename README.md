@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/CeMOS-Mannheim/MALDIcellassay/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CeMOS-Mannheim/MALDIcellassay/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # MALDIcellassay
 Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays.
 More information in Unger et. Al. 2021

@@ -10,6 +10,14 @@
 #' @importFrom dplyr join_by
 #' @importFrom MALDIquant intensityMatrix isMassPeaksList
 #' @noRd
+#' @examples
+#' data(Blank2022intmat)
+#' fits <- calculateCurveFit(Blank2022intmat, idx = 1:5)
+#' 
+#' peakstats <- calculatePeakStatistics(curveFits = fits, 
+#'                                      singlePeaks = Blank2022peaks, 
+#'                                      spec = Blank2022spec)
+#' head(peakstats)
 calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
   if (!is.list(curveFits)) {
     stop("curveFits must be a list of curve fits. See MALDIcellassay::calculateCurveFit().\n")

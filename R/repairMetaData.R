@@ -6,6 +6,7 @@
 #' list of MALDIquant::MassSpectrum with NA entries in meta data substituted with empty strings (unproblematic).
 #' 
 #' @importFrom MALDIquant metaData<-
+#' @noRd
 .repairMetaData <- function(spec) {
   count <- 0
   for(i in 1:length(spec)) {

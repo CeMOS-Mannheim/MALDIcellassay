@@ -15,3 +15,8 @@ Numeric, tolerance used for normalization
 \description{
 Extract tolerance used for normalization
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getNormMzTol(Blank2022res)
+}

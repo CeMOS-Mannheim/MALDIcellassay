@@ -25,3 +25,8 @@ If a variance filtering step was applied this will not include \strong{all} \emp
 If you wish to get a matrix of \strong{all} \emph{m/z} values use \code{MALDIquant::intensityMatrix(getSinglePeaks(object))}.
 For average spectra intensity matrix with \strong{all} \emph{m/z} values use \code{MALDIquant::intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))}.
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+head(getIntensityMatrix(Blank2022res, avg = TRUE, excludeNormMz = TRUE) )
+}

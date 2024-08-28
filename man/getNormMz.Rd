@@ -15,3 +15,8 @@ Numeric, m/z used for normalization
 \description{
 Extract m/z used for normalization
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+getNormMz(Blank2022res) 
+}

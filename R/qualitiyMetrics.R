@@ -34,6 +34,7 @@
 #'
 #' @return ssmd
 #' @importFrom stats sd
+#' @noRd
 
 .calculateSSMD <- function(pos, neg) {
   # strictly standardized mean difference
@@ -97,7 +98,7 @@
 #' @details
 #' The most common way to measure the quality of an assay is the so-called Z'-factor,
 #' which describes the separation of the positive and negative control in terms of their standard deviations \eqn{\sigma_p} and \eqn{\sigma_n}.
-#' The Z'-factor is defined as [Ji-Hu Zhang et al., A simple statistical parameter for use in evaluation and validation of high throughput screening assays](https://journals.sagepub.com/doi/abs/10.1177/108705719900400206).
+#' The Z'-factor is defined as [Ji-Hu Zhang et al., A simple statistical parameter for use in evaluation and validation of high throughput screening assays](https://pubmed.ncbi.nlm.nih.gov/10838414/).
 #' \deqn{Z' = 1 - (3 * (\sigma_p+\sigma_n))/|\mu_p-\mu_n|}
 #'
 #' where \eqn{\mu_p} and \eqn{\mu_p} is the mean value of the positive (response expected) and negative (no response expected) control, respectively.
@@ -118,11 +119,15 @@
 #' Numeric vector of Z'-factors.
 #' @importFrom purrr map_dbl
 #' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' calculateZPrime(Blank2022res, nConc = 2)       
+#'  
 calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   .calculateMetric(res = res,
@@ -153,11 +158,17 @@ calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
 #' @return
 #' Numeric vector of strictly standardized mean differences (SSMD)
 #' @export
+#' 
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' 
+#' calculateSSMD(Blank2022res, nConc = 2)       
+#' 
 calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   .calculateMetric(res = res,
@@ -189,11 +200,16 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #' @return
 #' Numeric vector of V'-factors
 #' @export
+#' 
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' 
+#' calculateVPrime(Blank2022res) 
 calculateVPrime <- function(res, internal = TRUE) {
   if(!internal) {
-    cat("Currently only the internal implementation,
+    stop("Currently only the internal implementation,
         using nConc top and bottom concentrations, is implemented.\n")
-    return()
   }
 
   param <- getFittingParameters(res)

@@ -15,3 +15,10 @@ Data.frame with peak data
 \description{
 Convert a list of peaks to a data.frame
 }
+\examples{
+data(Blank2022peaks)
+
+peakdf <- peaks2df(Blank2022peaks[1:2])
+head(peakdf)
+
+}

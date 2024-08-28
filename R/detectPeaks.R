@@ -10,6 +10,7 @@
 #'
 #' @return
 #' List of MALDIquant::MassPeaks with the same names as `spec`
+#' @noRd
 .detectPeaks <- function(spec, SNR, method = "SuperSmoother", halfWindowSize = 20) {
 
   if(!(isMassSpectrum(spec)| isMassSpectrumList(spec))) {

@@ -30,3 +30,10 @@ It is the mean divided by the standard deviation of a difference between the pos
 
 The SSMD can be easily be interpreted as it denotes the difference between positve and negative controls in units of standard deviation.
 }
+\examples{
+# see example for `fitCurve()` to see how this data was generated
+data(Blank2022res)
+
+calculateSSMD(Blank2022res, nConc = 2)       
+
+}

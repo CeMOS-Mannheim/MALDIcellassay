@@ -2,7 +2,7 @@
 #'
 #' @param object    object of class MALDIassay
 #' @param mzIdx     numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!
-#' @param errorbars character, add error bars to plot. Either standard error of the mean (`sem`) or standard deviation (`sd`) in regards to the measurment replicates or no errorbars (`none`).
+#' @param errorbars character, add error bars to plot. Either standard error of the mean (`sem`) or standard deviation (`sd`) in regards to the measurement replicates or no errorbars (`none`).
 #'
 #' @return
 #' list of ggplot objects
@@ -12,6 +12,10 @@
 #' @importFrom tibble tibble
 #' @importFrom nplr getGoodness getEstimates getXcurve getYcurve getX getY convertToProp
 #' @export
+#' @examples
+#' 
+#' data(Blank2022res)
+#' plotCurves(Blank2022res, mzIdx = 2, errorbars = "sd")
 plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem")) {
   stopIfNotIsMALDIassay(object)
   errorbars <- match.arg(errorbars)

@@ -4,6 +4,7 @@
 #'
 #' @return
 #' Numeric vector in proportions (0 - 1)
+#' @noRd
 .absToProp <- function(x) {
   prop <- (x - min(x)) / (max(x) - min(x))
 
@@ -19,6 +20,7 @@
 #' Numeric, value on the fit curve.
 #' Used to provide the correct target for `nplr::getEstimates()`
 #' @importFrom nplr getYcurve
+#' @noRd
 .getFitValue <- function(model, target) {
   x <- getYcurve(model)
   prop <- .absToProp(x)
@@ -35,6 +37,7 @@
 #' @return
 #' Numeric, pICtarget/pECtraget value
 #' @importFrom nplr getEstimates
+#' @noRd
 .getEstimates <- function(model, target) {
   -suppressMessages(
     suppressWarnings(

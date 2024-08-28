@@ -11,11 +11,16 @@ plotCurves(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
 
 \item{mzIdx}{numeric, indicies of mz values to plot (see \code{getPeakStatistics()}). Note, fc_thresh and R2_thresh filters do not apply if mzIdx is set!}
 
-\item{errorbars}{character, add error bars to plot. Either standard error of the mean (\code{sem}) or standard deviation (\code{sd}) in regards to the measurment replicates or no errorbars (\code{none}).}
+\item{errorbars}{character, add error bars to plot. Either standard error of the mean (\code{sem}) or standard deviation (\code{sd}) in regards to the measurement replicates or no errorbars (\code{none}).}
 }
 \value{
 list of ggplot objects
 }
 \description{
 generate ggplot objects for each of the curve fits in a MALDIassay object
+}
+\examples{
+
+data(Blank2022res)
+plotCurves(Blank2022res, mzIdx = 2, errorbars = "sd")
 }

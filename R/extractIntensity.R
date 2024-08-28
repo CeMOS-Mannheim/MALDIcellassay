@@ -10,6 +10,15 @@
 #' @export
 #' 
 #' @importFrom MALDIquant snr
+#' @examples
+#' data(Blank2022peaks)
+#' data(Blank2022spec)
+#' 
+#' int <- extractIntensity(mz = c(409, 423, 440), 
+#'                         peaks = Blank2022peaks, 
+#'                         spec = Blank2022spec, 
+#'                         tol = 0.2)
+#' head(int)
 extractIntensity <- function(mz, peaks, spec, tol) {
   if(!(length(peaks) == length(spec))) {
     stop("length of peaks and spec must match.\n")

@@ -7,11 +7,18 @@
 isMALDIassay(object)
 }
 \arguments{
-\item{object}{object}
+\item{object}{object to text}
 }
 \value{
-logical
+logical, TRUE if object is of class MALDIassay
 }
 \description{
 Check if object if of class MALDIassay
+}
+\examples{
+x <- 1
+# FALSE
+isMALDIassay(x)
+# TRUE
+isMALDIassay(Blank2022res)
 }

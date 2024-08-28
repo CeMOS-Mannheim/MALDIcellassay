@@ -32,15 +32,16 @@ For the sake to keep this package small, the spectra used as an example here wer
 
 ```{r setup, warning=FALSE}
 library(MALDIcellassay)
+library(MALDIquant)
 ```
 
 ```{r loadData}
-data("spec")
+data("Blank2022spec")
 ```
 
 First we will check the spectra for general quality.
 ```{r qualityCheck}
-MALDIquant::plot(spec[[1]], main = "0uM, replicate 1")
+MALDIquant::plot(Blank2022spec[[1]], main = "0uM, replicate 1")
 ```
 
 ## Preprocessing
@@ -50,8 +51,8 @@ But first we want so save the names of the spectra (which are the concentrations
 Also to get a better overview of the data we compute the mean spectra of each concentration (there are 4 measurement replicates for each concentration) and plot them around m/z 760 as we want to use this signal to normalize and also as lock mass.
 
 ```{r baseline}
-conc <- as.numeric(names(spec))
-spec_prc <- MALDIquant::removeBaseline(spec)
+conc <- as.numeric(names(Blank2022spec))
+spec_prc <- MALDIquant::removeBaseline(Blank2022spec)
 avg <- MALDIquant::averageMassSpectra(spec_prc, labels = conc)
 MALDIquant::plot(avg[[1]], main = "Overview of mean spectra", xlim = c(755, 765))
 for(i in 2:length(avg)) {
@@ -64,18 +65,18 @@ To get best results its necessary to normalize the spectra to each other.
 One way is to add a standard to each measurement spot (internal standard).
 This is not always possible and another option is to use endogenous peaks with high abundance like the signal around 760 m/z.
 As an example we will now find out the m/z deviation to this signal for each spectrum.
-First we need to detect the peaks, then we convert the peaks to a data.frame and finaly we use getMzShift() to find the mass shift in each spectrum.
+First we need to detect the peaks, then we convert the peaks to a data.frame and finally we use getMzShift() to find the mass shift in each spectrum.
 
 ```{r mzShift}
-peaks <- MALDIquant::detectPeaks(spec, method = "SuperSmoother", SNR = 3)
-names(peaks) <- names(spec)
+peaks <- MALDIquant::detectPeaks(Blank2022spec, method = "SuperSmoother", SNR = 5)
+names(peaks) <- names(Blank2022spec)
 mz_shift <- getMzShift(peaks = peaks, targetMz = 760.585, tol = 500)
 summary(mz_shift$mzshift)
 
 ```
 As we already suspected the shift is quite small. Now lets use it to align the spectra
 ```{r recal}
-spec_align <- shiftMassAxis(spec, mz_shift$mzshift)
+spec_align <- shiftMassAxis(Blank2022spec, mz_shift$mzshift)
 
 ```
 Now that we have aligned spectra the next step is to normalize them. 
@@ -135,11 +136,11 @@ And with that we are finished!
 As said during the introduction we did each step manually. 
 To do what we did in an automated way for each signal of interest use the following function:
 ```{r fitCruve, eval = FALSE}
-fitCurve(spec = spec,
+fitCurve(spec = Blank2022spec,
          SinglePointRecal = TRUE, 
          normMz = 760.585, 
-         alignTol = 500, 
-         normTol = 100)
+         alignTol = 0.1, 
+         normTol = 0.1)
 ```
 
 ## Session Info
