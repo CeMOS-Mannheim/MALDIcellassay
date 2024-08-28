@@ -144,13 +144,13 @@ The most important slot is <code>fits</code> which contains the IC50 curve fits.
 <span class="r-in"><span>         normTol <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
 <span class="r-in"><span>         varFilterMethod <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span> </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> found mz 760.585 in 32 / 32 spectra</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 normalizing... </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 aligning spectra... </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 calculating mean spectra... </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 building intensity matrix and applying variance filter... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 normalizing... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 aligning spectra... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 calculating mean spectra... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 building intensity matrix and applying variance filter... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Found 216 peaks in total.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 fitting curves... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 fitting curves... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Found 23 peaks with high variance using `mean` method.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fitting 406.775 (1/23)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fitting 406.914 (2/23)</span>
@@ -175,7 +175,7 @@ The most important slot is <code>fits</code> which contains the IC50 curve fits.
 <span class="r-out co"><span class="r-pr">#&gt;</span> fitting 438.04 (21/23)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fitting 438.891 (22/23)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fitting 439.042 (23/23)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:53 Done! </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 06:20 Done! </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------MALDIassay object------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Including 8 concentrations,</span>
@@ -190,18 +190,9 @@ The most important slot is <code>fits</code> which contains the IC50 curve fits.
 <span class="r-out co"><span class="r-pr">#&gt;</span> using variance filtering method: mean.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Top5-features based on Fold-Change and R²:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         mz mzIdx      pIC50        R2      wgof          min       max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 438.8908     3 -1.0681952 0.9999973 0.9999999 0.0005467355 0.3910323</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 783.5827    15  0.3727824 0.7295152 0.9906378 0.5557948853 0.6019211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 832.6010    22 -0.6592691 0.9921321 0.9996890 0.2537442934 0.2906058</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 804.5563    18 -0.7176871 0.9888835 0.9997602 0.1377453858 0.1603820</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 811.6244    20 -0.5813785 0.9966733 0.9999891 0.1687282522 0.1865230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           FC symetric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 436.312180     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  36.314589     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  18.063856     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   3.503622     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   3.006655     TRUE</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in arrange(., desc(.data$FC), desc(.data$R2)):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `..1 = .data$FC`.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `.data$FC`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Column `FC` not found in `.data`.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

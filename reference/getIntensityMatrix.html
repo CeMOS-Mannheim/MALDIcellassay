@@ -79,48 +79,7 @@ For average spectra intensity matrix with <strong>all</strong> <em>m/z</em> valu
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># see example for `fitCurve()` to see how this data was generated</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Blank2022res</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">getIntensityMatrix</span><span class="op">(</span><span class="va">Blank2022res</span>, avg <span class="op">=</span> <span class="cn">TRUE</span>, excludeNormMz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      406.914163450922 428.004132260612 438.890824557592 439.042346897966</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        0.2424933       0.21400031     0.0014001469        0.7050154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]        0.2872482       0.21846269     0.0016287144        0.6419370</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]        0.1728848       0.19877569     0.0016661576        0.5903497</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]        0.2054370       0.20331012     0.0013274351        0.7691431</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]        0.1507272       0.06460479     0.0006271682        0.5920978</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]        0.1655520       0.08088278     0.0012655789        0.8596732</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      566.961527775518 676.485447847528 703.586286847746 725.549662904297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.05086931        0.5456248        0.2807726         1.804763</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]       0.06851343        0.5133782        0.2452160         1.896596</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]       0.10066539        0.6410514        0.2730232         2.140607</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]       0.08537418        0.5693063        0.2556814         1.820078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]       0.05727564        0.5106124        0.2496434         1.654807</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]       0.10908744        0.5968330        0.2713521         1.909989</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      726.555208487752 727.552245980755 741.536315662242 756.548750613787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        0.6140090       0.11272918        1.0952381        0.5605902</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]        0.6197083       0.10353065        1.0266842        0.6057775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]        0.7172615       0.12537350        1.0177629        0.7470887</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]        0.6019735       0.10812057        0.8983122        0.6993991</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]        0.5467961       0.09864997        0.9317497        0.7373313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]        0.6414667       0.12025778        0.7907784        0.7116787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      772.540528346963 782.57644400297 783.582654272217 798.563919325163</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        0.3942163        1.343827        0.4795846        0.8147147</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]        0.4283457        1.509199        0.5316443        0.8984632</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]        0.4352256        1.580079        0.5653770        0.8181120</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]        0.4397037        1.530361        0.5391219        0.8079200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]        0.5019361        1.408371        0.5172195        0.7798565</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]        0.3437013        1.575263        0.5738349        0.5980498</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      799.567517217833 804.556260133438 810.622915627018 811.624361313474</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        0.2616927       0.07619232        0.4109521        0.1054032</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]        0.2901503       0.09723279        0.4526157        0.1158694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]        0.2611772       0.10168724        0.4765013        0.1260496</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]        0.2584666       0.10584126        0.4926227        0.1277281</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]        0.2563144       0.11586320        0.5630852        0.1510110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]        0.1898146       0.15728160        0.6992175        0.1959646</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      824.581961130221 832.600992026117 835.67738341154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        0.2421237        0.1495501       0.1290417</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]        0.2939849        0.1837206       0.1387516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]        0.2325689        0.1851744       0.1495159</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]        0.2490512        0.2036783       0.1467140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]        0.2178348        0.2301459       0.1335674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]        0.1465281        0.3084315       0.1633566</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in getAllMz(object, excludeNormMz = excludeNormMz):</span> Could not find normMz.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
