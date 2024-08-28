@@ -438,7 +438,6 @@ getSpots <- function(object, singleSpec = TRUE) {
 #' Get fitting parameters
 #'
 #' @param object      Object of class MALDIassay
-#' @param summarise   Logical, remove everything other then npar and mz from result.
 #'
 #' @return
 #' tibble of fitting parameters for each fitted m/z-value
@@ -448,7 +447,7 @@ getSpots <- function(object, singleSpec = TRUE) {
 #' # see example for `fitCurve()` to see how this data was generated
 #' data(Blank2022res)
 #' head(getFittingParameters(Blank2022res, summarise = FALSE))
-getFittingParameters <- function(object, summarise = FALSE) {
+getFittingParameters <- function(object) {
   stopIfNotIsMALDIassay(object)
   
   fits <- getCurveFits(object)
@@ -469,28 +468,5 @@ getFittingParameters <- function(object, summarise = FALSE) {
   df <- bind_rows(res_list, .id = "mzIdx") %>%
     mutate(mzIdx = as.numeric(.data$mzIdx))
   
-  if(summarise) {
-    df <- df %>%
-      mutate(mz = as.numeric(.data$mz)) %>%
-      select(.data$mz, .data$npar)
-  }
-  
   return(df)
 }
-
-#' Get binning tolerance
-#'
-#' @param object Object of class MALDIassay
-#'
-#' @return
-#' Numeric, tolerance used for binning in Dalton.
-#' @export
-#' @examples
-#' # see example for `fitCurve()` to see how this data was generated
-#' data(Blank2022res)
-#' getBinTol(Blank2022res)
-getBinTol <- function(object) {
-  return(object@settings$binTol)
-}
-
-
