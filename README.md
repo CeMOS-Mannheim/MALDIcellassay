@@ -1,5 +1,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/CeMOS-Mannheim/MALDIcellassay/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CeMOS-Mannheim/MALDIcellassay/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/github/CeMOS-Mannheim/MALDIcellassay/graph/badge.svg?token=URVX29WTDX)](https://codecov.io/github/CeMOS-Mannheim/MALDIcellassay)
+[![CRAN status](https://www.r-pkg.org/badges/version/MALDIcellassay)](https://CRAN.R-project.org/package=MALDIcellassay)
 <!-- badges: end -->
 
 # MALDIcellassay
