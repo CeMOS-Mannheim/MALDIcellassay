@@ -208,3 +208,44 @@ calculateVPrime <- function(res, internal = TRUE) {
   return(v)
 }
 
+#' Calculate the Curve Response Score (CRS)
+#'
+#' @param z      numeric vector, Z' prime score see `calculateZPrime()`.
+#' @param v      numeric vector, V' prime score see `calculateVPrime()`.
+#' @param log2FC numeric vector, log2 fold-change see `getPeakstatistics()`.
+#'
+#' @return
+#' Numeric vector of CRS scores (range 0 - 100%)
+#' @importFrom dplyr if_else
+#' @noRd
+CalculateCurveResponseScore <- function(z, v, log2FC) {
+  # logFC=2.59 equals: top = 6 * bottom
+  # logFC=1 would still be ok but at 2.59 we should cover everything.
+  # What goes even higher should not influence the score, otherwise it could be
+  # inflated by high FC it low z or v.
+  # S we set this upper limit.
+  maxFC <- 2.59
+  
+  absFC <- abs(log2FC)
+  
+  # limit to -1
+  zScore <- if_else(z < -0.5, -0.5, z)
+  
+  # z > 0.5 is an excellent assay and this is what we aim for
+  # z = 1.0 is hard to reach
+  zScore <- if_else(zScore > 0.5, 1,
+                    zScore/0.5)
+  
+  vScore <- v
+  
+  fcScore <- if_else(absFC > maxFC, 1,
+                     absFC/maxFC)
+  
+  score <- (zScore + vScore + fcScore) / 3 * 100
+  
+  # if metrics are really bad -> 0 score
+  score <- if_else(z <= -0.5 | v <= -0.5, 0, score)
+  
+  return(round(score, 1))
+}
+

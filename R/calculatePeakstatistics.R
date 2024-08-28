@@ -6,10 +6,10 @@
 #'
 #' @return
 #' A tibble with peak statistics.
-#' @export
+#' 
 #' @importFrom dplyr join_by
 #' @importFrom MALDIquant intensityMatrix isMassPeaksList
-
+#' @noRd
 calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
   if (!is.list(curveFits)) {
     stop("curveFits must be a list of curve fits. See MALDIcellassay::calculateCurveFit().\n")
@@ -61,6 +61,6 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
     ungroup() %>%
     left_join(fit_df, by = join_by("mz")) %>%
     filter(!is.na(.data$R2)) %>%
-    mutate(mzIdx = as.numeric(as.factor(as.numeric(.data$mz))))
+    mutate(mzIdx = as.numeric(as.factor(as.numeric(.data$mz)))) 
   return(stat_df)
 }

@@ -10,7 +10,7 @@ getConc <- function(object) {
   stopIfNotIsMALDIassay(object)
   conc <- as.numeric(object@settings$Conc[object@included_specIdx])
   return(conc)
-
+  
 }
 
 #' get direction of curve
@@ -42,7 +42,7 @@ getSingleSpecIntensity <- function(object, mz_idx) {
   mz <- mass(s[[1]]) # all single spectra have same mass axis
   targetMz <- getMzFromMzIdx(object, mz_idx)
   idx <- match.closest(targetMz, mz)
-
+  
   int <- vapply(s,
                 function(x) {
                   ints <- intensity(x)
@@ -69,20 +69,20 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 #'
 #' @export
 getIntensityMatrix <- function(object, avg = FALSE, excludeNormMz =FALSE) {
-
+  
   if(avg) {
     intmat <- intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))
   } else {
     intmat <- intensityMatrix(getSinglePeaks(object))
   }
-
+  
   all_mz <- as.numeric(colnames(intmat))
-
+  
   # filter fitted mz values
   mz <- getAllMz(object, excludeNormMz = excludeNormMz)
   idx <- match.closest(mz, all_mz, tolerance = 0.1)
   intmat <- intmat[,idx]
-
+  
   return(intmat)
 }
 
@@ -245,27 +245,34 @@ getDirectory <- function(object) {
 getPeakStatistics <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
   stats <- object@stats
-
+  
   if (summarise) {
-    stats <- stats %>%
-      mutate(mz = as.numeric(.data$mz)) %>%
-      group_by(.data$mz, .data$mzIdx) %>%
-      summarise(
-        pIC50 = first(.data$pIC50),
-        R2 = first(.data$R2),
-        wgof = first(.data$wgof),
-        min = mean(.data$min),
-        max = mean(.data$max),
-        FC = first(.data$fc)
-      ) %>%
-      ungroup() %>%
-      arrange(.data$mzIdx) %>%
-      left_join(getFittingParameters(object, summarise = TRUE),
-                by = join_by("mz")) %>%
-      mutate(symetric = ifelse(.data$npar < 5, TRUE, FALSE)) %>%
-      select(-.data$npar)
+    ssmd <- calculateSSMD(object, nConc = 2)
+    v <- calculateVPrime(object)
+    z <- calculateZPrime(object, nConc = 2)
+    
+    suppressWarnings(
+      stats <- stats %>%
+        mutate(mz = as.numeric(mz)) %>%
+        group_by(mz, mzIdx) %>%
+        summarise(
+          pEC50 = first(pIC50),
+          R2 = first(R2),
+          log2FC = log2(first(fc))
+        ) %>%
+        ungroup() %>%
+        mutate(
+          mz = round(mz, 3),
+          pEC50 = round(pEC50, 2),
+          R2 = round(R2, 2),
+          log2FC = round(log2FC, 2),
+          SSMD = round(ssmd, 2),
+          `V'` = round(v, 2),
+          `Z'` = round(z, 2),
+          CRS = CalculateCurveResponseScore(z = z, v = v, log2FC = log2FC)) %>%
+        mutate(CRS = if_else(CRS < 0, 0, CRS))
+    )
   }
-
   return(stats)
 }
 
@@ -287,7 +294,7 @@ getRecalibrationError <- function(object) {
     tolppm = FALSE,
     allowNoMatch = TRUE
   )
-
+  
   res_df <- tibble(
     meanAbs = mean(abs(mzdev$mzshift)),
     sdAbs = sd(abs(mzdev$mzshift)),
@@ -309,7 +316,7 @@ getRecalibrationError <- function(object) {
 getMzFromMzIdx <- function(object, mzIdx) {
   stopIfNotIsMALDIassay(object)
   mz <- as.numeric(getPeakStatistics(object, TRUE)[mzIdx, "mz"])
-
+  
   if(length(mz)>1) {
     warning("Something is wrong. There are multiple mz-values with this index!\n")
   }
@@ -326,26 +333,34 @@ getMzFromMzIdx <- function(object, mzIdx) {
 #' @export
 getAllMz <- function(object, excludeNormMz = FALSE) {
   stopIfNotIsMALDIassay(object)
+  mz <- as.numeric(sort(unique(object@stats[["mz"]])))
   if(!excludeNormMz) {
-    mz <-
-      getPeakStatistics(object, TRUE) %>%
-      pull(mz)
+    return(mz)
   } else {
-    mz <-
-      getPeakStatistics(object, TRUE) %>%
-      filter(
-        is.na(
-          match.closest(
-            table = getNormMz(object),
-            x = mz,
-            tolerance = getNormMzTol(object)
-          )
-        )
-      ) %>%
-      pull(mz)
+    if(!object@settings[["SinglePointRecal"]] & !object@settings[["normMeth"]] == "mz") {
+      # when neither singlePointRecal was performed nor mz normalization was applied:
+      # Even if normMz was set there is still no normMz to exlude.
+      return(mz)
+    }
+    if(is.null(object@settings[["normMz"]])) {
+      # Even no normMz is set we cant exclude it.
+      return(mz)
+    }
+    
+    normMzIdx <- match.closest(
+      table = mz,
+      x = getNormMz(object),
+      tolerance = getNormMzTol(object)
+    )
+    
+    if(is.na(normMzIdx)) {
+      # if no normMz can be found allthough it was used during processing.
+      # (SinglePointRecal AND/OR mz normalization)
+      stop("Could not find normMz.\n")
+    }
+    
+    return(mz[-normMzIdx])
   }
-
-  return(mz)
 }
 
 #' Get the spot coordinates of spectra
@@ -378,31 +393,31 @@ getSpots <- function(object, singleSpec = TRUE) {
 #' @importFrom nplr getPar
 getFittingParameters <- function(object, summarise = FALSE) {
   stopIfNotIsMALDIassay(object)
-
+  
   fits <- getCurveFits(object)
-
+  
   res_list <- lapply(seq_along(fits),
                      function(i) {
                        par <- getPar(fits[[i]]$model)
-
+                       
                        return(tibble(mz = names(fits)[i],
-                              npar = par$npar[[1]],
-                              bottom = par$params[["bottom"]],
-                              top = par$params[["top"]],
-                              xmid = par$params[["xmid"]],
-                              scal = par$params[["scal"]],
-                              s = par$params[["s"]]))
+                                     npar = par$npar[[1]],
+                                     bottom = par$params[["bottom"]],
+                                     top = par$params[["top"]],
+                                     xmid = par$params[["xmid"]],
+                                     scal = par$params[["scal"]],
+                                     s = par$params[["s"]]))
                      })
-
+  
   df <- bind_rows(res_list, .id = "mzIdx") %>%
     mutate(mzIdx = as.numeric(.data$mzIdx))
-
+  
   if(summarise) {
     df <- df %>%
       mutate(mz = as.numeric(.data$mz)) %>%
       select(.data$mz, .data$npar)
   }
-
+  
   return(df)
 }
 
