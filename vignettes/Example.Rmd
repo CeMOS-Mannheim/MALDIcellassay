@@ -171,11 +171,6 @@ plotPeak(res, mzIdx = 197, tol = 0.1)
 plotCurves(res, mzIdx = 197, errorbars = "sd")
 ```
 
-```{r plotTopHit, eval = TRUE}
-plotPeak(res, mzIdx = 197, tol = 0.1)
-plotCurves(res, mzIdx = 197, errorbars = "sd")
-```
-
 ## Session Info
 
 ```{r Rsession}
