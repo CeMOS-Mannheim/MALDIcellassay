@@ -139,9 +139,9 @@ getMzShift() to find the mass shift in each spectrum.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">peaks</span> <span class="op">&lt;-</span> <span class="fu">MALDIquant</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MALDIquant/man/detectPeaks-methods.html" class="external-link">detectPeaks</a></span><span class="op">(</span><span class="va">Blank2022spec</span>, method <span class="op">=</span> <span class="st">"SuperSmoother"</span>, SNR <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">peaks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span></span>
-<span><span class="va">mz_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMzShift.html">getMzShift</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">peaks</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="va">mz_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMzShift.html">getMzShift</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">peaks</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; found mz 760.585 in 32 / 32 spectra</span></span>
-<span><span class="co">#&gt; 07:32 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
+<span><span class="co">#&gt; 13:54 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mz_shift</span><span class="op">$</span><span class="va">mzshift</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
 <span><span class="co">#&gt; -0.08280 -0.08280 -0.08280 -0.07966 -0.08280 -0.05770</span></span></code></pre></div>
@@ -156,7 +156,7 @@ intensities for each spectrum of this signal and then we use it as a
 normalization factor.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">peaks_align</span> <span class="op">&lt;-</span> <span class="fu">MALDIquant</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MALDIquant/man/detectPeaks-methods.html" class="external-link">detectPeaks</a></span><span class="op">(</span><span class="va">spec_align</span>, method <span class="op">=</span> <span class="st">"SuperSmoother"</span>, SNR <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getNormFactors.html">getNormFactors</a></span><span class="op">(</span>peaksdf <span class="op">=</span> <span class="fu"><a href="../reference/peaks2df.html">peaks2df</a></span><span class="op">(</span><span class="va">peaks_align</span><span class="op">)</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getNormFactors.html">getNormFactors</a></span><span class="op">(</span>peaksdf <span class="op">=</span> <span class="fu"><a href="../reference/peaks2df.html">peaks2df</a></span><span class="op">(</span><span class="va">peaks_align</span><span class="op">)</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">norm</span><span class="op">$</span><span class="va">norm_factor</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span><span class="co">#&gt;    7949   12842   14492   14099   16145   19570</span></span>
@@ -225,31 +225,32 @@ Baseline removal and smoothing can (if needed) be performed with
 <span>         normMeth <span class="op">=</span> <span class="st">"mz"</span>,</span>
 <span>         varFilterMethod <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>         normMz <span class="op">=</span> <span class="fl">760.585</span>, </span>
-<span>         alignTol <span class="op">=</span> <span class="fl">500</span>, </span>
-<span>         normTol <span class="op">=</span> <span class="fl">100</span>, </span>
+<span>         alignTol <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>         normTol <span class="op">=</span> <span class="fl">0.1</span>, </span>
 <span>         verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in value[[3L]](cond): m/z 760.585 failed. Re-trying with npar='all' and additional noise (mean=0, sd=1e-4).</span></span>
 <span></span>
 <span><span class="va">res</span></span>
 <span><span class="co">#&gt; ------MALDIassay object------</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Including 8 concentrations,</span></span>
 <span><span class="co">#&gt; ranging from 0 to 30 .</span></span>
-<span><span class="co">#&gt; Normalization on m/z 760.58 ± 100 Da.</span></span>
+<span><span class="co">#&gt; Normalization on m/z 760.58 ± 0.1 Da.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Single point recalibation on 760.58 with 100 Da tolerance.</span></span>
+<span><span class="co">#&gt; Single point recalibation on 760.58 with 0.1 Da tolerance.</span></span>
 <span><span class="co">#&gt; Avg. mass shift before recal.: -0.0797 Da. Max abs. shift: 0.0828 Da.</span></span>
-<span><span class="co">#&gt; Avg. mass shift after recal. : 0.0031 Da. Max abs. shift: 0.0031 Da.</span></span>
+<span><span class="co">#&gt; Avg. mass shift after recal. : 0 Da. Max abs. shift: 0 Da.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Found 231 peaks (SNR 3) and 231 high variance peaks</span></span>
+<span><span class="co">#&gt; Found 249 peaks (SNR 3) and 249 high variance peaks</span></span>
 <span><span class="co">#&gt; using variance filtering method: none.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Top5-features based on Fold-Change and R²:</span></span>
 <span><span class="co">#&gt;        mz mzIdx pEC50   R2 log2FC SSMD   V'   Z'  CRS</span></span>
-<span><span class="co">#&gt; 1 811.609   197 -0.68 1.00   2.33 4.68 0.93 0.22 75.5</span></span>
-<span><span class="co">#&gt; 2 810.611   196 -0.56 0.99   1.81 5.03 0.89 0.27 70.7</span></span>
-<span><span class="co">#&gt; 3 804.544   190 -0.78 0.99   3.54 3.95 0.96 0.07 70.5</span></span>
-<span><span class="co">#&gt; 4 622.377   105 -0.62 0.99   3.23 3.56 0.91 0.08 69.1</span></span>
-<span><span class="co">#&gt; 5 620.354   102 -0.54 1.00   5.87 4.20 0.99 0.01 66.8</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 620.383   111 -0.31 0.97   3.23 5.56 0.82 0.37 85.4</span></span>
+<span><span class="co">#&gt; 2 662.422   134 -0.62 0.99   3.00 4.11 0.91 0.13 72.0</span></span>
+<span><span class="co">#&gt; 3 634.398   120 -0.48 0.99   2.61 4.15 0.89 0.13 71.7</span></span>
+<span><span class="co">#&gt; 4 810.604   208 -0.62 1.00   1.79 5.03 0.92 0.27 71.4</span></span>
+<span><span class="co">#&gt; 5 811.602   209 -0.64 0.99   1.90 4.68 0.90 0.22 68.8</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="screen-the-results-for-interesting-signals">Screen the results for interesting signals<a class="anchor" aria-label="anchor" href="#screen-the-results-for-interesting-signals"></a>
 </h3>

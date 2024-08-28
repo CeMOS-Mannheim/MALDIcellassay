@@ -30,7 +30,6 @@
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getBinTol.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getConc.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getCurveFits.html</loc></url>
-<url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getDirectory.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getFittingParameters.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getIntensityMatrix.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/getMzFromMzIdx.html</loc></url>
@@ -55,7 +54,6 @@
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/peaks2df.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/plotCurves.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/plotPeak.html</loc></url>
-<url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/sdMassSpectrum.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/shiftMassAxis.html</loc></url>
 <url><loc>https://cemos-mannheim.github.io/MALDIcellassay/reference/transformConc2Log.html</loc></url>
 </urlset>
