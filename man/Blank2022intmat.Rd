@@ -3,7 +3,7 @@
 \docType{data}
 \name{Blank2022intmat}
 \alias{Blank2022intmat}
-\title{Blank2022intmat}
+\title{Example intensity matrix from Blank 2022}
 \format{
 Matrix with concentrations of original spectra as rownames and m/z-values as colnames.
 }

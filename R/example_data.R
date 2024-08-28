@@ -1,4 +1,4 @@
-#' Blank2022spec
+#' Example spectra from Blank 2022
 #' @description
 #' MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
@@ -10,7 +10,7 @@
 #' @usage data(Blank2022spec)
 "Blank2022spec"
 
-#' Blank2022peaks
+#' Example peaks from Blank 2022
 #' @description
 #' Peaks from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
@@ -24,7 +24,7 @@
 "Blank2022peaks"
 
 
-#' Blank2022intmat
+#' Example intensity matrix from Blank 2022
 #' @description
 #' Intensity matrix from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.
@@ -38,7 +38,7 @@
 "Blank2022intmat"
 
 
-#' Blank2022res
+#' Example MALDIassay object from Blank 2022
 #' @description
 #' Object of class MALDIcellassay from MALDI mass spectrometry data of EOC cells treated with different concentrations of SAHA.
 #' It is used to demonstrate the usage of \code{MALDIcellassay}.

@@ -3,7 +3,7 @@
 \docType{data}
 \name{Blank2022peaks}
 \alias{Blank2022peaks}
-\title{Blank2022peaks}
+\title{Example peaks from Blank 2022}
 \format{
 A list of MALDIquant::MassPeaks-objects named with the respective concentration.
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \name{Blank2022res}
 \alias{Blank2022res}
-\title{Blank2022res}
+\title{Example MALDIassay object from Blank 2022}
 \format{
 Matrix with concentrations of original spectra as rownames and m/z-values as colnames.
 }

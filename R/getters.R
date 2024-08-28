@@ -318,24 +318,24 @@ getPeakStatistics <- function(object, summarise = FALSE) {
     
     suppressWarnings(
       stats <- stats %>%
-        mutate(mz = as.numeric(mz)) %>%
-        group_by(mz, mzIdx) %>%
+        mutate(mz = as.numeric(.data$mz)) %>%
+        group_by(.data$mz, .data$mzIdx) %>%
         summarise(
-          pEC50 = first(pIC50),
-          R2 = first(R2),
-          log2FC = log2(first(fc))
+          pEC50 = first(.data$pIC50),
+          R2 = first(.data$R2),
+          log2FC = log2(first(.data$fc))
         ) %>%
         ungroup() %>%
         mutate(
-          mz = round(mz, 3),
-          pEC50 = round(pEC50, 2),
-          R2 = round(R2, 2),
-          log2FC = round(log2FC, 2),
+          mz = round(.data$mz, 3),
+          pEC50 = round(.data$pEC50, 2),
+          R2 = round(.data$R2, 2),
+          log2FC = round(.data$log2FC, 2),
           SSMD = round(ssmd, 2),
           `V'` = round(v, 2),
           `Z'` = round(z, 2),
-          CRS = CalculateCurveResponseScore(z = z, v = v, log2FC = log2FC)) %>%
-        mutate(CRS = if_else(CRS < 0, 0, CRS))
+          CRS = CalculateCurveResponseScore(z = z, v = v, log2FC = .data$log2FC)) %>%
+        mutate(CRS = if_else(.data$CRS < 0, 0, .data$CRS))
     )
   }
   return(stats)
@@ -420,7 +420,7 @@ getAllMz <- function(object, excludeNormMz = FALSE) {
       return(mz)
     }
     if(is.null(object@settings[["normMz"]])) {
-      # Even no normMz is set we cant exclude it.
+      # When no normMz is set we cant exclude it.
       return(mz)
     }
     
@@ -433,7 +433,7 @@ getAllMz <- function(object, excludeNormMz = FALSE) {
     if(is.na(normMzIdx)) {
       # if no normMz can be found allthough it was used during processing.
       # (SinglePointRecal AND/OR mz normalization)
-      stop("Could not find normMz.\n")
+      warning("Could not find normMz. No exlusion possible.\n")
     }
     
     return(mz[-normMzIdx])

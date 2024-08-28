@@ -53,6 +53,8 @@ Also to get a better overview of the data we compute the mean spectra of each co
 ```{r baseline}
 conc <- as.numeric(names(Blank2022spec))
 spec_prc <- MALDIquant::removeBaseline(Blank2022spec)
+names(spec_prc) <- conc
+
 avg <- MALDIquant::averageMassSpectra(spec_prc, labels = conc)
 MALDIquant::plot(avg[[1]], main = "Overview of mean spectra", xlim = c(755, 765))
 for(i in 2:length(avg)) {
@@ -134,13 +136,44 @@ plot(model, main = title)
 ```
 And with that we are finished!
 As said during the introduction we did each step manually. 
-To do what we did in an automated way for each signal of interest use the following function:
-```{r fitCruve, eval = FALSE}
-fitCurve(spec = Blank2022spec,
+
+# MALDIcellassay Workflow
+
+To do what we did in an automated way for each signal of interest use the following function.
+
+Note, that we use the pre-processed spectra (baseline removed). Baseline removal and smoothing can (if needed) be performed with `MALDIquant`.
+```{r fitCruve, eval = TRUE}
+res <- fitCurve(spec = spec_prc,
          SinglePointRecal = TRUE, 
+         normMeth = "mz",
+         varFilterMethod = "none",
          normMz = 760.585, 
-         alignTol = 0.1, 
-         normTol = 0.1)
+         alignTol = 500, 
+         normTol = 100, 
+         verbose = FALSE)
+
+res
+```
+
+## Screen the results for interesting signals
+We can also extract a data.frame with all the peaks and quality metrics. We actually got a sneak peak on the results above from the `show` method of the `MALDIassay`-class.
+From there we can see that `mzIdx` 197 (**m/z** 811.6) scored the highest CRS score with around 75%.
+```{r peakStats, eval = TRUE}
+stats <- getPeakStatistics(res, summarise = TRUE) 
+```
+
+Depending on our experimental setup (targeted i.e. we know our **m/z** of interest or un-targeted) we might also want to look at V', Z' and log2FC individually.
+
+When we take a look at our highest hit we observe a good fit of the curve (V'), high distance between the lower and the upper part of the curve (log2FC) combined with low variance (Z'). Still we dont have a sigmoidal shape so either we did not use the right concentration range or we need to look deeper into the data.
+
+```{r plotTopHit, eval = TRUE}
+plotPeak(res, mzIdx = 197, tol = 0.1)
+plotCurves(res, mzIdx = 197, errorbars = "sd")
+```
+
+```{r plotTopHit, eval = TRUE}
+plotPeak(res, mzIdx = 197, tol = 0.1)
+plotCurves(res, mzIdx = 197, errorbars = "sd")
 ```
 
 ## Session Info

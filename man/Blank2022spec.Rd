@@ -3,7 +3,7 @@
 \docType{data}
 \name{Blank2022spec}
 \alias{Blank2022spec}
-\title{Blank2022spec}
+\title{Example spectra from Blank 2022}
 \format{
 A list of MALDIquant::MassSpectrum-objects named with the respective concentration.
 }
