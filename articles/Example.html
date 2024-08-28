@@ -141,7 +141,7 @@ getMzShift() to find the mass shift in each spectrum.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">peaks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span></span>
 <span><span class="va">mz_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMzShift.html">getMzShift</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">peaks</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; found mz 760.585 in 32 / 32 spectra</span></span>
-<span><span class="co">#&gt; 15:51 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
+<span><span class="co">#&gt; 18:35 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mz_shift</span><span class="op">$</span><span class="va">mzshift</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
 <span><span class="co">#&gt; -0.08280 -0.08280 -0.08280 -0.07966 -0.08280 -0.05770</span></span></code></pre></div>
@@ -257,8 +257,8 @@ Baseline removal and smoothing can (if needed) be performed with
 <p>We can also extract a data.frame with all the peaks and quality
 metrics. We actually got a sneak peak on the results above from the
 <code>show</code> method of the <code>MALDIassay</code>-class. From
-there we can see that <code>mzIdx</code> 197 (<strong>m/z</strong>
-811.6) scored the highest CRS score with around 75%.</p>
+there we can see that <code>mzIdx</code> 111 (<strong>m/z</strong>
+620.4) scored the highest CRS score with around 85%.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPeakStatistics.html">getPeakStatistics</a></span><span class="op">(</span><span class="va">res</span>, summarise <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
 <p>Depending on our experimental setup (targeted i.e. we know our
@@ -270,16 +270,25 @@ curve (log2FC) combined with low variance (Z’). Still we dont have a
 sigmoidal shape so either we did not use the right concentration range
 or we need to look deeper into the data.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPeak.html">plotPeak</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">197</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPeak.html">plotPeak</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">111</span>, tol <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Example_files/figure-html/plotTopHit-1.png" width="768"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCurves.html">plotCurves</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">197</span>, errorbars <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Example_files/figure-html/plotTopHit-2.png" width="768"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCurves.html">plotCurves</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">111</span>, errorbars <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Example_files/figure-html/plotTopHit-2.png" width="768">
+Here we might have a slightly better curve at a lower CRS. The CRS is
+intended to quickly filter out signals that make no sense at all but in
+makes sense to visually check the top hits.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPeak.html">plotPeak</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">193</span>, tol <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Example_files/figure-html/plotBetterHit-1.png" width="768"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCurves.html">plotCurves</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">193</span>, errorbars <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Example_files/figure-html/plotBetterHit-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
