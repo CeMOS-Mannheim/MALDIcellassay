@@ -435,7 +435,7 @@ getSpots <- function(object, singleSpec = TRUE) {
   }
 }
 
-#' Get fitting parameters
+#' Get fitting parameters 
 #'
 #' @param object      Object of class MALDIassay
 #'
