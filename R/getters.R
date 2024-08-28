@@ -477,6 +477,7 @@ getFittingParameters <- function(object) {
 #'
 #' @return
 #' Numeric, tolerance used for binning in Dalton.
+#' 
 #' @export
 #' @examples
 #' # see example for `fitCurve()` to see how this data was generated
