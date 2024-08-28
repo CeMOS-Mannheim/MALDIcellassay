@@ -13,8 +13,8 @@ knitr::opts_chunk$set(fig.width=8,
                       collapse = TRUE,
                       comment = "#>"
 )
+set.seed(42)
 ```
-
 
 ## Introduction
 
@@ -157,7 +157,7 @@ res
 
 ## Screen the results for interesting signals
 We can also extract a data.frame with all the peaks and quality metrics. We actually got a sneak peak on the results above from the `show` method of the `MALDIassay`-class.
-From there we can see that `mzIdx` 197 (**m/z** 811.6) scored the highest CRS score with around 75%.
+From there we can see that `mzIdx` 111 (**m/z** 620.4) scored the highest CRS score with around 85%.
 ```{r peakStats, eval = TRUE}
 stats <- getPeakStatistics(res, summarise = TRUE) 
 ```
@@ -167,8 +167,15 @@ Depending on our experimental setup (targeted i.e. we know our **m/z** of intere
 When we take a look at our highest hit we observe a good fit of the curve (V'), high distance between the lower and the upper part of the curve (log2FC) combined with low variance (Z'). Still we dont have a sigmoidal shape so either we did not use the right concentration range or we need to look deeper into the data.
 
 ```{r plotTopHit, eval = TRUE}
-plotPeak(res, mzIdx = 197, tol = 0.1)
-plotCurves(res, mzIdx = 197, errorbars = "sd")
+plotPeak(res, mzIdx = 111, tol = 0.8)
+plotCurves(res, mzIdx = 111, errorbars = "sd")
+```
+Here we might have a slightly better curve at a lower CRS.
+The CRS is intended to quickly filter out signals that make no sense at all but in makes sense to visually check the top hits.
+
+```{r plotBetterHit, eval = TRUE}
+plotPeak(res, mzIdx = 193, tol = 0.8)
+plotCurves(res, mzIdx = 193, errorbars = "sd")
 ```
 
 ## Session Info
