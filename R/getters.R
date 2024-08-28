@@ -470,3 +470,18 @@ getFittingParameters <- function(object) {
   
   return(df)
 }
+
+#' Get binning tolerance
+#'
+#' @param object Object of class MALDIassay
+#'
+#' @return
+#' Numeric, tolerance used for binning in Dalton.
+#' @export
+#' @examples
+#' # see example for `fitCurve()` to see how this data was generated
+#' data(Blank2022res)
+#' getBinTol(Blank2022res)
+getBinTol <- function(object) {
+  return(object@settings$binTol)
+}
