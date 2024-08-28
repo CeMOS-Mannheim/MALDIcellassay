@@ -23,41 +23,6 @@ transformConc2Log <- function(conc) {
   return(concLog)
 }
 
-#' go up x folders
-#'
-#' @param path Character, Path
-#' @param x    Numeric
-#'
-#' @return     new path
-#' @noRd
-goUpXFolders <- function(path, x) {
-  for (i in 1:x) {
-    resPath <- dirname(path)
-    path <- resPath
-  }
-  return(resPath)
-}
-
-#' Convert spectrum to data.frame
-#'
-#' @param specs MALDIquant::MassSpectrum or list there of
-#'
-#' @return      data.frame of spectra
-#' @noRd
-spec2df <- function(specs) {
-  df_l <- lapply(1:length(specs), function(i) {
-    mz <- mass(specs[[i]])
-    int <- intensity(specs[[i]])
-    name <- names(specs)[i]
-    return(tibble(
-      name = name,
-      mz = mz,
-      int = int,
-      plotIdx = i
-    ))
-  })
-  return(bind_rows(df_l))
-}
 
 #' Check if object if of class MALDIassay
 #'

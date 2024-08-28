@@ -19,7 +19,14 @@
 plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem")) {
   stopIfNotIsMALDIassay(object)
   errorbars <- match.arg(errorbars)
-
+  
+  if(!is.null(mzIdx)) {
+    allMzIdx <- seq_along(getAllMz(object))
+    if(!all(mzIdx %in% allMzIdx)) {
+      stop("Could not find all mzIdx in MALDIassay.\n")
+    }
+  }
+  
   if (is.null(mzIdx)) {
     res_list <- getCurveFits(object)
   } else {
@@ -27,23 +34,23 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
   }
   len <- length(names(res_list))
   mz_vals <- as.numeric(names(res_list))
-
+  
   p_list <- vector("list", length = len)
   for (i in 1:len) {
     mz <- mz_vals[i]
     model <- res_list[[as.character(mz)]]$model
     df <- res_list[[as.character(mz)]]$df
-
+    
     ic50 <- .getEstimates(model, 0.5)
     min <- min(df$value)
     max <- max(df$value)
-
+    
     fc <- calculateFC(model)
     R2 <- getGoodness(model)[[1]]
-
+    
     df_C <- tibble(xC = getXcurve(model), yC = getYcurve(model))
     df_P <- tibble(x = getX(model), y = getY(model))
-
+    
     int <- vapply(getSinglePeaks(object), function(x) {
       targetmass <- mz
       mass <- mass(x)
@@ -51,7 +58,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
       int <- intensity(x)
       return(int[idx])
     }, numeric(1))
-
+    
     df_singlePeaks <- tibble(
       x = getConc(object),
       int = int) %>%
@@ -60,11 +67,11 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
         sd = sd(.data$int),
         sem = .data$sd/sqrt(n())
       )
-
+    
     df_P <- df_P %>%
       mutate(sem = pull(df_singlePeaks, .data$sem),
              sd = pull(df_singlePeaks, .data$sd))
-
+    
     p <- ggplot(data = df_P, aes(x = .data$x, y = .data$y)) +
       geom_line(data = df_C, aes(x = .data$xC, y = .data$yC), size = 1, alpha = 0.75) +
       geom_point(size = 3) +
@@ -81,7 +88,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
           " FC=", round(fc, 2)
         )
       )
-
+    
     if (errorbars == "sem") {
       p <- p +
         geom_errorbar(
@@ -95,7 +102,7 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
           size = 0.8
         )
     }
-
+    
     if (errorbars == "sd") {
       p <- p +
         geom_errorbar(
@@ -109,22 +116,14 @@ plotCurves <- function(object, mzIdx = NULL, errorbars = c("none", "sd", "sem"))
           size = 0.8
         )
     }
-
+    
     p_list[[i]] <- p
     names(p_list) <- mz_vals
-
   }
-  # check for empty entries (result of filtering for FC or R2) and remove them
-  idx <- vapply(p_list, function(x) {
-    length(x) > 0
-  }, FUN.VALUE = TRUE)
-  if (sum(!idx) == len) {
-    stop("Nothing to plot. Condsider decreasing fc_thresh or R2_tresh.\n")
-  }
-
+  
   if (length(p_list) == 1) {
     return(p_list[[1]])
   }
-
-  return(p_list[idx])
+  
+  return(p_list)
 }

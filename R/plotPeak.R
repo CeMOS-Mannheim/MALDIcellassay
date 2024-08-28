@@ -18,9 +18,14 @@
 #' data(Blank2022res)
 #' plotPeak(Blank2022res, mzIdx = 2)
 plotPeak <- function(object, mzIdx, tol = 0.8) {
-  if (missing(mzIdx)) {
+  if (missing(mzIdx) | is.null(mzIdx) |is.na(mzIdx)) {
     stop("No mzIdx supplied.\n")
   }
+  
+  if(tol <= 0 | is.null(tol) | is.na(tol)) {
+    stop("tol needs to be a positive number.\n")
+  }
+  
   mz <- as.numeric(names(getCurveFits(object))[mzIdx])
   spec <- getAvgSpectra(object)
 

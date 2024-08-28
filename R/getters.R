@@ -17,22 +17,6 @@ getConc <- function(object) {
   
 }
 
-#' get direction of curve
-#'
-#' @param model nplr model
-#'
-#' @return Numeric direction (positive or negative)
-#'
-#' @noRd
-getDirection <- function(model) {
-  y <- getYcurve(model)
-  
-  y0 <- y[1]
-  y1 <- y[length(y)]
-  
-  return(y1 - y0)
-}
-
 #' Extract the intensities of single spectra for a given mzIdx
 #'
 #' @param object         Object of class MALDIassay
@@ -275,22 +259,6 @@ getAppliedNormFactors <- function(object) {
 getCurveFits <- function(object) {
   stopIfNotIsMALDIassay(object)
   return(object@fits)
-}
-
-#' Extract directory path
-#'
-#' @param object Object of class MALDIassay
-#'
-#' @return
-#' List, containing the data used to do the fits as well as the nlpr curve fit .
-#' @export
-#' @examples
-#' # see example for `fitCurve()` to see how this data was generated
-#' data(Blank2022res)
-#' getDirectory(Blank2022res)
-getDirectory <- function(object) {
-  stopIfNotIsMALDIassay(object)
-  return(object@settings$dir)
 }
 
 #' Extract peak statistics

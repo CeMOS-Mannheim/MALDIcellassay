@@ -18,7 +18,7 @@
   plot_Idx <- sort(unique(peaksdf$plotIdx))
 
   if(tolppm) {
-    tol <- tol / 1e6
+    tol <- tol * targetMz / 1e6
   }
 
 
@@ -77,9 +77,9 @@ getMzShift <- function(peaks,
   stopifnot(isMassPeaksList(peaks))
   nm <- names(peaks)
   stopifnot(!is.null(nm))
-  stopifnot(is.numeric(as.numeric(nm)))
+  stopifnot(all(!is.na((as.numeric(nm)))))
 
-  # perform single point mass recalibration
+  # perform single point mass re-calibration
   mzShift <- .getMzShift(
     peaksdf = peaks2df(peaks),
     tol = tol,

@@ -35,7 +35,6 @@
 #' @return ssmd
 #' @importFrom stats sd
 #' @noRd
-
 .calculateSSMD <- function(pos, neg) {
   # strictly standardized mean difference
   if(length(pos) < 2 | length(neg) < 2) {

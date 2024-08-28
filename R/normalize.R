@@ -103,7 +103,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
            }
          },
          "none" = {
-           norm_fac <- list("norm_factor" = 0)
+           norm_fac <- c("norm_factor" = 0)
            included_specIdx <- 1:length(spec)
          }
   )

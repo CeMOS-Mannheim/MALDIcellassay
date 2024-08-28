@@ -92,7 +92,7 @@ fitCurve <- function(spec,
 
   names(spec) <- as.numeric(names(spec)) * unitFactor
 
-  nm <- names(spec)
+  nm <- na.omit(names(spec))
 
   # check spectra for problematic meta data and remove it of needed
   spec <- .repairMetaData(spec)
@@ -101,12 +101,6 @@ fitCurve <- function(spec,
   order <- order(as.numeric(nm))
   nm <- nm[order]
   spec <- spec[order]
-
-
-  if(!length(nm) == length(spec)) {
-    stop("No concentrations provided.
-         Either name spectra with concentrations or use 'conc' argument.")
-  }
 
   spots <- extractSpots(spec)
 
@@ -166,7 +160,6 @@ fitCurve <- function(spec,
     cat(timeNow(), "Done!", "\n")
   }
  
-
   res_class <- new("MALDIassay",
                    avgSpectra = avg$avgSpec,
                    avgPeaks = avg$avgPeaksBinned,
