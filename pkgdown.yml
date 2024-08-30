@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   Example: Example.html
-last_built: 2024-08-30T05:09Z
+last_built: 2024-08-30T05:19Z
 urls:
   reference: https://cemos-mannheim.github.io/MALDIcellassay/reference
   article: https://cemos-mannheim.github.io/MALDIcellassay/articles

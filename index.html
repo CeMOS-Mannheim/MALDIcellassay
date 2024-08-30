@@ -56,13 +56,18 @@
 <div class="section level1">
 <div class="page-header"><h1 id="maldicellassay">MALDIcellassay<a class="anchor" aria-label="anchor" href="#maldicellassay"></a>
 </h1></div>
-<p>Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays. More information in Unger et. Al. 2021</p>
+<p>Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays. More information in <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link">Unger et. Al. 2021</a></p>
 <div class="section level2">
 <h2 id="main-functionality">Main functionality<a class="anchor" aria-label="anchor" href="#main-functionality"></a>
 </h2>
 <p>The main function in this package is <code><a href="reference/fitCurve.html">fitCurve()</a></code> which will not only do logistic regression and variance filtering but also handle all preprocessing necessary: - Spectral alignment (“single-point re-calibration”). - Normalization by an internal standard or known endogenous signal</p>
 <p>All these function can also be called on there own.</p>
 <p>This package makes heavy use of the <code>MALDIquant</code> framework.</p>
+</div>
+<div class="section level2">
+<h2 id="gui">GUI<a class="anchor" aria-label="anchor" href="#gui"></a>
+</h2>
+<p>If you want to use <code>MALDIcellassay</code> interactivly to explore your data you might be interested in <a href="https://github.com/CeMOS-Mannheim/M2ara" class="external-link"><code>M²ara</code></a> which offers a Shiny based interface. It also comes as a <a href="https://hub.docker.com/repository/docker/thomasenzlein/m2ara" class="external-link">docker container</a> and as a stand-alone <a href="https://github.com/CeMOS-Mannheim/m2ara/releases/latest/" class="external-link">Windows installer</a>. Also check the <a href="https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b" class="external-link">preprint</a> on M²ara.</p>
 </div>
 </div>
 
