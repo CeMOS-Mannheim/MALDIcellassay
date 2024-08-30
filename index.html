@@ -53,17 +53,29 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
+<!-- badges: end -->
+<p><img src="inst/figures/MALDIcellassay_sticker.png" height="150"></p>
 <div class="section level1">
 <div class="page-header"><h1 id="maldicellassay">MALDIcellassay<a class="anchor" aria-label="anchor" href="#maldicellassay"></a>
 </h1></div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<p>Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays. More information in Unger et. Al. 2021</p>
+<div class="section level2">
+<h2 id="main-functionality">Main functionality<a class="anchor" aria-label="anchor" href="#main-functionality"></a>
+</h2>
+</div>
+</div>
+<div class="section level1">
+<h1 id="the-main-function-in-this-package-is-fitcurve-which-will-not-only-do-logistic-regression-and-variance-filtering-but-also-handle-all-preprocessing-necessary---spectral-alignment-single-point-re-calibration---normalization-by-an-internal-standard-or-known-endogenous-signal">The main function in this package is <code>fitCurve()</code> which will not only do logistic regression and variance filtering but also handle all preprocessing necessary: - Spectral alignment (“single-point re-calibration”). - Normalization by an internal standard or known endogenous signal<a class="anchor" aria-label="anchor" href="#the-main-function-in-this-package-is-fitcurve-which-will-not-only-do-logistic-regression-and-variance-filtering-but-also-handle-all-preprocessing-necessary---spectral-alignment-single-point-re-calibration---normalization-by-an-internal-standard-or-known-endogenous-signal"></a>
+</h1>
 <p>Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z’, V’, log2-Fold-Change and the Curve response score (CRS) are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by <a href="https://doi.org/10.1038/s41598-018-29677-z" class="external-link">Weigt et al. (2018)</a> and first release as the <code>MALDIcellassay</code>-package in <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link">Unger et al. (2021)</a>.</p>
 <div class="section level2">
-<h2 id="main-functionality">Main Functionality<a class="anchor" aria-label="anchor" href="#main-functionality"></a>
+<h2 id="main-functionality-1">Main Functionality<a class="anchor" aria-label="anchor" href="#main-functionality-1"></a>
 </h2>
 <p>The primary function in this package is <code><a href="reference/fitCurve.html">fitCurve()</a></code> which not only performs logistic regression and variance filtering but also handles all necessary preprocessing steps:</p>
 <ul>
 <li>Spectral alignment (“single-point recalibration”)</li>
-<li>Normalization by an internal standard or known endogenous signal</li>
+<li>Normalization by an internal standard or known endogenous signal &gt;&gt;&gt;&gt;&gt;&gt;&gt; 2cfdddf0f4a2d6c65f6722a652567ff6fa59478c</li>
 </ul>
 <p>All these functions can also be called independently.</p>
 <p>This package makes heavy use of the <code>MALDIquant</code> framework.</p>
@@ -138,6 +150,7 @@
 </h2>
 <p>If you use <code>MALDIcellassay</code> in your research, please cite:</p>
 <p>Unger et al., 2021, “Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry”, Nature Protocols. DOI: <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link uri">https://doi.org/10.1038/s41596-021-00624-z</a>.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD This package makes heavy use of the <code>MALDIquant</code> framework. ======= &gt;&gt;&gt;&gt;&gt;&gt;&gt; 2cfdddf0f4a2d6c65f6722a652567ff6fa59478c</p>
 </div>
 </div>
 
