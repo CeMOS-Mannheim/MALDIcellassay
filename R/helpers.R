@@ -24,7 +24,7 @@ transformConc2Log <- function(conc) {
 }
 
 
-#' Check if object if of class MALDIassay
+#' Check if object is of class MALDIassay
 #'
 #' @param object object to text
 #'
@@ -54,10 +54,9 @@ stopIfNotIsMALDIassay <- function(object) {
   }
 }
 
-
 #' Calculate the fold-change
 #'
-#' @param model      nplr model object
+#' @param model nplr model object
 #'
 #' @return
 #' Numeric, fold-change
@@ -70,7 +69,9 @@ calculateFC <- function(model) {
   if(par[["top"]] <= 0 | par[["bottom"]] <= 0) {
     return(NA)
   }
-
+  
+  # Define FC as largeValue/smallValue
+  # Is this correct?
   if(par[["scal"]] < 0) {
     FC <- par[["bottom"]]/par[["top"]]
     return(FC)
