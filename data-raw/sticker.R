@@ -188,7 +188,7 @@ val <- map(unique(conc), function(x) {abs(rnorm(mean = x, n = 27, sd = x/2))}) %
 well <- paste0(LETTERS[2:13], rep(2:21, each = 12))
 
 pm <- 
-  platetools::raw_map(data = log10(val), well = well, plate = "384", shape = 21, size = 0.75) + 
+  platetools::raw_map(data = log10(val), well = well, plate = "384", shape = 21, size = 1, na_alpha = 0) + 
   theme_void() + 
   theme_transparent() +
   theme(legend.position = "none") +
@@ -213,10 +213,10 @@ sticker(package = "MALDIcellassay",
         filename = "inst/figures/MALDIcellassay_sticker.png", 
         dpi = 900, 
         p_size=48, p_fontface = "bold", 
-        s_x=1.1, 
-        s_y=.75, 
-        s_width=1.25, 
-        s_height=1.25, 
+        s_x=1, 
+        s_y=0.8, 
+        s_width=1.6, 
+        s_height=1.6, 
         h_fill = "white", 
         h_color = "midnightblue", 
         p_color = "black")
