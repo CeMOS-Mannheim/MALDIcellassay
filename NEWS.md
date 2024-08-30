@@ -1,3 +1,6 @@
+# MALDIcellassay (development version)
+* explain acronyms in DESCRIPTION file
+
 # MALDIcellassay 0.4.47
 * fix problems with description and title field in DESCRITPION file
 

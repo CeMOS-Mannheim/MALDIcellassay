@@ -1,13 +1,13 @@
 Package: MALDIcellassay
 Type: Package
 Title: Automated MALDI Cell Assays Using Dose-Response Curve Fitting
-Version: 0.4.47
+Version: 0.4.47.9000
 Authors@R: person(given = "Thomas",
                   family = "Enzlein",
                   role = c("aut", "cre", "cph"),
                   email = "t.enzlein@hs-mannheim.de",
                   comment = c(ORCID = "0000-0003-1789-4090"))
-Description: Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z', V', log2FC, and CRS are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by Weigt et al. (2018) <doi:10.1038/s41598-018-29677-z> and refined by Unger et al. (2021) <doi:10.1038/s41596-021-00624-z>.
+Description: Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z', V', log2 Fold-Change, and Curve response score (CRS) are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by Weigt et al. (2018) <doi:10.1038/s41598-018-29677-z> and refined by Unger et al. (2021) <doi:10.1038/s41596-021-00624-z>.
 License: MIT + file LICENSE
 Imports: methods, ggplot2, nplr, dplyr, tidyr, forcats, scales, MALDIquant, MALDIquantForeign, tibble, svMisc, purrr
 Encoding: UTF-8
