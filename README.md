@@ -6,7 +6,7 @@
 
 # MALDIcellassay
 
-Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell-based assays. More information in [Unger et al., 2021](https://doi.org/10.1038/s41596-021-00624-z).
+Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z', V', log2-Fold-Change, and Curve response score (CRS) are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by [Weigt et al. (2018)](https://doi.org/10.1038/s41598-018-29677-z) and first release as the `MALDIcellassay`-package in [Unger et al. (2021)](https://doi.org/10.1038/s41596-021-00624-z).
 
 ## Main Functionality
 
@@ -72,7 +72,7 @@ print(res)
 For more detailed examples, check out the [vignette](https://cemos-mannheim.github.io/MALDIcellassay/articles/Example.html).
 Also take a look at the [pkgdown-site](https://cemos-mannheim.github.io/MALDIcellassay/reference/index.html) for more details on specific functions.
 
-### GUI
+## GUI
 
 If you want to use `MALDIcellassay` interactively to explore your data, you might be interested in [M²ara](https://github.com/CeMOS-Mannheim/M2ara), which offers a Shiny-based interface. It is also available as a [docker container](https://hub.docker.com/repository/docker/thomasenzlein/m2ara) and as a stand-alone [Windows installer](https://github.com/CeMOS-Mannheim/m2ara/releases/latest/). You can find more details in the [preprint on M²ara](https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b).
 
