@@ -56,18 +56,88 @@
 <div class="section level1">
 <div class="page-header"><h1 id="maldicellassay">MALDIcellassay<a class="anchor" aria-label="anchor" href="#maldicellassay"></a>
 </h1></div>
-<p>Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays. More information in <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link">Unger et. Al. 2021</a></p>
+<p>Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell-based assays. More information in <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link">Unger et al., 2021</a>.</p>
 <div class="section level2">
-<h2 id="main-functionality">Main functionality<a class="anchor" aria-label="anchor" href="#main-functionality"></a>
+<h2 id="main-functionality">Main Functionality<a class="anchor" aria-label="anchor" href="#main-functionality"></a>
 </h2>
-<p>The main function in this package is <code><a href="reference/fitCurve.html">fitCurve()</a></code> which will not only do logistic regression and variance filtering but also handle all preprocessing necessary: - Spectral alignment (“single-point re-calibration”). - Normalization by an internal standard or known endogenous signal</p>
-<p>All these function can also be called on there own.</p>
+<p>The primary function in this package is <code><a href="reference/fitCurve.html">fitCurve()</a></code> which not only performs logistic regression and variance filtering but also handles all necessary preprocessing steps:</p>
+<ul>
+<li>Spectral alignment (“single-point recalibration”)</li>
+<li>Normalization by an internal standard or known endogenous signal</li>
+</ul>
+<p>All these functions can also be called independently.</p>
 <p>This package makes heavy use of the <code>MALDIquant</code> framework.</p>
 </div>
 <div class="section level2">
-<h2 id="gui">GUI<a class="anchor" aria-label="anchor" href="#gui"></a>
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>If you want to use <code>MALDIcellassay</code> interactivly to explore your data you might be interested in <a href="https://github.com/CeMOS-Mannheim/M2ara" class="external-link"><code>M²ara</code></a> which offers a Shiny based interface. It also comes as a <a href="https://hub.docker.com/repository/docker/thomasenzlein/m2ara" class="external-link">docker container</a> and as a stand-alone <a href="https://github.com/CeMOS-Mannheim/m2ara/releases/latest/" class="external-link">Windows installer</a>. Also check the <a href="https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b" class="external-link">preprint</a> on M²ara.</p>
+<div class="section level3">
+<h3 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
+</h3>
+<p>You can install the released version of <code>MALDIcellassay</code> from CRAN with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"MALDIcellassay"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="from-github">From GitHub<a class="anchor" aria-label="anchor" href="#from-github"></a>
+</h3>
+<p>To install the development version of the package, use devtools:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install devtools if you haven't already</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install MALDIcellassay from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CeMOS-Mannheim/MALDIcellassay"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="example-usage">Example Usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
+</h2>
+<p>Here’s a simple example to get you started with the MALDIcellassay package:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CeMOS-Mannheim/MALDIcellassay" class="external-link">MALDIcellassay</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strimmerlab.github.io/software/maldiquant/" class="external-link">MALDIquant</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load example data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Blank2022spec"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Preprocess data</span></span>
+<span><span class="va">spec_prc</span> <span class="op">&lt;-</span> <span class="fu">MALDIquant</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MALDIquant/man/removeBaseline-methods.html" class="external-link">removeBaseline</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span></span>
+<span><span class="va">conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">spec_prc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">conc</span></span>
+<span></span>
+<span><span class="co"># Fit dose-response curve</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fitCurve.html">fitCurve</a></span><span class="op">(</span>spec <span class="op">=</span> <span class="va">spec_prc</span>,</span>
+<span>                SinglePointRecal <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                normMeth <span class="op">=</span> <span class="st">"mz"</span>,</span>
+<span>                varFilterMethod <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>                normMz <span class="op">=</span> <span class="fl">760.585</span>, </span>
+<span>                alignTol <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>                normTol <span class="op">=</span> <span class="fl">0.1</span>, </span>
+<span>                verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View the results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<p>For more detailed examples, check out the <a href="vignettes/Example.Rmd">vignette</a>.</p>
+<div class="section level3">
+<h3 id="gui">GUI<a class="anchor" aria-label="anchor" href="#gui"></a>
+</h3>
+<p>If you want to use MALDIcellassay interactively to explore your data, you might be interested in <a href="https://github.com/CeMOS-Mannheim/M2ara" class="external-link">M²ara</a>, which offers a Shiny-based interface. It is also available as a <a href="https://hub.docker.com/repository/docker/thomasenzlein/m2ara" class="external-link">docker container</a> and as a stand-alone <a href="">Windows installer</a><a href="https://github.com/CeMOS-Mannheim/m2ara/releases/latest/" class="external-link uri">https://github.com/CeMOS-Mannheim/m2ara/releases/latest/</a>. You can find more details in the <a href="https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b" class="external-link">preprint on M²ara</a>.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="contribution-and-contact">Contribution and Contact<a class="anchor" aria-label="anchor" href="#contribution-and-contact"></a>
+</h2>
+<p>We welcome contributions to MALDIcellassay! If you encounter any issues or have suggestions for improvement, please open an issue on GitHub or submit a pull request.</p>
+<p>For any questions or further information, you can contact the maintainer:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Name<span class="sc">:</span> Thomas Enzlein</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>Email<span class="sc">:</span> t.enzlein<span class="sc">@</span>hs<span class="sc">-</span>mannheim.de</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use MALDIcellassay in your research, please cite:</p>
+<p>Unger et al., 2021, “Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry”, Nature Protocols. DOI: <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link uri">https://doi.org/10.1038/s41596-021-00624-z</a>.</p>
 </div>
 </div>
 
