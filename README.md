@@ -1,4 +1,4 @@
-# MALDIcellassay <img src="inst/figures/MALDIcellassay_sticker.png" align="right" height="138" />
+# MALDIcellassay <img src="man/figures/MALDIcellassay_sticker.png" align="right" height="138" />
 
 <!-- badges: start -->
 

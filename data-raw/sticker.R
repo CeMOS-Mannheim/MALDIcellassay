@@ -210,7 +210,7 @@ pall
 
 sticker(package = "MALDIcellassay", 
         subplot = pall, 
-        filename = "inst/figures/MALDIcellassay_sticker.png", 
+        filename = "man/figures/MALDIcellassay_sticker.png", 
         dpi = 900, 
         p_size=48, p_fontface = "bold", 
         s_x=1.05, 
