@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>MALDI cell based assay Example • MALDIcellassay</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
@@ -140,7 +146,7 @@ getMzShift() to find the mass shift in each spectrum.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">peaks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span></span>
 <span><span class="va">mz_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMzShift.html">getMzShift</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">peaks</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; found mz 760.585 in 32 / 32 spectra</span></span>
-<span><span class="co">#&gt; 11:39 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
+<span><span class="co">#&gt; 11:46 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mz_shift</span><span class="op">$</span><span class="va">mzshift</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
 <span><span class="co">#&gt; -0.08280 -0.08280 -0.08280 -0.07966 -0.08280 -0.05770</span></span></code></pre></div>
