@@ -42,7 +42,7 @@ devtools::install_github("CeMOS-Mannheim/MALDIcellassay")
 
 ## Example Usage
 
-Here's a simple example to get you started with the MALDIcellassay package:
+Here's a simple example to get you started with the `MALDIcellassay` package:
 ```r
 library(MALDIcellassay)
 library(MALDIquant)
@@ -74,11 +74,11 @@ Also take a look at the [pkgdown-site](https://cemos-mannheim.github.io/MALDIcel
 
 ### GUI
 
-If you want to use MALDIcellassay interactively to explore your data, you might be interested in [M²ara](https://github.com/CeMOS-Mannheim/M2ara), which offers a Shiny-based interface. It is also available as a [docker container](https://hub.docker.com/repository/docker/thomasenzlein/m2ara) and as a stand-alone [Windows installer](https://github.com/CeMOS-Mannheim/m2ara/releases/latest/). You can find more details in the [preprint on M²ara](https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b).
+If you want to use `MALDIcellassay` interactively to explore your data, you might be interested in [M²ara](https://github.com/CeMOS-Mannheim/M2ara), which offers a Shiny-based interface. It is also available as a [docker container](https://hub.docker.com/repository/docker/thomasenzlein/m2ara) and as a stand-alone [Windows installer](https://github.com/CeMOS-Mannheim/m2ara/releases/latest/). You can find more details in the [preprint on M²ara](https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b).
 
 ## Contribution and Contact
 
-We welcome contributions to MALDIcellassay! If you encounter any issues or have suggestions for improvement, please open an issue on GitHub or submit a pull request.
+We welcome contributions to `MALDIcellassay`! If you encounter any issues or have suggestions for improvement, please open an issue on GitHub or submit a pull request.
 
 For any questions or further information, you can contact the maintainer:
 
@@ -86,7 +86,7 @@ For any questions or further information, you can contact the maintainer:
     Email: t.enzlein@hs-mannheim.de
 
 ## Citation
-If you use MALDIcellassay in your research, please cite:
+If you use `MALDIcellassay` in your research, please cite:
 
 Unger et al., 2021, "Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry", Nature Protocols. DOI: https://doi.org/10.1038/s41596-021-00624-z.
 
