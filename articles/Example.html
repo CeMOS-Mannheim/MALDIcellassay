@@ -141,7 +141,7 @@ getMzShift() to find the mass shift in each spectrum.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">peaks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span></span>
 <span><span class="va">mz_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMzShift.html">getMzShift</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">peaks</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; found mz 760.585 in 32 / 32 spectra</span></span>
-<span><span class="co">#&gt; 11:28 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
+<span><span class="co">#&gt; 11:31 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mz_shift</span><span class="op">$</span><span class="va">mzshift</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
 <span><span class="co">#&gt; -0.08280 -0.08280 -0.08280 -0.07966 -0.08280 -0.05770</span></span></code></pre></div>
