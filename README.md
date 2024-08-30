@@ -1,4 +1,4 @@
-# MALDIcellassay <img src="man/figures/MALDIcellassay_sticker.png" align="right" height="138" />
+# MALDIcellassay <a href="https://cemos-mannheim.github.io/MALDIcellassay/"><img src="man/figures/logo.png" align="right" height="139" alt="MALDIcellassay website" /></a>
 
 <!-- badges: start -->
 
