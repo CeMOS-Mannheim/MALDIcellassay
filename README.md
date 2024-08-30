@@ -7,14 +7,6 @@
 <img src="inst/figures/MALDIcellassay_sticker.png" height="150"/>
 
 # MALDIcellassay
-<<<<<<< HEAD
-
-Detects high variance signals and generates dose-response curves to further investigate candidate signals from MALDI cell based assays. More information in Unger et. Al. 2021
-
-## Main functionality
-
-The main function in this package is `fitCurve()` which will not only do logistic regression and variance filtering but also handle all preprocessing necessary: - Spectral alignment ("single-point re-calibration"). - Normalization by an internal standard or known endogenous signal
-=======
 
 Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z', V', log2-Fold-Change and the Curve response score (CRS) are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by [Weigt et al. (2018)](https://doi.org/10.1038/s41598-018-29677-z) and first release as the `MALDIcellassay`-package in [Unger et al. (2021)](https://doi.org/10.1038/s41596-021-00624-z).
 
@@ -24,7 +16,6 @@ The primary function in this package is `fitCurve()` which not only performs log
 
 - Spectral alignment ("single-point recalibration")
 - Normalization by an internal standard or known endogenous signal
->>>>>>> 2cfdddf0f4a2d6c65f6722a652567ff6fa59478c
 
 All these functions can also be called independently.
 
@@ -100,8 +91,3 @@ For any questions or further information, you can contact the maintainer:
 If you use `MALDIcellassay` in your research, please cite:
 
 Unger et al., 2021, "Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry", Nature Protocols. DOI: https://doi.org/10.1038/s41596-021-00624-z.
-
-<<<<<<< HEAD
-This package makes heavy use of the `MALDIquant` framework.
-=======
->>>>>>> 2cfdddf0f4a2d6c65f6722a652567ff6fa59478c
