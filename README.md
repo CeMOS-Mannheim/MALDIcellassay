@@ -6,7 +6,7 @@
 
 # MALDIcellassay
 
-Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z', V', log2-Fold-Change, and Curve response score (CRS) are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by [Weigt et al. (2018)](https://doi.org/10.1038/s41598-018-29677-z) and first release as the `MALDIcellassay`-package in [Unger et al. (2021)](https://doi.org/10.1038/s41596-021-00624-z).
+Conduct automated cell-based assays using Matrix-Assisted Laser Desorption/Ionization (MALDI) methods for high-throughput screening of signals responsive to treatments. The package efficiently identifies high variance signals and fits dose-response curves to them. Quality metrics such as Z', V', log2-Fold-Change and the Curve response score (CRS) are provided for evaluating the potential of signals as biomarkers. The methodologies were introduced by [Weigt et al. (2018)](https://doi.org/10.1038/s41598-018-29677-z) and first release as the `MALDIcellassay`-package in [Unger et al. (2021)](https://doi.org/10.1038/s41596-021-00624-z).
 
 ## Main Functionality
 
