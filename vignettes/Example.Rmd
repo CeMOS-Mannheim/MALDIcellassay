@@ -163,7 +163,7 @@ To do what we did in an automated way for each signal of interest use the follow
 Note, that we use the pre-processed spectra (baseline removed).
 Baseline removal and smoothing can (if needed) be performed with `MALDIquant`.
 
-```{r fitCruve, eval = TRUE}
+```{r fitCruve, eval = TRUE, warning=FALSE}
 res <- fitCurve(spec = spec_prc,
          SinglePointRecal = TRUE, 
          normMeth = "mz",
