@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "Label-free cell assays to determine compound uptake or drug action using MALDI-TOF mass spectrometry",
+  author   = "Melissa S Unger, Martina Blank, Thomas Enzlein, Carsten Hopf",
+  journal  = "Nature Protocols",
+  year     = 2021,
+  volume   = 16,
+  number   = 12,
+  pages    = "5533-5558",
+  doi      = "10.1038/s41596-021-00624-z"
+)

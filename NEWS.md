@@ -1,3 +1,10 @@
+# MALDIcellassay (development version)
+* explain acronyms in DESCRIPTION file
+* make readme more informative
+* add logo
+* add citation
+* corrections in example-vignette
+
 # MALDIcellassay 0.4.47
 * fix problems with description and title field in DESCRITPION file
 

@@ -1,4 +1,5 @@
 url: https://cemos-mannheim.github.io/MALDIcellassay/
 template:
   bootstrap: 5
+  light-switch: true
 
