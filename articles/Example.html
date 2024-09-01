@@ -84,19 +84,21 @@
 <p>In this document we will apply an automated screening for possible
 candidate signals that show a response to treatment with a compound. For
 details how to do the experimental part check out our Nature Protocols
-publication Unger 2021 “Label-free Cell Assays of Compound Uptake and
-Drug Action using MALDI-TOF Mass Spectrometry”. Briefly, cells were
-treated with the following concentration of a compound: 0, 0.04, 0.12,
-0.37, 1.11, 3.33, 10, 30 uM. After incubation the cells were washed,
-transferred to a MALDI target plate and matrix was applied. For each
-concentration 4 spots were applied which means that we also have 4
-“measurement replicates” for each concentration.</p>
-<p>The most important function in this package is fitCurve(). It does
-not only fit the dose response curve and compute score values but it
-also does most of the necessary steps needed to prepare the data for
-fitting like normalization and alignment. In this tutorial we want to
-first look at each of this steps individually and then apply the
-fitCurve() function the helps us combine all of them.</p>
+publication <a href="https://doi.org/10.1038/s41596-021-00624-z" class="external-link">Unger
+2021 “Label-free Cell Assays of Compound Uptake and Drug Action using
+MALDI-TOF Mass Spectrometry”</a>. Briefly, cells were treated with the
+following concentration of a compound: 0, 0.04, 0.12, 0.37, 1.11, 3.33,
+10, 30 uM. After incubation the cells were washed, transferred to a
+MALDI target plate and matrix was applied. For each concentration 4
+spots were applied which means that we also have 4 “measurement
+replicates” for each concentration.</p>
+<p>The most important function in this package is
+<code><a href="../reference/fitCurve.html">fitCurve()</a></code>. It does not only fit the dose response curve
+and compute score values but it also does most of the necessary steps
+needed to prepare the data for fitting like normalization and alignment.
+In this tutorial we want to first look at each of this steps
+individually and then apply the <code><a href="../reference/fitCurve.html">fitCurve()</a></code> function the
+helps us combine all of them.</p>
 <p>For the sake to keep this package small, the spectra used as an
 example here were trimmed to 400-900 Da mass-range and stored in a
 compact form as example data.</p>
@@ -139,32 +141,32 @@ signal to normalize and also as lock mass.</p>
 <span>  <span class="fu">MALDIquant</span><span class="fu">::</span><span class="fu">lines</span><span class="op">(</span><span class="va">avg</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, col <span class="op">=</span> <span class="va">i</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">avg</span><span class="op">)</span>, <span class="st">"uM"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Example_files/figure-html/baseline-1.png" width="768">
-We see that the alignment of the spectra is quite good but the intensity
-varies for the peak around m/z 760. To get best results its necessary to
-normalize the spectra to each other. One way is to add a standard to
-each measurement spot (internal standard). This is not always possible
-and another option is to use endogenous peaks with high abundance like
-the signal around 760 m/z. As an example we will now find out the m/z
-deviation to this signal for each spectrum. First we need to detect the
-peaks, then we convert the peaks to a data.frame and finally we use
-getMzShift() to find the mass shift in each spectrum.</p>
+<p><img src="Example_files/figure-html/baseline-1.png" width="768"></p>
+<p>We see that the alignment of the spectra is quite good but the
+intensity varies for the peak around m/z 760. To get best results its
+necessary to normalize the spectra to each other. One way is to add a
+standard to each measurement spot (internal standard). This is not
+always possible and another option is to use endogenous peaks with high
+abundance like the signal around 760 m/z. As an example we will now find
+out the m/z deviation to this signal for each spectrum. First we need to
+detect the peaks, then we use <code><a href="../reference/getMzShift.html">getMzShift()</a></code> to find the mass
+shift/mass deviation in each spectrum.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">peaks</span> <span class="op">&lt;-</span> <span class="fu">MALDIquant</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MALDIquant/man/detectPeaks-methods.html" class="external-link">detectPeaks</a></span><span class="op">(</span><span class="va">Blank2022spec</span>, method <span class="op">=</span> <span class="st">"SuperSmoother"</span>, SNR <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">peaks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Blank2022spec</span><span class="op">)</span></span>
 <span><span class="va">mz_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMzShift.html">getMzShift</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">peaks</span>, targetMz <span class="op">=</span> <span class="fl">760.585</span>, tol <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; found mz 760.585 in 32 / 32 spectra</span></span>
-<span><span class="co">#&gt; 11:52 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
+<span><span class="co">#&gt; 13:26 mzshift was -0.0796625 in mean and 0.0828  abs. max.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mz_shift</span><span class="op">$</span><span class="va">mzshift</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
 <span><span class="co">#&gt; -0.08280 -0.08280 -0.08280 -0.07966 -0.08280 -0.05770</span></span></code></pre></div>
 <p>As we already suspected the shift is quite small. Now lets use it to
-align the spectra</p>
+align/re-calibrate the spectra (single point re-calibration).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spec_align</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/shiftMassAxis.html">shiftMassAxis</a></span><span class="op">(</span><span class="va">Blank2022spec</span>, <span class="va">mz_shift</span><span class="op">$</span><span class="va">mzshift</span><span class="op">)</span></span></code></pre></div>
 <p>Now that we have aligned spectra the next step is to normalize them.
-Also here, a internal standard would be great but as we dont have one we
-again use the m/z 760 endogenous signal. First we extract the
+Also here, a internal standard would be great but as we don’t have one
+we again use the m/z 760 endogenous signal. First we extract the
 intensities for each spectrum of this signal and then we use it as a
 normalization factor.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -220,8 +222,8 @@ curve. Lets do the fitting for one exemplary signal.</p>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">nplr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nplr/man/nplr.html" class="external-link">nplr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">concLog</span>, y <span class="op">=</span> <span class="va">resp</span>, useLog <span class="op">=</span> <span class="cn">FALSE</span>, npars <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">title</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"m/z ="</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">intmat</span><span class="op">)</span><span class="op">[</span><span class="fl">12</span><span class="op">]</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, main <span class="op">=</span> <span class="va">title</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Example_files/figure-html/fit-1.png" width="768">
-And with that we are finished! As said during the introduction we did
+<p><img src="Example_files/figure-html/fit-1.png" width="768"></p>
+<p>And with that we are finished! As said during the introduction we did
 each step manually.</p>
 </div>
 <div class="section level2">
@@ -269,7 +271,7 @@ Baseline removal and smoothing can (if needed) be performed with
 </h3>
 <p>We can also extract a data.frame with all the peaks and quality
 metrics. We actually got a sneak peak on the results above from the
-<code>show</code> method of the <code>MALDIassay</code>-class. From
+<code><a href="https://rdrr.io/r/methods/show.html" class="external-link">show()</a></code> method of the <code>MALDIassay</code>-class. From
 there we can see that <code>mzIdx</code> 111 (<strong>m/z</strong>
 620.4) scored the highest CRS score with around 85%.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -279,7 +281,7 @@ there we can see that <code>mzIdx</code> 111 (<strong>m/z</strong>
 look at V’, Z’ and log2FC individually.</p>
 <p>When we take a look at our highest hit we observe a good fit of the
 curve (V’), high distance between the lower and the upper part of the
-curve (log2FC) combined with low variance (Z’). Still we dont have a
+curve (log2FC) combined with low variance (Z’). Still we don’t have a
 sigmoidal shape so either we did not use the right concentration range
 or we need to look deeper into the data.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -287,8 +289,8 @@ or we need to look deeper into the data.</p>
 <p><img src="Example_files/figure-html/plotTopHit-1.png" width="768"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCurves.html">plotCurves</a></span><span class="op">(</span><span class="va">res</span>, mzIdx <span class="op">=</span> <span class="fl">111</span>, errorbars <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Example_files/figure-html/plotTopHit-2.png" width="768">
-Here we might have a slightly better curve at a lower CRS. The CRS is
+<p><img src="Example_files/figure-html/plotTopHit-2.png" width="768"></p>
+<p>Here we might have a slightly better curve at a lower CRS. The CRS is
 intended to quickly filter out signals that make no sense at all but in
 makes sense to visually check the top hits.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
