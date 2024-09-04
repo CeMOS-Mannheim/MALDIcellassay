@@ -20,14 +20,29 @@ test_that("getNormFactors stops if allowNoMatch = FALSE and normMz was not found
                               allowNoMatch = FALSE))
 })
 
+test_that("getNormFactors warns if allowNoMatch = FALSE and normMz was not found in one spectrum", {
+  peaks <- peakListConstructor()
+  MALDIquant::mass(peaks[[1]])[10] <- 12
+  
+  expect_warning(getNormFactors(peaks = peaks, 
+                                targetMz = 10, 
+                                tol = 100, 
+                                tolppm = TRUE, 
+                                allowNoMatch = TRUE))
+})
+
 test_that("getNormFactors stops if normMz was not found in any spectrum", {
   peaks <- peakListConstructor()
   
-  expect_error(getNormFactors(peaks = peaks, 
-                              targetMz = 12, 
-                              tol = 100, 
-                              tolppm = TRUE, 
-                              allowNoMatch = FALSE))
+  expect_error(suppressWarnings(
+    getNormFactors(peaks = peaks, 
+                   targetMz = 12, 
+                   tol = 100, 
+                   tolppm = TRUE, 
+                   allowNoMatch = TRUE)
+  )
+  )
+  
 })
 
 

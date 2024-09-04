@@ -3,6 +3,9 @@ test_that("shiftMassAxis stops correctly", {
   
   # length(spec) != length(mzdiff)
   expect_error(shiftMassAxis(spec = Blank2022spec, mzdiff = 1))
+  
+  # no spectra/peaks provided
+  expect_error(shiftMassAxis(spec = 1, mzdiff = 1))
 })
 
 test_that("shiftMassAxis works for single spectra/peaks", {
