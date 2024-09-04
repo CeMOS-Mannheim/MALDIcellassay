@@ -86,7 +86,7 @@ Also here, a internal standard would be great but as we dont have one we again u
 First we extract the intensities for each spectrum of this signal and then we use it as a normalization factor.
 ```{r norm}
 peaks_align <- MALDIquant::detectPeaks(spec_align, method = "SuperSmoother", SNR = 3)
-norm <- getNormFactors(peaksdf = peaks2df(peaks_align), targetMz = 760.585, tol = 0.1)
+norm <- getNormFactors(peaks = peaks_align, targetMz = 760.585, tol = 0.1)
 summary(norm$norm_factor)
 spec_rdy <- normalizeByFactor(spec_align, norm$norm_factor)
 

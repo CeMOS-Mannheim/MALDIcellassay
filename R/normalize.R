@@ -78,7 +78,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
          },
          "mz" = {
            mzNorm <- getNormFactors(
-             peaksdf = peaks2df(peaks),
+             peaks = peaks,
              targetMz = normMz,
              tol = normTol,
              allowNoMatch = TRUE,

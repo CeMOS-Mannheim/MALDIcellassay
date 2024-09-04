@@ -23,7 +23,6 @@ transformConc2Log <- function(conc) {
   return(concLog)
 }
 
-
 #' Check if object if of class MALDIassay
 #'
 #' @param object object to text
@@ -53,7 +52,6 @@ stopIfNotIsMALDIassay <- function(object) {
     stop("object needs to be of class MALDIassay.")
   }
 }
-
 
 #' Calculate the fold-change
 #'
