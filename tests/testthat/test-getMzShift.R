@@ -33,7 +33,20 @@ test_that("getMzShift stops if a single condition gets filtered completly", {
   MALDIquant::mass(dummyPeaks[[1]]) <- c(1:4, 6, 7:11)
   names(dummyPeaks) <- 1:3
   
-  expect_error(suppressWarnings(getMzShift(dummyPeaks, targetMz = 5.1, tol = 0.15, verbose = TRUE)))
+  expect_error(suppressWarnings(getMzShift(dummyPeaks,
+                                           targetMz = 5.1, 
+                                           tol = 0.15, 
+                                           verbose = TRUE)))
+})
+
+test_that("getMzShift stops if targetMz can't be found in any spectrum", {
+  dummyPeaks <- peakListConstructor()
+  names(dummyPeaks) <- 1:3
+  
+  expect_error(suppressWarnings(getMzShift(dummyPeaks, 
+                                           targetMz = 12, 
+                                           tol = 0.15, 
+                                           verbose = TRUE)))
 })
 
 test_that("getMzShift finds mass shift correctly", {

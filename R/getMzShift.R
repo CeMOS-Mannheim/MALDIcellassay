@@ -49,9 +49,6 @@ getMzShift <- function(peaks,
   mzShift <- na.omit(mzShift)
   
   if (!all(allIdx %in% specIdx)) {
-    if (!allowNoMatch) {
-      stop("Could not find ", targetMz, " for all spectra! Consider adjusting tol.\n")
-    }
     warning("Could not find ", targetMz, " in spectrum ", paste(which(!(allIdx %in% specIdx)), collapse = ", "), ".\n")
     specIdx <- sort(which(allIdx %in% specIdx))
   } else {

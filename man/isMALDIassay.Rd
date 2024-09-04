@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers.R
 \name{isMALDIassay}
 \alias{isMALDIassay}
-\title{Check if object is of class MALDIassay}
+\title{Check if object if of class MALDIassay}
 \usage{
 isMALDIassay(object)
 }
@@ -13,7 +13,7 @@ isMALDIassay(object)
 logical, TRUE if object is of class MALDIassay
 }
 \description{
-Check if object is of class MALDIassay
+Check if object if of class MALDIassay
 }
 \examples{
 x <- 1
