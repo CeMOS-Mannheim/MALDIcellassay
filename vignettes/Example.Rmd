@@ -3,8 +3,11 @@ title: "MALDI cell based assay Example"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MALDI cell based assay Example}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r, include = FALSE}
@@ -19,12 +22,14 @@ set.seed(42)
 ## Introduction
 
 In this document we will apply an automated screening for possible candidate signals that show a response to treatment with a compound.
-For details how to do the experimental part check out our Nature Protocols publication Unger 2021 "Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry".
+For details how to do the experimental part check out our Nature Protocols publication [Unger 2021 "Label-free Cell Assays of Compound Uptake and Drug Action using MALDI-TOF Mass Spectrometry"](https://doi.org/10.1038/s41596-021-00624-z).
 Briefly, cells were treated with the following concentration of a compound: 0, 0.04, 0.12, 0.37, 1.11, 3.33, 10, 30 uM.
 After incubation the cells were washed, transferred to a MALDI target plate and matrix was applied.
 For each concentration 4 spots were applied which means that we also have 4 "measurement replicates" for each concentration.
 
-The most important function in this package is fitCurve(). It does not only fit the dose response curve and compute score values but it also does most of the necessary steps needed to prepare the data for fitting like normalization and alignment. In this tutorial we want to first look at each of this steps individually and then apply the fitCurve() function the helps us combine all of them.
+The most important function in this package is `fitCurve()`.
+It does not only fit the dose response curve and compute score values but it also does most of the necessary steps needed to prepare the data for fitting like normalization and alignment.
+In this tutorial we want to first look at each of this steps individually and then apply the `fitCurve()` function the helps us combine all of them.
 
 For the sake to keep this package small, the spectra used as an example here were trimmed to 400-900 Da mass-range and stored in a compact form as example data.
 
@@ -40,6 +45,7 @@ data("Blank2022spec")
 ```
 
 First we will check the spectra for general quality.
+
 ```{r qualityCheck}
 MALDIquant::plot(Blank2022spec[[1]], main = "0uM, replicate 1")
 ```
@@ -62,12 +68,13 @@ for(i in 2:length(avg)) {
 }
 legend("topright", legend = paste0(names(avg), "uM"), col = 1:8, lty=1)
 ```
+
 We see that the alignment of the spectra is quite good but the intensity varies for the peak around m/z 760.
-To get best results its necessary to normalize the spectra to each other. 
+To get best results its necessary to normalize the spectra to each other.
 One way is to add a standard to each measurement spot (internal standard).
 This is not always possible and another option is to use endogenous peaks with high abundance like the signal around 760 m/z.
 As an example we will now find out the m/z deviation to this signal for each spectrum.
-First we need to detect the peaks, then we convert the peaks to a data.frame and finally we use getMzShift() to find the mass shift in each spectrum.
+First we need to detect the peaks, then we use `getMzShift()` to find the mass shift/mass deviation in each spectrum.
 
 ```{r mzShift}
 peaks <- MALDIquant::detectPeaks(Blank2022spec, method = "SuperSmoother", SNR = 5)
@@ -76,14 +83,19 @@ mz_shift <- getMzShift(peaks = peaks, targetMz = 760.585, tol = 0.1)
 summary(mz_shift$mzshift)
 
 ```
-As we already suspected the shift is quite small. Now lets use it to align the spectra
+
+As we already suspected the shift is quite small.
+Now lets use it to align/re-calibrate the spectra (single point re-calibration).
+
 ```{r recal}
 spec_align <- shiftMassAxis(Blank2022spec, mz_shift$mzshift)
 
 ```
-Now that we have aligned spectra the next step is to normalize them. 
-Also here, a internal standard would be great but as we dont have one we again use the m/z 760 endogenous signal.
+
+Now that we have aligned spectra the next step is to normalize them.
+Also here, a internal standard would be great but as we don't have one we again use the m/z 760 endogenous signal.
 First we extract the intensities for each spectrum of this signal and then we use it as a normalization factor.
+
 ```{r norm}
 peaks_align <- MALDIquant::detectPeaks(spec_align, method = "SuperSmoother", SNR = 3)
 norm <- getNormFactors(peaks = peaks_align, targetMz = 760.585, tol = 0.1)
@@ -91,6 +103,7 @@ summary(norm$norm_factor)
 spec_rdy <- normalizeByFactor(spec_align, norm$norm_factor)
 
 ```
+
 As a final check we now plot again the aligned and normalizes mean spectra for each concentration.
 
 ```{r finalCheck}
@@ -106,13 +119,17 @@ legend("topright", legend = paste0(names(avg), "uM"), col = 1:8, lty=1)
 
 As expected we find our spectra to be perfectly aligned and normalized to 760.585.
 Now we can again detect peaks, bin them and compose a intensity matrix of all peaks.
+
 ```{r intmat}
 peaks_rdy <- MALDIquant::detectPeaks(avg_rdy, method = "SuperSmoother", SNR = 3)
 peaks_rdy <- MALDIquant::binPeaks(peaks_rdy)
 intmat <- MALDIquant::intensityMatrix(peaks_rdy, avg_rdy)
 dim(intmat)
 ```
-We get a intensity matrix with 211 peaks in total. The next step is to screen for high variant peaks.
+
+We get a intensity matrix with `r dim(intmat)[2]` peaks in total.
+The next step is to screen for high variant peaks.
+
 ```{r highVar}
 vars <- apply(intmat, 2, var)
 idx <- which(vars > mean(vars))
@@ -122,8 +139,9 @@ dim(highVarIntmat)
 
 ## Fit Curve
 
-We end up with 20 candidate peaks for which we want to fit a IC50 curve.
+We end up with `r dim(highVarIntmat)[2]` candidate peaks for which we want to fit a IC50 curve.
 Lets do the fitting for one exemplary signal.
+
 ```{r fit}
 concLog <- log10(unique(conc))
     if(any(concLog == -Inf)) {
@@ -134,15 +152,18 @@ model <- nplr::nplr(x = concLog, y = resp, useLog = FALSE, npars = 4)
 title <- paste0("m/z =", round(as.numeric(colnames(intmat)[12]), 2))
 plot(model, main = title)
 ```
+
 And with that we are finished!
-As said during the introduction we did each step manually. 
+As said during the introduction we did each step manually.
 
 # MALDIcellassay Workflow
 
 To do what we did in an automated way for each signal of interest use the following function.
 
-Note, that we use the pre-processed spectra (baseline removed). Baseline removal and smoothing can (if needed) be performed with `MALDIquant`.
-```{r fitCruve, eval = TRUE}
+Note, that we use the pre-processed spectra (baseline removed).
+Baseline removal and smoothing can (if needed) be performed with `MALDIquant`.
+
+```{r fitCruve, eval = TRUE, warning=FALSE}
 res <- fitCurve(spec = spec_prc,
          SinglePointRecal = TRUE, 
          normMeth = "mz",
@@ -156,20 +177,25 @@ res
 ```
 
 ## Screen the results for interesting signals
-We can also extract a data.frame with all the peaks and quality metrics. We actually got a sneak peak on the results above from the `show` method of the `MALDIassay`-class.
+
+We can also extract a data.frame with all the peaks and quality metrics.
+We actually got a sneak peak on the results above from the `show()` method of the `MALDIassay`-class.
 From there we can see that `mzIdx` 111 (**m/z** 620.4) scored the highest CRS score with around 85%.
+
 ```{r peakStats, eval = TRUE}
 stats <- getPeakStatistics(res, summarise = TRUE) 
 ```
 
 Depending on our experimental setup (targeted i.e. we know our **m/z** of interest or un-targeted) we might also want to look at V', Z' and log2FC individually.
 
-When we take a look at our highest hit we observe a good fit of the curve (V'), high distance between the lower and the upper part of the curve (log2FC) combined with low variance (Z'). Still we dont have a sigmoidal shape so either we did not use the right concentration range or we need to look deeper into the data.
+When we take a look at our highest hit we observe a good fit of the curve (V'), high distance between the lower and the upper part of the curve (log2FC) combined with low variance (Z').
+Still we don't have a sigmoidal shape so either we did not use the right concentration range or we need to look deeper into the data.
 
 ```{r plotTopHit, eval = TRUE}
 plotPeak(res, mzIdx = 111, tol = 0.8)
 plotCurves(res, mzIdx = 111, errorbars = "sd")
 ```
+
 Here we might have a slightly better curve at a lower CRS.
 The CRS is intended to quickly filter out signals that make no sense at all but in makes sense to visually check the top hits.
 
