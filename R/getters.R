@@ -327,7 +327,8 @@ getRecalibrationError <- function(object) {
     peaks = getAvgPeaks(object),
     tol = getNormMzTol(object),
     targetMz = getNormMz(object),
-    tolppm = FALSE
+    tolppm = FALSE, 
+    verbose = FALSE
   )
   
   res_df <- tibble(
