@@ -22,6 +22,79 @@ setClass("MALDIassay",
   )
 )
 
+.validMALDIassay <- function(object) {
+  if (length(object@avgSpectra) < 1) {
+    return("Length of avgSpectra can't be 0.")
+  }
+  
+  if (!isMassSpectrumList(object@avgSpectra)) {
+    return("avgSpectra must be a list of class MALDIquant::MassSpectrum objects.")
+  }
+  
+  if (length(object@avgPeaks) < 1) {
+    return("Length of avgPeaks can't be 0.")
+  }
+  
+  if (!isMassPeaksList(object@avgPeaks)) {
+    return("avgPeaks must be a list of class MALDIquant::MassPeaks objects.")
+  }
+  
+  if (length(object@singlePeaks) < 1) {
+    return("Length of singlePeaks can't be 0.")
+  }
+  
+  if (!isMassPeaksList(object@singlePeaks)) {
+    return("singlePeaks must be a list of class MALDIquant::MassPeaks objects.")
+  }
+  
+  if (length(object@avgSpectra) != length(object@avgPeaks)) {
+    return(paste0("avgSpectra (", length(object@avgSpectra),
+                  ") and avgPeaks (", length(object@avgPeaks),
+                  ") must have the same length."))
+  }
+  
+  if (length(object@singlePeaks) != length(object@included_specIdx)) {
+    return(paste0("singlePeaks (", length(object@singlePeaks),
+                  ") and included_specIdx (", length(object@included_specIdx),
+                  ") must have the same length."))
+  }
+  
+  if (!(length(object@singlePeaks) == length(object@mzShifts) || length(object@mzShifts) == 1)) {
+    return(paste0("singlePeaks (", length(object@singlePeaks),
+                  ") and mzShifts (", length(object@mzShifts),
+                  ") must have the same length or mzShifts must have length 1."))
+  }
+  
+  if (!(length(object@singlePeaks) == length(object@normFactors) || length(object@normFactors) == 1)) {
+    return(paste0("singlePeaks (", length(object@singlePeaks),
+                  ") and normFactors (", length(object@normFactors),
+                  ") must have the same length or normFactors must have length 1."))
+  }
+  
+  if (!(length(object@singlePeaks) == length(object@singleSpecSpots) || length(object@singleSpecSpots) == 1)) {
+    return(paste0("singlePeaks (", length(object@singlePeaks),
+                  ") and singleSpecSpots (", length(object@singleSpecSpots),
+                  ") must have the same length or singleSpecSpots must have length 1."))
+  }
+  
+  if (length(object@fits) != length(unique(object@stats[["mz"]]))) {
+    return(paste0("fits (", length(object@fits),
+                  ") and the unique m/z values in stats (", length(unique(object@stats[["mz"]])),
+                  ") must have the same length."))
+  }
+  
+  TRUE
+}
+
+setValidity("MALDIassay", method=.validMALDIassay)
+
+#' Print summary of MALDIassay object
+#'
+#' @param object object of class MALDIassay
+#'
+#' @return nothing, prints to console
+#'
+#' @noRd
 show_MALDIassay <- function(object) {
   mz <- round(getNormMz(object), digits = 2)
   varFilterMethod <- getVarFilterMethod(object)
