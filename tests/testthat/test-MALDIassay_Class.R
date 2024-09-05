@@ -35,7 +35,10 @@ test_that("Slots in MALDIassay are accessible and can be modified", {
   )
   
   # Test if instance is valid
-  validObject(instance)
+  expect_true(validObject(instance))
+  
+  # Test if instance is valid more explicitly (for coverage only)
+  expect_true(.validMALDIassay(instance))
   
   # Test show method explicitly
   expect_output(show(instance), "MALDIassay object")
