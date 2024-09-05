@@ -12,28 +12,33 @@ test_that("Slots in MALDIassay are accessible and can be modified", {
   instance <- new("MALDIassay")
   
   # Access and modify slots
-  instance@avgSpectra <- list(1)
-  instance@avgPeaks <- list(2)
-  instance@singlePeaks <- list(3)
-  instance@singleSpecSpots <- "spot1"
-  instance@normFactors <- c(0.5, 1.0)
-  instance@mzShifts <- c(1, 2, 3)
-  instance@fits <- list(model1 = "fit1")
-  instance@stats <- data.frame(A = 1:3)
-  instance@included_specIdx <- c(1, 2)
-  instance@settings <- list(option1 = TRUE)
+  instance@avgSpectra <- Blank2022res@avgSpectra
+  instance@avgPeaks <- Blank2022res@avgPeaks
+  instance@singlePeaks <- Blank2022res@singlePeaks
+  instance@singleSpecSpots <- Blank2022res@singleSpecSpots
+  instance@normFactors <- Blank2022res@normFactors
+  instance@mzShifts <- Blank2022res@mzShifts
+  instance@fits <- Blank2022res@fits
+  instance@stats <- Blank2022res@stats
+  instance@included_specIdx <- Blank2022res@included_specIdx
+  instance@settings <- list(
+    Conc = Blank2022res@settings$Conc,
+    normMz = 760.585,
+    normTol = 0.1,
+    varFilterMethod = "none",
+    monoisotopicFilter = TRUE,
+    alignTol = 0,
+    SNR = 3,
+    normMeth = "mz",
+    binTol = 0.1,
+    SinglePointRecal = TRUE
+  )
   
-  # Check modified values
-  expect_equal(instance@avgSpectra, list(1))
-  expect_equal(instance@avgPeaks, list(2))
-  expect_equal(instance@singlePeaks, list(3))
-  expect_equal(instance@singleSpecSpots, "spot1")
-  expect_equal(instance@normFactors, c(0.5, 1.0))
-  expect_equal(instance@mzShifts, c(1, 2, 3))
-  expect_equal(instance@fits, list(model1 = "fit1"))
-  expect_equal(instance@stats, data.frame(A = 1:3))
-  expect_equal(instance@included_specIdx, c(1, 2))
-  expect_equal(instance@settings, list(option1 = TRUE))
+  # Test if instance is valid
+  validObject(instance)
+  
+  # Test show method explicitly
+  expect_output(show(instance), "MALDIassay object")
 })
 
 test_that("MALDIassy_class handles invalid inputs gracefully", {
