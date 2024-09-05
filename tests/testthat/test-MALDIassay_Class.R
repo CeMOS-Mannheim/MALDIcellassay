@@ -44,6 +44,91 @@ test_that("Slots in MALDIassay are accessible and can be modified", {
   expect_output(show(instance), "MALDIassay object")
 })
 
+test_that("Slots in MALDIassay are accessible and can be modified", {
+  # Create an instance of MALDIassay
+  instance <- new("MALDIassay")
+  
+  # Access and modify slots
+  instance@avgSpectra <- Blank2022res@avgSpectra
+  instance@avgPeaks <- list()
+  instance@singlePeaks <- Blank2022res@singlePeaks
+  instance@singleSpecSpots <- Blank2022res@singleSpecSpots
+  instance@normFactors <- Blank2022res@normFactors
+  instance@mzShifts <- Blank2022res@mzShifts
+  instance@fits <- Blank2022res@fits
+  instance@stats <- Blank2022res@stats
+  instance@included_specIdx <- Blank2022res@included_specIdx
+  instance@settings <- list(
+    Conc = Blank2022res@settings$Conc,
+    normMz = 760.585,
+    normTol = 0.1,
+    varFilterMethod = "none",
+    monoisotopicFilter = TRUE,
+    alignTol = 0,
+    SNR = 3,
+    normMeth = "mz",
+    binTol = 0.1,
+    SinglePointRecal = TRUE
+  )
+  
+  expect_match(.validMALDIassay(instance), 
+                "Length of avgPeaks can't be 0.")
+  
+  instance@avgSpectra <- list()
+  instance@avgPeaks <- Blank2022res@avgPeaks
+  
+  expect_equal(.validMALDIassay(instance), 
+                "Length of avgSpectra can't be 0.")
+  
+  instance@avgSpectra <- list(1:32)
+  
+  expect_equal(.validMALDIassay(instance), 
+                "avgSpectra must be a list of class MALDIquant::MassSpectrum objects.")
+  
+  instance@avgSpectra <- Blank2022res@avgSpectra
+  instance@avgPeaks <- list(1:32)
+  expect_equal(.validMALDIassay(instance), 
+                "avgPeaks must be a list of class MALDIquant::MassPeaks objects.")
+  
+  instance@avgPeaks <- Blank2022res@avgPeaks
+  instance@singlePeaks <- list()
+  expect_equal(.validMALDIassay(instance), 
+                "Length of singlePeaks can't be 0.")
+  
+  instance@singlePeaks <- Blank2022res@avgSpectra
+  expect_equal(.validMALDIassay(instance), 
+                "singlePeaks must be a list of class MALDIquant::MassPeaks objects.")
+  
+  instance@singlePeaks <- Blank2022res@singlePeaks[-1]
+  expect_match(.validMALDIassay(instance), 
+              "singlePeaks \\(\\d+\\) and included_specIdx \\(\\d+\\) must have the same length\\.")
+  
+  instance@singlePeaks <- Blank2022res@singlePeaks
+  instance@avgPeaks <- Blank2022res@avgPeaks[-1]
+  expect_match(.validMALDIassay(instance), 
+               "avgSpectra \\(\\d+\\) and avgPeaks \\(\\d+\\) must have the same length\\.")
+  
+  instance@avgPeaks <- Blank2022res@avgPeaks
+  instance@mzShifts <- Blank2022res@mzShifts[-1]
+  expect_match(.validMALDIassay(instance), 
+               "singlePeaks \\(\\d+\\) and mzShifts \\(\\d+\\) must have the same length or mzShifts must have length 1\\.")
+  
+  instance@mzShifts <- Blank2022res@mzShifts
+  instance@normFactors <- Blank2022res@normFactors[-1]
+  expect_match(.validMALDIassay(instance), 
+               "singlePeaks \\(\\d+\\) and normFactors \\(\\d+\\) must have the same length or normFactors must have length 1\\.")
+  
+  instance@normFactors <- Blank2022res@normFactors
+  instance@singleSpecSpots <- Blank2022res@singleSpecSpots[-1]
+  expect_match(.validMALDIassay(instance), 
+               "singlePeaks \\(\\d+\\) and singleSpecSpots \\(\\d+\\) must have the same length or singleSpecSpots must have length 1\\.")
+  
+  instance@singleSpecSpots <- Blank2022res@singleSpecSpots
+  instance@fits <- Blank2022res@fits[-1]
+  expect_match(.validMALDIassay(instance), 
+               "fits \\(\\d+\\) and the unique m/z values in stats \\(\\d+\\) must have the same length\\.")
+})
+
 test_that("MALDIassy_class handles invalid inputs gracefully", {
   avgSpecInvalid <- list("invalidMassSpec")  # Invalid list, not of MassSpectrum class
   validMassSpec <- list(MALDIquant::createMassSpectrum(mass = 1:10, intensity = 1:10))
