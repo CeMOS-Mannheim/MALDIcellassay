@@ -1,10 +1,11 @@
 #' Get mass shift for target mz
 #'
-#' @param peaks    List of MALDIquant::MassPeak
-#' @param targetMz Numeric, target mass
-#' @param tol      Numeric, tolerance around targetMz
-#' @param tolppm   Logical, tolerance supplied in ppm
-#' @param verbose  Logical, print logs to the console.
+#' @param peaks         List of MALDIquant::MassPeak
+#' @param targetMz      Numeric, target mass
+#' @param tol           Numeric, tolerance around targetMz
+#' @param tolppm        Logical, tolerance supplied in ppm
+#' @param verbose       Logical, print logs to the console.
+#' @param allowNoMatch  Logical, allow no matches.
 #'
 #' @return
 #' List with two entries:
@@ -21,7 +22,8 @@ getMzShift <- function(peaks,
                        targetMz,
                        tol,
                        tolppm = FALSE,
-                       verbose = TRUE) {
+                       verbose = TRUE,
+                       allowNoMatch = TRUE) {
   stopifnot(isMassPeaksList(peaks))
   nm <- names(peaks)
   stopifnot(!is.null(nm))
