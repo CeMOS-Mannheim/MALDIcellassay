@@ -64,7 +64,6 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
            u_fil <- unique(nm[included_specIdx])
            if(length(u_nm) != length(u_fil)) {
              # stop if a single condition got filtered completely
-
              label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
              stop("Could not find ", normMz, " in all spectra with label ",

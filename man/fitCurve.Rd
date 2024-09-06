@@ -17,7 +17,7 @@ fitCurve(
   SNR = 3,
   halfWindowSize = 3,
   allowNoMatches = TRUE,
-  normMeth = c("mz", "TIC", "PQN", "median", "none"),
+  normMeth = c("mz", "TIC", "median", "none"),
   SinglePointRecal = TRUE,
   verbose = TRUE
 )
@@ -48,7 +48,7 @@ Set to "M" if you dont want changes in your concentrations.}
 
 \item{allowNoMatches}{Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop}
 
-\item{normMeth}{Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.}
+\item{normMeth}{Character, normalization method. Can either be "TIC", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.}
 
 \item{SinglePointRecal}{Logical, perform single point recalibration to normMz}
 

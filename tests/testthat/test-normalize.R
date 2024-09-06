@@ -1,3 +1,25 @@
+# helper 
+spectraListConstructor <- function(n = 3, metaData = list(test = "test")) {
+  l <- lapply(1:n, 
+              function(x) 
+              {MALDIquant::createMassSpectrum(mass = 1:10, 
+                                              intensity = abs(rnorm(10, 0, 1)), 
+                                              metaData = metaData)
+              })
+  return(l)
+} 
+
+peakListConstructor <- function(n = 3, metaData = list(test = "test")) {
+  l <- lapply(1:n, 
+              function(x) 
+              {MALDIquant::createMassPeaks(mass = 1:10, 
+                                           intensity = abs(rnorm(10, 0, 1)), 
+                                           snr = 1:10,
+                                           metaData = metaData)
+              })
+  return(l)
+} 
+
 test_that("normalize stops like intended", {
   data("Blank2022peaks")
   data("Blank2022spec")
@@ -21,6 +43,23 @@ test_that("normalize stops like intended", {
       normalize(spec = Blank2022spec, peaks = Blank2022peaks, normMeth = "mz", normMz = 0, normTol = 0.1)
     )
   )
+  
+  # normMz absent in a specific concentration
+  spec <- spectraListConstructor()
+  peaks <- peakListConstructor()
+  
+  names(spec) <-1:3
+  names(peaks) <- 1:3
+  
+  MALDIquant::mass(spec[[2]])[10] <- 11
+  MALDIquant::mass(peaks[[2]])[10] <- 11
+  
+  expect_error(
+    suppressWarnings(
+      normalize(spec = spec, peaks = peaks, normMeth = "mz", normMz = 10, normTol = 0.1)
+    )
+  )
+  
 })
 
 test_that("normalize works", {
