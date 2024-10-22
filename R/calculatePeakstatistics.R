@@ -69,6 +69,7 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
     ungroup() %>%
     left_join(fit_df, by = join_by("mz")) %>%
     filter(!is.na(.data$R2)) %>%
+    arrange(as.numeric(.data[["mz"]])) %>%
     mutate(mzIdx = as.numeric(as.factor(as.numeric(.data$mz)))) 
   return(stat_df)
 }

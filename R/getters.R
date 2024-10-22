@@ -378,7 +378,7 @@ getMzFromMzIdx <- function(object, mzIdx) {
 #' head(getAllMz(Blank2022res))
 getAllMz <- function(object, excludeNormMz = FALSE) {
   stopIfNotIsMALDIassay(object)
-  mz <- as.numeric(sort(unique(object@stats[["mz"]])))
+  mz <- sort(as.numeric(unique(object@stats[["mz"]])))
   if(!excludeNormMz) {
     return(mz)
   } else {
