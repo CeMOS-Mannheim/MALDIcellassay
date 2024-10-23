@@ -16,7 +16,7 @@ test_that("extractSpots extracts no spots if not present", {
 })
 
 test_that("extractSpots stops if no spectra/peak provided", {
-  expect_error(extract_spots(1))
+  expect_error(extractSpots(1))
 })
 
 test_that("extractSpots extracts spots from peaks", {

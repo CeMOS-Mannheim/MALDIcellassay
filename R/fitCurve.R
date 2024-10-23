@@ -13,7 +13,7 @@
 #' @param SNR                 Numeric, signal to noise ratio for peak detection.
 #' @param halfWindowSize      2ction. See `MALDIquant::detectPeaks()`.
 #' @param allowNoMatches      Logical, if normMz can not be found in a spectrum, proceed and exclude spectrum or stop
-#' @param normMeth            Character, normalization method. Can either be "TIC", "PQM", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.
+#' @param normMeth            Character, normalization method. Can either be "TIC", "median" or "mz". If "mz" then the normMz is used. If none no normalization is done.
 #' @param SinglePointRecal    Logical, perform single point recalibration to normMz
 #' @param verbose             Logical, print logs to console.
 #'
@@ -53,7 +53,7 @@ fitCurve <- function(spec,
                      SNR = 3,
                      halfWindowSize = 3,
                      allowNoMatches = TRUE,
-                     normMeth = c("mz", "TIC", "PQN", "median", "none"),
+                     normMeth = c("mz", "TIC", "median", "none"),
                      SinglePointRecal = TRUE,
                      verbose = TRUE) {
 

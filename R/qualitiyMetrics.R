@@ -88,11 +88,8 @@
 #' Calculate Z'-factor of assay quality
 #'
 #' @param res      Object of class MALDIassay
-#' @param internal Logical, currently only the internal implementation,
-#'                 using `nConc` top and bottom concentrations, is implemented.
 #' @param nConc    Numeric, number of top and bottom concentrations to be used
 #'                 to calculate the pseudo positive and negative control.
-#'                 Only used if `internal` is TRUE
 #'
 #' @details
 #' The most common way to measure the quality of an assay is the so-called Z'-factor,
@@ -103,7 +100,7 @@
 #' where \eqn{\mu_p} and \eqn{\mu_p} is the mean value of the positive (response expected) and negative (no response expected) control, respectively.
 #' Therefore, the assay quality is **independent of the shape of the concentration response curve** and solely depend on two control values.
 #'
-#' Note, if `internal` is set to TRUE, the `nConc` highest concentrations are assumed as positive control,
+#' Note, the `nConc` highest concentrations are assumed as positive control,
 #' whereas the `nConc` lowest concentrations are used as negative.
 #'
 #' |**Value** |**Interpretation** |
@@ -123,11 +120,7 @@
 #' data(Blank2022res)
 #' calculateZPrime(Blank2022res, nConc = 2)       
 #'  
-calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
-  if(!internal) {
-    stop("Currently only the internal implementation,
-        using nConc top and bottom concentrations, is implemented.\n")
-  }
+calculateZPrime <- function(res, nConc = 2) {
 
   .calculateMetric(res = res,
                    nConc = nConc,
@@ -138,11 +131,8 @@ calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
 #' Calculate strictly standardized mean difference (SSMD)
 #'
 #' @param res      Object of class MALDIassay
-#' @param internal Logical, currently only the internal implementation,
-#'                 using `nConc` top and bottom concentrations, is implemented.
 #' @param nConc    Numeric, number of top and bottom concentrations to be used
 #'                 to calculate the pseudo positive and negative control.
-#'                 Only used if `internal` is TRUE
 #'
 #' @details
 #' The strictly standardized mean difference (SSMD) is a measure of effect size.
@@ -164,11 +154,7 @@ calculateZPrime <- function(res, internal = TRUE, nConc = 2) {
 #' 
 #' calculateSSMD(Blank2022res, nConc = 2)       
 #' 
-calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
-  if(!internal) {
-    stop("Currently only the internal implementation,
-        using nConc top and bottom concentrations, is implemented.\n")
-  }
+calculateSSMD <- function(res, nConc = 2) {
 
   .calculateMetric(res = res,
                    nConc = nConc,
@@ -178,8 +164,6 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #'  Calculate V'-Factor
 #'
 #' @param res      Object of class MALDIassay
-#' @param internal Logical, currently only the internal implementation,
-#'                 using `nConc` top and bottom concentrations, is implemented.
 #'
 #' @details
 #' The V'-factor is a generalization of the Z'-factor to a dose-response curve.
@@ -205,11 +189,7 @@ calculateSSMD <- function(res, internal = TRUE, nConc = 2) {
 #' data(Blank2022res)
 #' 
 #' calculateVPrime(Blank2022res) 
-calculateVPrime <- function(res, internal = TRUE) {
-  if(!internal) {
-    stop("Currently only the internal implementation,
-        using nConc top and bottom concentrations, is implemented.\n")
-  }
+calculateVPrime <- function(res) {
 
   param <- getFittingParameters(res)
 

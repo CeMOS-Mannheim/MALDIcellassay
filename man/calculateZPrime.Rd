@@ -4,17 +4,13 @@
 \alias{calculateZPrime}
 \title{Calculate Z'-factor of assay quality}
 \usage{
-calculateZPrime(res, internal = TRUE, nConc = 2)
+calculateZPrime(res, nConc = 2)
 }
 \arguments{
 \item{res}{Object of class MALDIassay}
 
-\item{internal}{Logical, currently only the internal implementation,
-using \code{nConc} top and bottom concentrations, is implemented.}
-
 \item{nConc}{Numeric, number of top and bottom concentrations to be used
-to calculate the pseudo positive and negative control.
-Only used if \code{internal} is TRUE}
+to calculate the pseudo positive and negative control.}
 }
 \value{
 Numeric vector of Z'-factors.
@@ -31,7 +27,7 @@ The Z'-factor is defined as \href{https://pubmed.ncbi.nlm.nih.gov/10838414/}{Ji-
 where \eqn{\mu_p} and \eqn{\mu_p} is the mean value of the positive (response expected) and negative (no response expected) control, respectively.
 Therefore, the assay quality is \strong{independent of the shape of the concentration response curve} and solely depend on two control values.
 
-Note, if \code{internal} is set to TRUE, the \code{nConc} highest concentrations are assumed as positive control,
+Note, the \code{nConc} highest concentrations are assumed as positive control,
 whereas the \code{nConc} lowest concentrations are used as negative.\tabular{ll}{
    \strong{Value} \tab \strong{Interpretation} \cr
    Z' ~ 1 \tab perfect assay \cr

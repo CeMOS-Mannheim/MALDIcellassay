@@ -323,13 +323,12 @@ getPeakStatistics <- function(object, summarise = FALSE) {
 #' data(Blank2022res)
 #' getRecalibrationError(Blank2022res)
 getRecalibrationError <- function(object) {
-  peaks <- peaks2df(getAvgPeaks(object))
-  mzdev <- .getMzShift(
-    peaksdf = peaks,
+  mzdev <- getMzShift(
+    peaks = getAvgPeaks(object),
     tol = getNormMzTol(object),
     targetMz = getNormMz(object),
-    tolppm = FALSE,
-    allowNoMatch = TRUE
+    tolppm = FALSE, 
+    verbose = FALSE
   )
   
   res_df <- tibble(

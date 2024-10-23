@@ -33,7 +33,20 @@ test_that("getMzShift stops if a single condition gets filtered completly", {
   MALDIquant::mass(dummyPeaks[[1]]) <- c(1:4, 6, 7:11)
   names(dummyPeaks) <- 1:3
   
-  expect_error(suppressWarnings(getMzShift(dummyPeaks, targetMz = 5.1, tol = 0.15, verbose = TRUE)))
+  expect_error(suppressWarnings(getMzShift(dummyPeaks,
+                                           targetMz = 5.1, 
+                                           tol = 0.15, 
+                                           verbose = TRUE)))
+})
+
+test_that("getMzShift stops if targetMz can't be found in any spectrum", {
+  dummyPeaks <- peakListConstructor()
+  names(dummyPeaks) <- 1:3
+  
+  expect_error(suppressWarnings(getMzShift(dummyPeaks, 
+                                           targetMz = 12, 
+                                           tol = 0.15, 
+                                           verbose = TRUE)))
 })
 
 test_that("getMzShift finds mass shift correctly", {
@@ -43,6 +56,7 @@ test_that("getMzShift finds mass shift correctly", {
   names(dummyPeaks) <- 1:3
   shift <- getMzShift(dummyPeaks, targetMz = 5.1, tol = 0.15, verbose = TRUE)
   expect_equal(names(shift), c("mzshift", "specIdx"))
+  expect_true(all(shift$mzshift <= 0.101 & shift$mzshift >=0.099))
   expect_equal(length(shift$mzshift), 3)
   expect_true(length(shift$mzshift) == length(shift$specIdx))
   expect_true(is.numeric(shift$mzshift))
@@ -52,6 +66,7 @@ test_that("getMzShift finds mass shift correctly", {
   
   shift <- getMzShift(dummyPeaks, targetMz = 5.001, tol = 1000, verbose = FALSE, tolppm = TRUE)
   expect_equal(length(shift$mzshift), 3)
+  expect_true(all(shift$mzshift <= 0.00101 & shift$mzshift >=0.00099))
 })
 
 test_that("getMzShift stops if no peak can be found", {

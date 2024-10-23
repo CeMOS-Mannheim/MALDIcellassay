@@ -24,7 +24,7 @@ transformConc2Log <- function(conc) {
 }
 
 
-#' Check if object is of class MALDIassay
+#' Check if object if of class MALDIassay
 #'
 #' @param object object to text
 #'

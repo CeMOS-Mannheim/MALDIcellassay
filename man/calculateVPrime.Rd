@@ -4,13 +4,10 @@
 \alias{calculateVPrime}
 \title{Calculate V'-Factor}
 \usage{
-calculateVPrime(res, internal = TRUE)
+calculateVPrime(res)
 }
 \arguments{
 \item{res}{Object of class MALDIassay}
-
-\item{internal}{Logical, currently only the internal implementation,
-using \code{nConc} top and bottom concentrations, is implemented.}
 }
 \value{
 Numeric vector of V'-factors

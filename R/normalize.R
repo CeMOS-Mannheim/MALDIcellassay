@@ -1,32 +1,3 @@
-#' .scalingFactor re implemented from sgibb/MALDIquant
-#'
-#' @param object AbstractMassObject
-#' @param method character
-#' @param range double
-#'
-#' @return
-#' double
-#' @importFrom MALDIquant trim
-#' @noRd
-.scalingFactor <- function(object, method=c("TIC", "median"), range) {
-  
-  method <- match.arg(method)
-  
-  if (!missing(range)) {
-    object <- trim(object, range=range)
-  }
-  
-  switch(method,
-         "TIC" = {
-           totalIonCurrent(object)
-         },
-         "median" = {
-           median(object@intensity)
-         }
-  )
-}
-
-
 #' Normalize spectra and peaks
 #'
 #' @param spec     List of MALDIquant::MassSpectrum
@@ -51,7 +22,7 @@
 normalize <- function(spec, peaks, normMeth, normMz, normTol) {
   nm <- names(spec)
   stopifnot(!is.null(nm))
-  stopifnot(is.numeric(as.numeric(nm)))
+  stopifnot(!is.na(as.numeric(nm)))
 
   switch(normMeth,
          "TIC" = {
@@ -66,8 +37,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
          "median" = {
            median <- vapply(spec,
                             FUN = function(x)
-                              .scalingFactor(object = x,
-                                                          method = "median"),
+                              median(x@intensity),
                             numeric(1))
 
            spec <- normalizeByFactor(spec, median)
@@ -78,7 +48,7 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
          },
          "mz" = {
            mzNorm <- getNormFactors(
-             peaksdf = peaks2df(peaks),
+             peaks = peaks,
              targetMz = normMz,
              tol = normTol,
              allowNoMatch = TRUE,
@@ -94,7 +64,6 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
            u_fil <- unique(nm[included_specIdx])
            if(length(u_nm) != length(u_fil)) {
              # stop if a single condition got filtered completely
-
              label_removed <- u_nm[which(!(u_nm %in% u_fil))]
 
              stop("Could not find ", normMz, " in all spectra with label ",
