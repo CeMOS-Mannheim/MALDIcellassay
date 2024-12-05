@@ -4,17 +4,13 @@
 \alias{calculateSSMD}
 \title{Calculate strictly standardized mean difference (SSMD)}
 \usage{
-calculateSSMD(res, internal = TRUE, nConc = 2)
+calculateSSMD(res, nConc = 2)
 }
 \arguments{
 \item{res}{Object of class MALDIassay}
 
-\item{internal}{Logical, currently only the internal implementation,
-using \code{nConc} top and bottom concentrations, is implemented.}
-
 \item{nConc}{Numeric, number of top and bottom concentrations to be used
-to calculate the pseudo positive and negative control.
-Only used if \code{internal} is TRUE}
+to calculate the pseudo positive and negative control.}
 }
 \value{
 Numeric vector of strictly standardized mean differences (SSMD)

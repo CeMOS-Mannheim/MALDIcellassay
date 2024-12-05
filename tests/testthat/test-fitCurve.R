@@ -3,6 +3,7 @@ test_that("fitCurve works", {
   normTol = 0.1
   normMethod = "mz"
   normMz = 760.585
+  set.seed(43)
   
   res <- fitCurve(spec = Blank2022spec,
                   SinglePointRecal = TRUE, 
@@ -30,27 +31,31 @@ test_that("fitCurve works", {
   expect_equal(length(getAppliedNormFactors(res)), 32)
   
   # test monoisotopic peaks filtering
-  res <- fitCurve(spec = Blank2022spec,
-                  SinglePointRecal = TRUE, 
-                  normMz = normMz, 
-                  alignTol = 0.1, 
-                  normTol = normTol,
-                  varFilterMethod = "mean",
-                  normMeth = "median",
-                  verbose = TRUE, 
-                  monoisotopicFilter = TRUE) 
+  res <- suppressWarnings(
+    fitCurve(spec = Blank2022spec,
+             SinglePointRecal = TRUE, 
+             normMz = normMz, 
+             alignTol = 0.1, 
+             normTol = normTol,
+             varFilterMethod = "mean",
+             normMeth = "median",
+             verbose = TRUE, 
+             monoisotopicFilter = TRUE) 
+  )
   expect_true(isMALDIassay(res))
   
   # test no normlization and no re-cal
-  res <- fitCurve(spec = Blank2022spec,
-                  SinglePointRecal = FALSE, 
-                  normMz = normMz, 
-                  alignTol = 0.1, 
-                  normTol = normTol,
-                  varFilterMethod = "mean",
-                  normMeth = "none",
-                  verbose = TRUE, 
-                  monoisotopicFilter = TRUE) 
+  res <- suppressWarnings(
+    fitCurve(spec = Blank2022spec,
+             SinglePointRecal = FALSE, 
+             normMz = normMz, 
+             alignTol = 0.1, 
+             normTol = normTol,
+             varFilterMethod = "mean",
+             normMeth = "none",
+             verbose = TRUE, 
+             monoisotopicFilter = TRUE) 
+  )
   expect_true(isMALDIassay(res))
 })
 

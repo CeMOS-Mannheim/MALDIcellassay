@@ -4,7 +4,14 @@
 \alias{getMzShift}
 \title{Get mass shift for target mz}
 \usage{
-getMzShift(peaks, targetMz, tol, tolppm = FALSE, verbose = TRUE)
+getMzShift(
+  peaks,
+  targetMz,
+  tol,
+  tolppm = FALSE,
+  verbose = TRUE,
+  allowNoMatch = TRUE
+)
 }
 \arguments{
 \item{peaks}{List of MALDIquant::MassPeak}
@@ -16,6 +23,8 @@ getMzShift(peaks, targetMz, tol, tolppm = FALSE, verbose = TRUE)
 \item{tolppm}{Logical, tolerance supplied in ppm}
 
 \item{verbose}{Logical, print logs to the console.}
+
+\item{allowNoMatch}{Logical, allow no matches.}
 }
 \value{
 List with two entries:

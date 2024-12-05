@@ -73,7 +73,8 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE) {
 #' @param filter      Character vector, filter out spectra which match the given vector.
 #' @param nameSpectra Logical, if TRUE the spectra in the resulting list will be named according to the dirname.
 #' @param verbose     Logical, print logs to console
-#' @return List of MALDIquant::MassSpectra
+#' @param centroided  Logical, if FALSE (default) a list of MALDIquant::MassSpectrum is returned, otherwise a list of MALDIquant::MassPeaks are returned.
+#' @return            List of MALDIquant::MassSpectra
 #' @export
 #'
 #' @importFrom svMisc progress
@@ -83,7 +84,7 @@ loadSpectra <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE) {
 #' dataDir <- system.file("extdata", package="MALDIcellassay")
 #' 
 #' loadSpectraMzML(file.path(dataDir, "Koch2024mzML"))
-loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE) {
+loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE, centroided = FALSE) {
   # get names of all anaylses
   analyses <- list.files(Dir, recursive = F)
 
@@ -101,7 +102,7 @@ loadSpectraMzML <- function(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE
     counter <- counter + 1
     path <- file.path(Dir, i)
 
-    spec <- MALDIquantForeign::importMzMl(path = file.path(path), verbose = F)
+    spec <- MALDIquantForeign::importMzMl(path = file.path(path), verbose = F, centroided = centroided)
 
 
     if (nameSpectra) {

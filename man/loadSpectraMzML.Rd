@@ -4,7 +4,13 @@
 \alias{loadSpectraMzML}
 \title{load mzML spectra}
 \usage{
-loadSpectraMzML(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE)
+loadSpectraMzML(
+  Dir,
+  filter = NA,
+  nameSpectra = TRUE,
+  verbose = TRUE,
+  centroided = FALSE
+)
 }
 \arguments{
 \item{Dir}{Character, parent directory of spectra.}
@@ -14,9 +20,12 @@ loadSpectraMzML(Dir, filter = NA, nameSpectra = TRUE, verbose = TRUE)
 \item{nameSpectra}{Logical, if TRUE the spectra in the resulting list will be named according to the dirname.}
 
 \item{verbose}{Logical, print logs to console}
+
+\item{centroided}{Logical, if FALSE (default) a list of MALDIquant::MassSpectrum is returned, otherwise a list of MALDIquant::MassPeaks are returned.}
 }
 \value{
-List of MALDIquant::MassSpectra
+\if{html}{\out{<div class="sourceCode">}}\preformatted{       List of MALDIquant::MassSpectra
+}\if{html}{\out{</div>}}
 }
 \description{
 load mzML spectra
