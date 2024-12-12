@@ -83,7 +83,7 @@ test_that("Slots in MALDIassay are accessible and can be modified", {
   instance@avgSpectra <- list(1:32)
   
   expect_equal(.validMALDIassay(instance), 
-                "avgSpectra must be a list of class MALDIquant::MassSpectrum objects.")
+                "avgSpectra must be a list of class MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects.")
   
   instance@avgSpectra <- Blank2022res@avgSpectra
   instance@avgPeaks <- list(1:32)
