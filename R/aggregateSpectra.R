@@ -17,7 +17,7 @@
 #' @return
 #' List of lists with intensity matrix, average spectra and average peaks
 #' 
-#' @importFrom MALDIquant monoisotopicPeaks
+#' @importFrom MALDIquant monoisotopicPeaks filterPeaks
 #' @noRd
 .aggregateSpectra <- function(spec,
                               averageMethod,
