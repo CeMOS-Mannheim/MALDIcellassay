@@ -7,7 +7,7 @@
 normalize(spec, peaks, normMeth, normMz, normTol)
 }
 \arguments{
-\item{spec}{List of MALDIquant::MassSpectrum}
+\item{spec}{List of MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects}
 
 \item{peaks}{List of MALDIquant::MassPeaks}
 
@@ -23,6 +23,10 @@ normalization factors as well as indicies of spectra containing the \code{normMz
 }
 \description{
 Normalize spectra and peaks
+}
+\details{
+Typically MassSpectrum lists should be provided as \code{spec}, still its possible to provide peaks for both arguments \code{spec} and \code{peaks} in the case that no raw data (continuous spectra) is available.
+In this case the operations performed on \code{spec} and \code{peaks} are equal.
 }
 \examples{
 data(Blank2022spec)

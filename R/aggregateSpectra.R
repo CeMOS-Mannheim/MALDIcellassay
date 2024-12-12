@@ -39,8 +39,22 @@
                                    method = averageMethod)
   } else {
     message("      .aggregateSpectra: MassPeaks provided as input. Binning and merging peaks.")
-    avg_spec <- mergeMassPeaks(binPeaks(spec, 
-                                        tolerance = binTol),
+    preBinnedPeaks <- MALDIquant:::.doByLabels(spec, 
+                                               labels = names(spec), 
+                                               FUN = binPeaks, 
+                                               tolerance = binTol)
+    nReplicates <- table(names(spec)) %>% min()
+    if(nReplicates <= 3) {
+      minNumber <- 2
+    } else {
+      minNumber = ceiling(nReplicates/2)
+    }
+    
+    preBinnedPeaks <- filterPeaks(preBinnedPeaks, 
+                                  minNumber = minNumber, 
+                                  labels = names(spec))
+    
+    avg_spec <- mergeMassPeaks(preBinnedPeaks,
                                labels = nm,
                                method = averageMethod)
   }
@@ -124,13 +138,12 @@
     )
   }
   
-  if(isMassSpectrumList(spec)) {
-    peaksBinned <- binPeaks(peaks, tolerance = binTol)  
-  } else {
-    # we binned peaks before merging, no need to do it again
-    peaksBinned <- peaks
-  }
+  peaksBinned <- binPeaks(peaks, tolerance = binTol) 
   
+  if(isMassPeaksList(spec)) {
+    message("Filtered peaks after binning to peaks that appear in all concentrations.")
+    peaksBinned <- filterPeaks(peaksBinned, minNumber = length(unique(names(spec))))
+  }
   
   # perform variance filtering
   if(isMassSpectrumList(spec)) { 
