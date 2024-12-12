@@ -1,11 +1,14 @@
 #' Preprocessing function to average spectra, detect and bin peaks before turning them into an intensity matrix
-#'
-#' @param spec                List of MALDIquant::MassSpectrum
-#' @param averageMethod       Character, method for aggregation: "mean", "median" or "sum"
-#' @param SNR                 Numeric, Signal noise value for peak detection
-#' @param monoisotopicFilter  Logical, filter monoisotopic peaks
-#' @param binTol              Numeric, tolerance for binning
-#' @param normMz              Numeric, m/z value used for normalization/re-calibration
+#' 
+#' @details
+#' If peaks are provided as input peak detection is skipped and merging of peaks is performed after binning the peaks with the provided tolerance.
+#' 
+#' @param spec                List of MALDIquant::MassSpectrum or MALDIquant::MassPeaks.
+#' @param averageMethod       Character, method for aggregation: "mean", "median" or "sum".
+#' @param SNR                 Numeric, Signal noise value for peak detection.
+#' @param monoisotopicFilter  Logical, filter monoisotopic peaks.
+#' @param binTol              Numeric, tolerance for binning.
+#' @param normMz              Numeric, m/z value used for normalization/re-calibration.
 #' @param normTol             Numeric, tolerance around `normMz` in Da.
 #' @param halfWindowSize      Numeric, halfWindowSize for peak detection.
 #' @param peakMethod          Character, method for peak detection. Either "SuperSmoother" or "MAD".
@@ -28,25 +31,40 @@
                               verbose = TRUE) {
   nm <- names(spec)
   stopifnot(!is.null(nm))
-  stopifnot(isMassSpectrumList(spec))
+  stopifnot(isMassSpectrumList(spec) | isMassPeaksList(spec))
   
-  avg_spec <- averageMassSpectra(spec,
-                                 labels = nm,
-                                 method = averageMethod)
-  
-  if(verbose) {
-    cat(timeNow(),
-        "building intensity matrix and applying variance filter... \n")
+  if(isMassSpectrumList(spec)) {
+    avg_spec <- averageMassSpectra(spec,
+                                   labels = nm,
+                                   method = averageMethod)
+  } else {
+    message("      .aggregateSpectra: MassPeaks provided as input. Binning and merging peaks.")
+    avg_spec <- mergeMassPeaks(binPeaks(spec, 
+                                        tolerance = binTol),
+                               labels = nm,
+                               method = averageMethod)
   }
   
-  peaks <- .detectPeaks(avg_spec, method = peakMethod, 
-                        SNR = SNR, 
-                        halfWindowSize = halfWindowSize)
+  if(verbose) {
+    message(timeNow(),
+            " Building intensity matrix and applying variance filter... \n")
+  }
+  
+  if(isMassSpectrumList(spec)) {
+    peaks <- .detectPeaks(avg_spec, 
+                          method = peakMethod, 
+                          SNR = SNR, 
+                          halfWindowSize = halfWindowSize)
+  } else {
+    # if peaks were merged we dont need to detect peaks again.
+    peaks <- avg_spec
+  }
+  
   
   if(monoisotopicFilter) {
     if(verbose) {
-      cat(timeNow(),
-          "Filtering monoisotopic peaks...\n")
+      message(timeNow(),
+              " Filtering monoisotopic peaks...\n")
     }
     
     # set it to be less restrictive then default settings
@@ -106,13 +124,28 @@
     )
   }
   
-  peaksBinned <- binPeaks(peaks, tolerance = binTol)
+  if(isMassSpectrumList(spec)) {
+    peaksBinned <- binPeaks(peaks, tolerance = binTol)  
+  } else {
+    # we binned peaks before merging, no need to do it again
+    peaksBinned <- peaks
+  }
+  
   
   # perform variance filtering
-  intmat <- intensityMatrix(peaksBinned, avg_spec)
+  if(isMassSpectrumList(spec)) { 
+    intmat <- intensityMatrix(peaksBinned, avg_spec)
+  } else {
+    intmat <- intensityMatrix(peaksBinned)
+    
+    if(any(is.na(intmat))) {
+      warning("NA values generated when aggregating peak into intensity matrix. This might lead to errors.\n")
+    }
+  }
+  
   
   if(verbose) {
-    cat("      Found", dim(intmat)[2], "peaks in total.\n")
+    message("      Found ", dim(intmat)[2], " peaks in total.\n")
   }
   
   rownames(intmat) <- names(avg_spec)
