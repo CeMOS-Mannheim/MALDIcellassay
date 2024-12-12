@@ -17,11 +17,10 @@ test_that(".aggregateSpectra stops if spectra not named.", {
 })
 
 test_that(".aggregateSpectra stops if spec is not list of spectra.", {
-  data("Blank2022peaks")
   data("Blank2022spec")
   
   # no spectra
-  expect_error(.aggregateSpectra(spec = Blank2022peaks,
+  expect_error(.aggregateSpectra(spec = list(1, 2, 3),
                                  averageMethod = "mean", 
                                  SNR = 3, 
                                  monoisotopicFilter = TRUE,
