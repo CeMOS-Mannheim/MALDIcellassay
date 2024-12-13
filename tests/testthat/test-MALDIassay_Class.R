@@ -83,7 +83,7 @@ test_that("Slots in MALDIassay are accessible and can be modified", {
   instance@avgSpectra <- list(1:32)
   
   expect_equal(.validMALDIassay(instance), 
-                "avgSpectra must be a list of class MALDIquant::MassSpectrum objects.")
+                "avgSpectra must be a list of class MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects.")
   
   instance@avgSpectra <- Blank2022res@avgSpectra
   instance@avgPeaks <- list(1:32)
@@ -151,7 +151,7 @@ test_that("MALDIassy_class handles invalid inputs gracefully", {
                    normFactors = prc$normFac, mzShifts = prc$mzShift,
                    fits = res_list, stats = stat_df, included_specIdx = prc$idx,
                    settings = list(normMeth = "method")),
-               "avgSpectra must be a list of class MALDIquant::MassSpectrum objects.")
+               "avgSpectra must be a list of class MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects.")
   
   # Test invalid avgPeaks
   expect_error(new("MALDIassay",

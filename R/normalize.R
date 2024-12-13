@@ -1,6 +1,11 @@
 #' Normalize spectra and peaks
+#' 
+#' @details
+#' Typically MassSpectrum lists should be provided as `spec`, still its possible to provide peaks for both arguments `spec` and `peaks` in the case that no raw data (continuous spectra) is available.
+#' In this case the operations performed on `spec` and `peaks` are equal.
+#' 
 #'
-#' @param spec     List of MALDIquant::MassSpectrum
+#' @param spec     List of MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects
 #' @param peaks    List of MALDIquant::MassPeaks
 #' @param normMeth Character, normalization method. Options are "TIC", "median" and "mz".
 #' @param normMz   Numeric, mz used to normalize.
@@ -26,7 +31,15 @@ normalize <- function(spec, peaks, normMeth, normMz, normTol) {
 
   switch(normMeth,
          "TIC" = {
-           tic <- purrr::map_dbl(spec, totalIonCurrent)
+           if(isMassPeaksList(spec)) {
+             tic <- purrr::map_dbl(spec, 
+                                   function(x) 
+                                     sum(x@intensity)
+               )
+           } else {
+             tic <- purrr::map_dbl(spec, totalIonCurrent)  
+           }
+           
 
            spec <- normalizeByFactor(spec, tic)
            peaks <- normalizeByFactor(peaks, tic)

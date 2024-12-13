@@ -28,8 +28,13 @@ calculatePeakStatistics <- function(curveFits, singlePeaks, spec) {
   if (is.null(names(singlePeaks))) {
     stop("singlePeaks must have concentrations as names!\n")
   }
-
-  intensityMatrix <- intensityMatrix(singlePeaks, spec)
+  
+  if(isMassPeaksList(spec)) {
+    intensityMatrix <- intensityMatrix(singlePeaks)
+  } else {
+    intensityMatrix <- intensityMatrix(singlePeaks, spec)  
+  }
+  
   rownames(intensityMatrix) <- names(singlePeaks)
 
   fit_df <- lapply(curveFits, function(x) {

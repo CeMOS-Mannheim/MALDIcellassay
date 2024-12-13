@@ -1,7 +1,7 @@
-#' Internal function to perform preprocessing of spectra
+#' Internal function to perform preprocessing of spectra or peaks
 #'
 #' @param peaks_single        List of MALDIquant::MassPeaks objects.
-#' @param spec                List of MALDIquant::MassSpectrum objects.
+#' @param spec                List of MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects.
 #' @param SinglePointRecal    Logical, perform single point re-calibration
 #' @param normMz              Numeric, m/z used for normalization and re-calibration.
 #' @param normTol             Numeric, tolerance around `normMz` in Da.
@@ -30,18 +30,18 @@
       tolppm = FALSE, 
       verbose = verbose
     )
-
+    
     spec <- shiftMassAxis(spec[mzShift$specIdx],
                           mzShift$mzshift)
     peaks_single <- shiftMassAxis(peaks_single[mzShift$specIdx],
                                   mzShift$mzshift)
     included_idx_recal <- mzShift$specIdx
-
+    
   } else {
     mzShift <- list("mzshift" = 0)
     included_idx_recal <- 1:length(spec)
   }
-
+  
   #### normalization ####
   if(verbose) {
     cat(timeNow(), "normalizing... \n")  
@@ -52,13 +52,13 @@
                     normMeth = normMeth,
                     normMz = normMz,
                     normTol = normTol)
-
+  
   spec <- norm$spec
   peaks_single <- norm$peaks
-
+  
   current_names <- names(spec)
-
-
+  
+  
   #### alignment ####
   if(alignTol > 0) {
     if(verbose) {
@@ -72,18 +72,24 @@
                                     tolerance = alignTol,
                                     method = "linear",
                                     allowNoMatches = allowNoMatches)
-
-    spec <- warpMassSpectra(spec,
+    if(isMassPeaksList(spec)) {
+      spec <- warpMassPeaks(spec,
                             w = wf,
-                            emptyNoMatches = allowNoMatches)
+                            emptyNoMatches = allowNoMatches) 
+    } else {
+      spec <- warpMassSpectra(spec,
+                              w = wf,
+                              emptyNoMatches = allowNoMatches)  
+    }
+    
     names(spec) <- current_names
-
+    
     peaks_single <- warpMassPeaks(peaks_single,
                                   w = wf,
                                   emptyNoMatches = allowNoMatches)
     names(peaks_single) <- current_names
   }
-
+  
   return(list(spec = spec,
               singlePeaks = peaks_single,
               idx = norm$idx,
