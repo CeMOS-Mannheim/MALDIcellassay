@@ -27,8 +27,8 @@ setClass("MALDIassay",
     return("Length of avgSpectra can't be 0.")
   }
   
-  if (!isMassSpectrumList(object@avgSpectra)) {
-    return("avgSpectra must be a list of class MALDIquant::MassSpectrum objects.")
+  if (!MALDIquant:::.isMassObjectList(object@avgSpectra)) {
+    return("avgSpectra must be a list of class MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects.")
   }
   
   if (length(object@avgPeaks) < 1) {

@@ -68,7 +68,13 @@ getSingleSpecIntensity <- function(object, mz_idx) {
 getIntensityMatrix <- function(object, avg = FALSE, excludeNormMz =FALSE) {
   
   if(avg) {
-    intmat <- intensityMatrix(getAvgPeaks(object), getAvgSpectra(object))
+    avgSpec <- getAvgSpectra(object)
+    if(isMassPeaksList(avgSpec)) {
+      intmat <- intensityMatrix(getAvgPeaks(object))
+    } else {
+      intmat <- intensityMatrix(getAvgPeaks(object), avgSpec)
+    }
+    
   } else {
     intmat <- intensityMatrix(getSinglePeaks(object))
   }

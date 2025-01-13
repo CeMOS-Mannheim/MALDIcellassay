@@ -95,4 +95,8 @@ test_that("normalize works", {
   expect_true(all(is.numeric(n$factor)))
   expect_true(all(is.integer(n$idx)))
   expect_true(length(Blank2022spec) == length(n$factor))
+  
+  n <- normalize(spec = Blank2022peaks, peaks = Blank2022peaks, normMeth = "median", normMz = 760.585, normTol = 0.1)
+  expect_true(MALDIquant::isMassPeaksList(n$spec))
+  expect_true(MALDIquant::isMassPeaksList(n$peaks))
 })
