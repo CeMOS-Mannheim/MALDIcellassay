@@ -56,7 +56,7 @@
 
 
 <dl><dt id="arg-spec">spec<a class="anchor" aria-label="anchor" href="#arg-spec"></a></dt>
-<dd><p>List of MALDIquant::MassSpectrum</p></dd>
+<dd><p>List of MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects</p></dd>
 
 
 <dt id="arg-peaks">peaks<a class="anchor" aria-label="anchor" href="#arg-peaks"></a></dt>
@@ -79,6 +79,11 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>List of lists of normalized MALDIquant::MassSpectrum, normalized MALDIquant::MassPeaks,
 normalization factors as well as indicies of spectra containing the <code>normMz</code> in case of <code>normMeth = "mz"</code>,</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Typically MassSpectrum lists should be provided as <code>spec</code>, still its possible to provide peaks for both arguments <code>spec</code> and <code>peaks</code> in the case that no raw data (continuous spectra) is available.
+In this case the operations performed on <code>spec</code> and <code>peaks</code> are equal.</p>
     </div>
 
     <div class="section level2">
