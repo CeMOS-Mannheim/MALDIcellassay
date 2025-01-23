@@ -74,7 +74,7 @@ Also take a look at the [pkgdown-site](https://cemos-mannheim.github.io/MALDIcel
 
 ## GUI
 
-If you want to use `MALDIcellassay` interactively to explore your data, you might be interested in [M²ara](https://github.com/CeMOS-Mannheim/M2ara), which offers a Shiny-based interface. It is also available as a [docker container](https://hub.docker.com/repository/docker/thomasenzlein/m2ara) and as a stand-alone [Windows installer](https://github.com/CeMOS-Mannheim/m2ara/releases/latest/). You can find more details in the [preprint on M²ara](https://chemrxiv.org/engage/chemrxiv/article-details/663a1d0f418a5379b0aa286b).
+If you want to use `MALDIcellassay` interactively to explore your data, you might be interested in [M²ara](https://github.com/CeMOS-Mannheim/M2ara), which offers a Shiny-based interface. It is also available as a [docker container](https://hub.docker.com/repository/docker/thomasenzlein/m2ara) and as a stand-alone [Windows installer](https://github.com/CeMOS-Mannheim/m2ara/releases/latest/). You can find more details in the [publication on M²ara](https://doi.org/10.1093/bioinformatics/btae694).
 
 ## Contribution and Contact
 
