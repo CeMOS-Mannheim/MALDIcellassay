@@ -1,0 +1,229 @@
+# MALDIcellassay
+
+Conduct automated cell-based assays using Matrix-Assisted Laser
+Desorption/Ionization (MALDI) methods for high-throughput screening of
+signals responsive to treatments. The package efficiently identifies
+high variance signals and fits dose-response curves to them. Quality
+metrics such as Z’, V’, log2-Fold-Change and the Curve response score
+(CRS) are provided for evaluating the potential of signals as
+biomarkers. The methodologies were introduced by [Weigt et
+al. (2018)](https://doi.org/10.1038/s41598-018-29677-z) and first
+release as the `MALDIcellassay`-package in [Unger et
+al. (2021)](https://doi.org/10.1038/s41596-021-00624-z).
+
+## Main Functionality
+
+The primary function in this package is
+[`fitCurve()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/fitCurve.md)
+which not only performs logistic regression and variance filtering but
+also handles all necessary preprocessing steps:
+
+- Spectral alignment (“single-point recalibration”)
+- Normalization by an internal standard or known endogenous signal
+
+All these functions can also be called independently.
+
+This package makes heavy use of the `MALDIquant` framework.
+
+## Installation
+
+### From CRAN
+
+You can install the released version of `MALDIcellassay` from CRAN with:
+
+``` r
+
+install.packages("MALDIcellassay")
+```
+
+### From GitHub
+
+To install the development version of the package, use devtools:
+
+``` r
+
+# Install devtools if you haven't already
+install.packages("devtools")
+
+# Install MALDIcellassay from GitHub
+devtools::install_github("CeMOS-Mannheim/MALDIcellassay")
+```
+
+## Example Usage
+
+Here’s a simple example to get you started with the `MALDIcellassay`
+package:
+
+``` r
+
+library(MALDIcellassay)
+library(MALDIquant)
+
+# Load example data
+data("Blank2022spec")
+
+# Preprocess data
+spec_prc <- MALDIquant::removeBaseline(Blank2022spec)
+conc <- as.numeric(names(Blank2022spec))
+names(spec_prc) <- conc
+
+# Fit dose-response curve
+res <- fitCurve(spec = spec_prc,
+                SinglePointRecal = TRUE, 
+                normMeth = "mz",
+                varFilterMethod = "none",
+                normMz = 760.585, 
+                alignTol = 0, 
+                normTol = 0.1, 
+                verbose = FALSE)
+
+# View the results
+print(res)
+```
+
+For more detailed examples, check out the
+[vignette](https://cemos-mannheim.github.io/MALDIcellassay/articles/Example.html).
+Also take a look at the
+[pkgdown-site](https://cemos-mannheim.github.io/MALDIcellassay/reference/index.html)
+for more details on specific functions.
+
+## GUI
+
+If you want to use `MALDIcellassay` interactively to explore your data,
+you might be interested in
+[M²ara](https://github.com/CeMOS-Mannheim/M2ara), which offers a
+Shiny-based interface. It is also available as a [docker
+container](https://hub.docker.com/repository/docker/thomasenzlein/m2ara)
+and as a stand-alone [Windows
+installer](https://github.com/CeMOS-Mannheim/m2ara/releases/latest/).
+You can find more details in the [publication on
+M²ara](https://doi.org/10.1093/bioinformatics/btae694).
+
+## Contribution and Contact
+
+We welcome contributions to `MALDIcellassay`! If you encounter any
+issues or have suggestions for improvement, please open an issue on
+GitHub or submit a pull request.
+
+For any questions or further information, you can contact the
+maintainer:
+
+``` R
+Name: Thomas Enzlein
+Email: t.enzlein@hs-mannheim.de
+```
+
+## Citation
+
+If you use `MALDIcellassay` in your research, please cite:
+
+Unger et al., 2021, “Label-free Cell Assays of Compound Uptake and Drug
+Action using MALDI-TOF Mass Spectrometry”, Nature Protocols. DOI:
+<https://doi.org/10.1038/s41596-021-00624-z>.
+
+# Package index
+
+## All functions
+
+- [`Blank2022intmat`](https://cemos-mannheim.github.io/MALDIcellassay/reference/Blank2022intmat.md)
+  : Example intensity matrix from Blank 2022
+- [`Blank2022peaks`](https://cemos-mannheim.github.io/MALDIcellassay/reference/Blank2022peaks.md)
+  : Example peaks from Blank 2022
+- [`Blank2022res`](https://cemos-mannheim.github.io/MALDIcellassay/reference/Blank2022res.md)
+  : Example MALDIassay object from Blank 2022
+- [`Blank2022spec`](https://cemos-mannheim.github.io/MALDIcellassay/reference/Blank2022spec.md)
+  : Example spectra from Blank 2022
+- [`MALDIassay-class`](https://cemos-mannheim.github.io/MALDIcellassay/reference/MALDIassay-class.md)
+  : Class MALDIassay
+- [`calculateChauvenetCriterion()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/calculateChauvenetCriterion.md)
+  : Calculate Chauvenet's criterion for outlier detection
+- [`calculateCurveFit()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/calculateCurveFit.md)
+  : Calculate the fit for a dose-response curve
+- [`calculateSSMD()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/calculateSSMD.md)
+  : Calculate strictly standardized mean difference (SSMD)
+- [`calculateVPrime()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/calculateVPrime.md)
+  : Calculate V'-Factor
+- [`calculateZPrime()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/calculateZPrime.md)
+  : Calculate Z'-factor of assay quality
+- [`checkRecalibration()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/checkRecalibration.md)
+  : Check the recalibration of spectra from a MALDIassay object
+- [`extractIntensity()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/extractIntensity.md)
+  : Extract intensity using peaks as template
+- [`extractSpots()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/extractSpots.md)
+  : Extract the spot coordinates
+- [`filterVariance()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/filterVariance.md)
+  : Filter for high variance signals
+- [`fitCurve()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/fitCurve.md)
+  : Fit dose-response curves
+- [`getAllMz()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getAllMz.md)
+  : Get all mz value of an MALDIassay-object
+- [`getAppliedMzShift()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getAppliedMzShift.md)
+  : Extract applied mz-shift
+- [`getAppliedNormFactors()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getAppliedNormFactors.md)
+  : Extract applied normalization factors
+- [`getAvgPeaks()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getAvgPeaks.md)
+  : Extract peaks of average spectra
+- [`getAvgSpectra()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getAvgSpectra.md)
+  : Extract average spectra
+- [`getBinTol()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getBinTol.md)
+  : Get binning tolerance
+- [`getConc()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getConc.md)
+  : Extract the concentrations used in a MALDIassay
+- [`getCurveFits()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getCurveFits.md)
+  : Extract curve fits
+- [`getFittingParameters()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getFittingParameters.md)
+  : Get fitting parameters
+- [`getIntensityMatrix()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getIntensityMatrix.md)
+  : Get the intensity matrix of single spectra for all fitted curves
+- [`getMzFromMzIdx()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getMzFromMzIdx.md)
+  : Get the mz value associated with a mzIdx
+- [`getMzShift()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getMzShift.md)
+  : Get mass shift for target mz
+- [`getNormFactors()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getNormFactors.md)
+  : Get normalization factors from peak data.frame
+- [`getNormMethod()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getNormMethod.md)
+  : Extract normalization method
+- [`getNormMz()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getNormMz.md)
+  : Extract m/z used for normalization
+- [`getNormMzTol()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getNormMzTol.md)
+  : Extract tolerance used for normalization
+- [`getPeakStatistics()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getPeakStatistics.md)
+  : Extract peak statistics
+- [`getRecalibrationError()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getRecalibrationError.md)
+  : Calculate remaining calibration error of a MALDIassay object
+- [`getSNR()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getSNR.md)
+  : Extract SNR used for peak detection
+- [`getSinglePeaks()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getSinglePeaks.md)
+  : Extract peaks of single spectra spectra (before average calculation)
+- [`getSingleSpecIntensity()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getSingleSpecIntensity.md)
+  : Extract the intensities of single spectra for a given mzIdx
+- [`getSpots()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getSpots.md)
+  : Get the spot coordinates of spectra
+- [`getVarFilterMethod()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/getVarFilterMethod.md)
+  : Extract variance filtering method
+- [`isMALDIassay()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/isMALDIassay.md)
+  : Check if object if of class MALDIassay
+- [`loadSpectra()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/loadSpectra.md)
+  : load bruker MALDI target plate spectra
+- [`loadSpectraMzML()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/loadSpectraMzML.md)
+  : load mzML spectra
+- [`normalize()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/normalize.md)
+  : Normalize spectra and peaks
+- [`normalizeByFactor()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/normalizeByFactor.md)
+  : Apply normalization factors to spectra
+- [`plotCurves()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/plotCurves.md)
+  : generate ggplot objects for each of the curve fits in a MALDIassay
+  object
+- [`plotPeak()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/plotPeak.md)
+  : Plot a peak of interest from a MALDIassay object
+- [`shiftMassAxis()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/shiftMassAxis.md)
+  : Shift mass axis
+- [`transformConc2Log()`](https://cemos-mannheim.github.io/MALDIcellassay/reference/transformConc2Log.md)
+  : Convert concentration to log10 and replace zero's
+
+# Articles
+
+### All vignettes
+
+- [MALDI cell based assay
+  Example](https://cemos-mannheim.github.io/MALDIcellassay/articles/Example.md):
