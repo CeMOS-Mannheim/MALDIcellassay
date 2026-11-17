@@ -4,12 +4,17 @@
 \alias{checkRecalibration}
 \title{Check the recalibration of spectra from a MALDIassay object}
 \usage{
-checkRecalibration(object, idx)
+checkRecalibration(object, idx, centroided = FALSE, showPeaks = TRUE)
 }
 \arguments{
 \item{object}{Object of class MALDIassay}
 
 \item{idx}{Numeric, index of spectrum to plot}
+
+\item{centroided}{Logical, \code{TRUE} for centroided data: the spectra are then
+drawn as sticks instead of lines}
+
+\item{showPeaks}{Logical, mark the detected peaks with open circles}
 }
 \value{
 ggplot object
@@ -19,8 +24,15 @@ Dashed gray lines indicate the mz used for re-calibration ± the tolerance.
 Red dashed line indicate the mz used for re-calibration and solid lines indicate peaks.
 The spectrum will show the peak used for re-calibration ± 10x the tolerance.
 }
+\details{
+Profile data is drawn as lines, centroided data as sticks; the detected peaks
+that are used for the recalibration are marked with open circles.
+}
 \examples{
 # see example for `fitCurve()` to see how this data was generated
 data(Blank2022res)
-checkRecalibration(Blank2022res, idx = 1:8)       
+checkRecalibration(Blank2022res, idx = 1:8)
+
+# centroided data is drawn as sticks
+checkRecalibration(Blank2022res, idx = 1:8, centroided = TRUE)
 }
