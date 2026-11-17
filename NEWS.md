@@ -1,4 +1,7 @@
 # MALDIcellassay (development version)
+* `plotPeak()` gains `centroided` and `showPeaks` arguments: centroided data are
+  drawn as sticks instead of profile curves, and the peaks that are used for
+  curve fitting are marked with open circles (default `TRUE`)
 * explain acronyms in DESCRIPTION file
 * make readme more informative
 * add logo

@@ -4,7 +4,7 @@
 \alias{plotPeak}
 \title{Plot a peak of interest from a MALDIassay object}
 \usage{
-plotPeak(object, mzIdx, tol = 0.8)
+plotPeak(object, mzIdx, tol = 0.8, centroided = FALSE, showPeaks = TRUE)
 }
 \arguments{
 \item{object}{object of class MALDIassay}
@@ -12,15 +12,31 @@ plotPeak(object, mzIdx, tol = 0.8)
 \item{mzIdx}{numeric, index of mass of interest (see \code{getPeakStatistics()})}
 
 \item{tol}{numeric, tolerance around peak to plot}
+
+\item{centroided}{logical, whether the data are centroided. If \code{TRUE}
+the centroids are drawn as sticks instead of profile curves.}
+
+\item{showPeaks}{logical, whether the peaks used for curve fitting are marked
+with open circles (default \code{TRUE}).}
 }
 \value{
 ggplot object
 }
 \description{
-Plot a peak of interest from a MALDIassay object
+Draws the region around the peak of interest using the averaged spectra. For
+profile data the spectra are shown as curves, for centroided data the
+centroids are shown as sticks.
+}
+\details{
+With \code{showPeaks = TRUE} the peaks that are used for curve fitting are marked
+with open circles: the peaks detected on the averaged spectra for profile
+data, and the centroids themselves for centroided data.
 }
 \examples{
 
 data(Blank2022res)
 plotPeak(Blank2022res, mzIdx = 2)
+
+# centroided data: centroids are drawn as sticks
+plotPeak(Blank2022res, mzIdx = 2, centroided = TRUE)
 }
