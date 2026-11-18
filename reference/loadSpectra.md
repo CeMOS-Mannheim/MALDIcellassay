@@ -38,7 +38,7 @@ dataDir <- system.file("extdata", package="MALDIcellassay")
 unzip(file.path(dataDir, "example-raw-spectra.zip"))
 
 loadSpectra("example-raw-spectra/")
-#> 10:48 Loading spectra...
+#> 06:12 Loading spectra...
 #> 
 #> Progress: 100%  
 #> $`0.0001`

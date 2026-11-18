@@ -96,7 +96,7 @@ peaks <- MALDIquant::detectPeaks(Blank2022spec, method = "SuperSmoother", SNR = 
 names(peaks) <- names(Blank2022spec)
 mz_shift <- getMzShift(peaks = peaks, targetMz = 760.585, tol = 0.1)
 #> found mz 760.585 in 32 / 32 spectra
-#> 10:48 mzshift was -0.07964664 in mean and 0.08278404  abs. max.
+#> 06:12 mzshift was -0.07964664 in mean and 0.08278404  abs. max.
 summary(mz_shift$mzshift)
 #>     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 #> -0.08278 -0.08278 -0.08278 -0.07965 -0.08278 -0.05768

@@ -48,7 +48,7 @@ loadSpectraMzML(
 dataDir <- system.file("extdata", package="MALDIcellassay")
 
 loadSpectraMzML(file.path(dataDir, "Koch2024mzML"))
-#> 10:48 Loading spectra...
+#> 06:12 Loading spectra...
 #> 
 #> Progress: 100%  
 #> $`0.0001`

@@ -52,7 +52,7 @@ List with two entries: `MzShift` The mass shift for each spectrum
 data(Blank2022peaks)
 getMzShift(Blank2022peaks, targetMz = 760.585, tol = 0.1, tolppm = FALSE)
 #> found mz 760.585 in 32 / 32 spectra
-#> 10:48 mzshift was -0.07964664 in mean and 0.08278404  abs. max.
+#> 06:12 mzshift was -0.07964664 in mean and 0.08278404  abs. max.
 #> $mzshift
 #>           0           0           0           0        0.04        0.04 
 #> -0.08278404 -0.08278404 -0.08278404 -0.08278404 -0.08278404 -0.08278404 
